@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521:XE
+    username: vit
+    password: vit
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      dialect: org.hibernate.dialect.Oracle10gDialect
+      database-platform: org.hibernate.dialect.Oracle10gDialect
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB

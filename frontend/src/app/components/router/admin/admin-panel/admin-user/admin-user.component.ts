@@ -34,9 +34,11 @@ export class AdminUserComponent implements OnInit, OnDestroy {
   ]
   changePagePag = false;
   inputSubs: Subscription;
+  selectSubs: Subscription;
   searchState = false;
   userStream$;
   inputSearch = '';
+  userId: string;
 
   constructor(
     private userService: UserService
@@ -45,6 +47,7 @@ export class AdminUserComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.inputSubs.unsubscribe();
+    this.selectSubs.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -71,6 +74,15 @@ export class AdminUserComponent implements OnInit, OnDestroy {
       this.inputSearch = input;
       this.getUser(0);
     });
+    this.selectSubs = fromEvent(document.getElementById('select-qty'), 'change')
+      .pipe(
+        map((event: any) => event.target.value),
+      )
+      .subscribe(select => {
+        this.userListSize = select;
+        this.changePagePag = false;
+        this.getUser(0);
+      })
   }
 
   getUser(pageNumber) {
@@ -83,6 +95,7 @@ export class AdminUserComponent implements OnInit, OnDestroy {
     }
     this.subscriber = this.userStream$.subscribe({
       next: (data) => {
+        this.removeActiveButtons();
         this.loadState = false;
         this.prepareUserData();
         data.content.forEach((user, index) => {
@@ -111,7 +124,6 @@ export class AdminUserComponent implements OnInit, OnDestroy {
           this.userData[index].isActive = user.active;
           this.userData[index].isNotLocked = user.notLocked;
         });
-        console.log(this.userData)
         this.rowNumber = data.size * data.number;
         this.totalPage = data.totalPages;
         if (this.totalPage > 1) {
@@ -232,6 +244,32 @@ export class AdminUserComponent implements OnInit, OnDestroy {
       number: this.totalPage-1
     };
     this.pagePaginator[index].class = 'page-num active';
+  }
+
+  onSelectRow(tr: HTMLElement, userId) {
+    if (document.querySelector('tbody tr.active')) {
+      document.querySelector('tbody tr.active').classList.remove('active');
+    }
+    if (userId === '') {
+      this.removeActiveButtons();
+      this.userId = '';
+      return;
+    }
+    this.userId = userId;
+    tr.classList.add('active');
+    if (document.querySelectorAll('.icon-container, .iconremove-container').length > 0) {
+      document.querySelectorAll('.icon-container, .iconremove-container').forEach((el: HTMLElement) => {
+        el.classList.add('active');
+      })
+    }
+  }
+
+  removeActiveButtons() {
+    if (document.querySelectorAll('.icon-container.active, .iconremove-container.active').length > 0) {
+      document.querySelectorAll('.icon-container, .iconremove-container').forEach((el: HTMLElement) => {
+        el.classList.remove('active');
+      })
+    }
   }
 
 }

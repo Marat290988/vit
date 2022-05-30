@@ -4,12 +4,14 @@ import { RouterModule } from "@angular/router";
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 import { AdminUserComponent } from './admin-panel/admin-user/admin-user.component';
 import { SpinnerComponent } from "../../ui/spinner/spinner.component";
+import { AddEditUserComponent } from './admin-panel/admin-user/add-edit-user/add-edit-user.component';
 
 @NgModule({
     declarations: [
         AdminPanelComponent,
         AdminUserComponent,
-        SpinnerComponent
+        SpinnerComponent,
+        AddEditUserComponent
     ],
     imports: [
         CommonModule,

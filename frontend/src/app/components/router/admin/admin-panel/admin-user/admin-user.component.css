@@ -9,6 +9,7 @@
     border-left: 1px solid var(--colorblight1);
     border-right: 1px solid var(--colorblight1);
     table-layout: fixed;
+    border-collapse: collapse;
 }
 
 .user-table-container {
@@ -23,6 +24,14 @@
 .user-table td, .user-table th {
     padding: 6px;
     word-break: break-all;
+}
+
+.user-table th {
+    top: 0;
+    z-index: 1000;
+    position: sticky;
+    background-color: #fff;
+    border-bottom: 1px solid #dee2e6;
 }
 
 .user-table td {
@@ -128,7 +137,8 @@
 
 .table-scroll {
     overflow: auto; 
-    max-height: calc(100vh - 186px);
+    max-height: calc(100vh - 200px);
+    position: relative;
 }
 
 .control-panel {
@@ -159,4 +169,80 @@
     caret-color: var(--colorb1);
     width: 165px;
     margin-left: 20px;
+}
+
+.user-table tbody tr:first-child td {
+    border-top: none;
+}
+
+.select {
+    border: none; 
+    background-color: 
+    #c6f3ec; 
+    border-radius: 3px;
+}
+
+.select:focus-visible {
+    outline: none;
+    border: none;
+}
+
+.control-panel-buttons {
+    display: flex;
+    padding-left: 10px;
+}
+
+.control-panel-buttons p {
+    font-size: 12px;
+    margin-right: 4px;
+    color: var(--colorf1);
+}
+
+.icon-container {
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 2px;
+    opacity: 0.5;
+    background-color: #c6f3ec;
+}
+
+.icon-container-add {
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 2px;
+    opacity: 1;
+    background-color: #c6f3ec;
+}
+
+.iconremove-container {
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 2px;
+    opacity: 0.5;
+    background-color: #ffd7d7;
+}
+
+tbody tr.active {
+    background-color: var(--colorblight1);
+}
+
+.active.icon-container, .active.iconremove-container {
+    opacity: 1;
+}
+
+.user-add-edit-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 10000;
+    transform: translateX(0px);
+    overflow: hidden;
 }

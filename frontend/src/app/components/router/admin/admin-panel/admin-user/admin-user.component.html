@@ -1,22 +1,53 @@
 <div class="users-container">
     <div class="user-table-container">
         <div class="control-panel">
-            <div class="control-panel-buttons"></div>
+            <div class="control-panel-buttons">
+                <div style="height: 100%; width: 25px; align-items: center; display: flex; margin-right: 5px;">
+                    <div class="icon-container-add">
+                        <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="20px" height="20px" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32">
+                            <path fill="#607d8b" d="M14 4c-3.854 0-7 3.146-7 7c0 2.41 1.23 4.552 3.094 5.813C6.527 18.343 4 21.88 4 26h2c0-4.43 3.57-8 8-8c1.376 0 2.654.358 3.78.97A7.993 7.993 0 0 0 16 24c0 4.406 3.594 8 8 8c4.406 0 8-3.594 8-8c0-4.406-3.594-8-8-8a7.98 7.98 0 0 0-4.688 1.53c-.442-.277-.92-.51-1.406-.718A7.018 7.018 0 0 0 21 11c0-3.854-3.146-7-7-7zm0 2c2.773 0 5 2.227 5 5s-2.227 5-5 5s-5-2.227-5-5s2.227-5 5-5zm10 12c3.326 0 6 2.674 6 6s-2.674 6-6 6s-6-2.674-6-6s2.674-6 6-6zm-1 2v3h-3v2h3v3h2v-3h3v-2h-3v-3h-2z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div style="height: 100%; width: 25px; align-items: center; display: flex; margin-right: 5px;">
+                    <div class="icon-container">
+                        <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="20px" height="20px" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32">
+                            <path fill="#607d8b" d="M13 3c-3.855 0-7 3.145-7 7c0 2.41 1.23 4.55 3.094 5.813C5.527 17.343 3 20.883 3 25h2c0-4.43 3.57-8 8-8c2.145 0 4.063.879 5.5 2.25l-4.719 4.719l-.062.312l-.688 3.532l-.312 1.468l1.469-.312l3.53-.688l.313-.062l10.094-10.094c1.16-1.16 1.16-3.09 0-4.25a3.018 3.018 0 0 0-4.219-.031l-3.968 3.969a10.103 10.103 0 0 0-3.032-2A7.024 7.024 0 0 0 20 10c0-3.855-3.145-7-7-7zm0 2c2.773 0 5 2.227 5 5s-2.227 5-5 5s-5-2.227-5-5s2.227-5 5-5zm13 10c.254 0 .52.082.719.281a.977.977 0 0 1 0 1.406l-9.688 9.688l-1.781.375l.375-1.781l9.688-9.688A.934.934 0 0 1 26 15z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div style="height: 100%; width: 25px; align-items: center; display: flex; margin-right: 5px;">
+                    <div class="iconremove-container">
+                        <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="20px" height="20px" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32">
+                            <path fill="var(--colorerror)" d="M14 4c-3.854 0-7 3.146-7 7c0 2.41 1.23 4.552 3.094 5.813C6.527 18.343 4 21.88 4 26h2c0-4.43 3.57-8 8-8c1.376 0 2.654.358 3.78.97A7.993 7.993 0 0 0 16 24c0 4.406 3.594 8 8 8c4.406 0 8-3.594 8-8c0-4.406-3.594-8-8-8a7.98 7.98 0 0 0-4.688 1.53c-.442-.277-.92-.51-1.406-.718A7.018 7.018 0 0 0 21 11c0-3.854-3.146-7-7-7zm0 2c2.773 0 5 2.227 5 5s-2.227 5-5 5s-5-2.227-5-5s2.227-5 5-5zm10 12c3.326 0 6 2.674 6 6s-2.674 6-6 6s-6-2.674-6-6s2.674-6 6-6zm-2.28 2.28l-1.44 1.44L22.563 24l-2.28 2.28l1.437 1.44L24 25.437l2.28 2.28l1.44-1.437L25.437 24l2.28-2.28l-1.437-1.44L24 22.563l-2.28-2.28z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div style="height: 100%; display: flex; align-items: center; outline: none; margin-left: 15px;">
+                    <p>Q-ty row</p>
+                    <select class="select" id="select-qty">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </div>
             <div class="control-panel-search">
                 <div class="search-container">
                     <div style="height: 18px; width: 18px; position: absolute; top: 5px; left: 4px;">
                         <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
                             <g transform="translate(24 0) scale(-1 1)"><path fill="var(--colorb1)" d="M10 2.5a7.5 7.5 0 0 1 5.964 12.048l4.743 4.745a1 1 0 0 1-1.32 1.497l-.094-.083l-4.745-4.743A7.5 7.5 0 1 1 10 2.5Zm0 2a5.5 5.5 0 1 0 0 11a5.5 5.5 0 0 0 0-11Z"/></g>
                         </svg>
-                        <!-- <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20">
-                            <path fill="var(--colorb1)" d="M10 2a4 4 0 1 0 0 8a4 4 0 0 0 0-8Zm4.865 14.797c-1.071.683-2.454 1.064-3.962 1.171a1.497 1.497 0 0 0-.342-.529l-2-1.999A4.482 4.482 0 0 0 9 13.5a4.48 4.48 0 0 0-.758-2.5H15a2 2 0 0 1 2 2c0 1.691-.833 2.966-2.135 3.797ZM4.5 17c.786 0 1.512-.26 2.096-.697l2.55 2.55a.5.5 0 1 0 .708-.707l-2.55-2.55A3.5 3.5 0 1 0 4.5 17Zm0-1a2.5 2.5 0 1 1 0-5a2.5 2.5 0 0 1 0 5Z"/>
-                        </svg> -->
                     </div>
                     <input type="text" class="search-input" id="user-search">
                 </div>
             </div>
         </div>
         <div class="table-scroll">
+            <div class="user-add-edit-container">
+                <app-add-edit-user></app-add-edit-user>
+            </div>
             <table class="user-table">
                 <thead>
                     <tr>
@@ -30,7 +61,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let user of userData let index = index">
+                    <tr #tr *ngFor="let user of userData let index = index" (click)="onSelectRow(tr, user.userId)">
                         <td scope="row" width="50">{{rowNumber+index+1}}</td>
                         <td>{{user.username}}</td>
                         <td>{{user.email}}</td>

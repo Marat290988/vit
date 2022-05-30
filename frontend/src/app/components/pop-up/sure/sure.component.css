@@ -1,0 +1,28 @@
+.title {
+    color: var(--colorf2);
+    font-size: 22px;
+    font-family: var(--f700);
+    text-align: center;
+}
+
+.confirm {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 10px;
+}
+
+.confirm > div:first-child {
+    cursor: pointer;
+    color: var(--colorf1);
+    border: 1px solid var(--colorf1);
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.confirm > div:nth-child(2) {
+    cursor: pointer;
+    color: var(--colorerror);
+    border: 1px solid var(--colorerror);
+    padding: 2px 6px;
+    border-radius: 3px;
+}

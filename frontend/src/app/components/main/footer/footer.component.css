@@ -1,0 +1,8 @@
+.vit-footer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    background: var(--colorb1);
+    padding: 10px;
+    color: #fff;
+}

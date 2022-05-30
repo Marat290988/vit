@@ -1,0 +1,93 @@
+.vit-heeader {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background: var(--colorb1);
+    padding: 0 25px;
+}
+
+.vit-logo {
+    display: flex;
+    align-items: center;
+    user-select: none;
+}
+
+.vit-logo-text {
+    font-size: 38px;
+    color: var(--colorf1);
+}
+
+.vit-logo-text>span {
+    font-family: var(--f700);
+}
+
+.vit-user {
+    display: flex;
+    align-items: center;
+}
+
+.vit-user-title {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.vit-user-name {
+    color: var(--colorf1);
+    font-size: 15px;
+    max-width: 70px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    user-select: none;
+    cursor: pointer;
+}
+
+.vit-arrow {
+    cursor: pointer;
+}
+
+.pop-up-profile {
+    width: 70px;
+    position: absolute;
+    top: 25px;
+    left: 50%;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    border: solid 1px #e0e0e0;
+    border-radius: 5px;
+    box-shadow: -1px 2px 7px 0 #b6b6b6;
+    padding: 5px 0;
+    background-color: var(--colorblight1);
+}
+
+.vit-user-title:hover .pop-up-profile {
+    display: flex;
+}
+
+.pop-up-profile>p {
+    text-align: center;
+}
+
+.vit-link {
+    color: var(--colorf1);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.vit-link:hover {
+    color: var(--colorb1);
+    text-decoration: underline;
+}
+
+.vit-admin {
+    margin-right: 30px;
+    margin-left: auto;
+    background-color: #cddc39;
+    display: flex;
+    align-items: center;
+    padding: 0 5px;
+    color: var(--colorf1);
+    font-size: 15px;
+}

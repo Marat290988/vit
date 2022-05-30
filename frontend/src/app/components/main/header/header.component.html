@@ -1,0 +1,48 @@
+<div class="vit-heeader">
+    <a routerLink="">
+        <div class="vit-logo">
+            <div style="height: 40px; width: 40px; padding: 5px;">
+                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 320 512">
+                    <path fill="#5c3c3c" d="M32 32C32 14.33 46.33 0 64 0h192c17.7 0 32 14.33 32 32s-14.3 32-32 32H64c-17.67 0-32-14.33-32-32zM0 160c0-35.3 28.65-64 64-64h192c35.3 0 64 28.7 64 64v288c0 35.3-28.7 64-64 64H64c-35.35 0-64-28.7-64-64V160zm256 64H64v160h192V224z"/>
+                </svg>
+            </div>
+            <h1 class="vit-logo-text">vit<span>Market</span></h1>
+        </div>
+    </a>
+    <a routerLink="/admin-panel" class="vit-admin" *ngIf="isAdmin()">
+        <p>Admin Panel</p>
+    </a> 
+    <div class="vit-user">
+        <div class="vit-user-title" *ngIf="userService.user">
+            <div style="height: 25px; width: 25px; margin-right: 3px;">
+                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+                    <g fill="#5c3c3c" fill-rule="evenodd" clip-rule="evenodd">
+                        <path d="M14.809 34.714c6.845-1 11.558-.914 18.412.035A2.077 2.077 0 0 1 35 36.818c0 .48-.165.946-.463 1.31A61.165 61.165 0 0 1 32.941 40h2.641c.166-.198.333-.4.502-.605A4.071 4.071 0 0 0 37 36.819c0-2.025-1.478-3.77-3.505-4.05c-7.016-.971-11.92-1.064-18.975-.033c-2.048.299-3.52 2.071-3.52 4.11c0 .905.295 1.8.854 2.525c.165.214.328.424.49.63h2.577a57.88 57.88 0 0 1-1.482-1.85A2.144 2.144 0 0 1 13 36.845c0-1.077.774-1.98 1.809-2.131ZM24 25a6 6 0 1 0 0-12a6 6 0 0 0 0 12Zm0 2a8 8 0 1 0 0-16a8 8 0 0 0 0 16Z"/>
+                        <path d="M24 42c9.941 0 18-8.059 18-18S33.941 6 24 6S6 14.059 6 24s8.059 18 18 18Zm0 2c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z"/>
+                    </g>
+                </svg>
+            </div>
+            <div class="vit-user-name">{{userService.user.username}}</div>
+            <div style="height: 15px; width: 15px;" class="vit-arrow">
+                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20">
+                    <path fill="#5c3c3c" d="M12.0007621,13.0865485 L16.3127232,8.77458739 C16.6788397,8.40847087 17.2724319,8.40847087 17.6385484,8.77458739 L17.7269368,8.86297574 C18.0930533,9.22909226 18.0930533,9.82268443 17.7269368,10.188801 L12.688801,15.2269368 C12.4993518,15.4163859 12.2489938,15.5078035 12.0007621,15.5011895 C11.7525304,15.5078035 11.5021723,15.4163859 11.3127232,15.2269368 L6.27458739,10.188801 C5.90847087,9.82268443 5.90847087,9.22909226 6.27458739,8.86297574 L6.36297574,8.77458739 C6.72909226,8.40847087 7.32268443,8.40847087 7.68880096,8.77458739 L12.0007621,13.0865485 Z"></path>
+                </svg>
+            </div>
+            <div class="pop-up-profile">
+                <p><a routerLink="/profile" class="vit-link">Profile</a></p>
+                <p><a routerLink="/orders" class="vit-link">Orders</a></p>
+                <p><a class="vit-link" (click)="showLogoutWindow()">Logout</a></p>
+            </div>
+        </div>
+        <div class="vit-btn vit-sign" (click)="signEvent.emit()" *ngIf="!userService.user">
+            SIGN IN
+        </div>
+        <div style="height: 40px; width: 40px; padding: 5px; cursor: pointer;">
+            <a routerLink="/cart">
+                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20">
+                    <path fill="#5c3c3c" d="M6 13h9c.55 0 1 .45 1 1s-.45 1-1 1H5c-.55 0-1-.45-1-1V4H2c-.55 0-1-.45-1-1s.45-1 1-1h3c.55 0 1 .45 1 1v2h13l-4 7H6v1zm-.5 3c.83 0 1.5.67 1.5 1.5S6.33 19 5.5 19S4 18.33 4 17.5S4.67 16 5.5 16zm9 0c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5z"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</div>

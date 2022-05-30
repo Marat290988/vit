@@ -1,0 +1,83 @@
+<div class="auth-container">
+    <div class="auth-close" (click)="closePopup.emit()">
+        <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+            <path fill="#5c3c3c" d="M18 3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3Zm1 15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1Z"/>
+            <path fill="#5c3c3c" d="M14.71 9.29a1 1 0 0 0-1.42 0L12 10.59l-1.29-1.3a1 1 0 0 0-1.42 1.42l1.3 1.29l-1.3 1.29a1 1 0 0 0 0 1.42a1 1 0 0 0 1.42 0l1.29-1.3l1.29 1.3a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.42L13.41 12l1.3-1.29a1 1 0 0 0 0-1.42Z"/>
+        </svg>
+    </div>
+    <form *ngIf="signState" [formGroup]="formGroupSign" class="form-control" (ngSubmit)="onSubmitSign()">
+        <h2 class="auth-title">User authorization</h2>
+        <div class="auth-error"><span *ngIf="serverError$ | async">{{serverError$ | async}}</span></div>
+        <div class="auth-control">
+            <h3 class="control-title">Login</h3>
+            <input formControlName="username" type="text" class="input-field" placeholder="Enter your username or email">
+            <div class="error-container">
+                <span class="control-error" *ngIf="formGroupSign.hasError('required', 'username') && !formGroupSign.get('username').untouched">
+                    Required usename or email
+                </span>
+            </div>
+            <h3 class="control-title">Password</h3>
+            <input formControlName="password" type="password" class="input-field" placeholder="Enter your password">
+            <div class="error-container">
+                <span class="control-error" *ngIf="formGroupSign.hasError('required', 'password') && !formGroupSign.get('password').untouched">
+                    Required password
+                </span>
+            </div>
+        </div>
+        <div class="auth-button-container">
+            <button class="vit-btn submit-btn" [disabled]="formGroupSign.invalid" type="submit" *ngIf="!loadingState">SIGN IN</button>
+            <div class="vit-btn submit-btn" style="width: 65.06px; height: 28px;" *ngIf="loadingState">
+                <svg class="rotate-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 21 24">
+                    <path fill="currentColor" d="m7.5 21l2.999-3v1.5a7.501 7.501 0 0 0 5.299-12.811l2.114-2.124A10.465 10.465 0 0 1 21 12.002C21 17.8 16.3 22.5 10.502 22.5H10.5V24zM0 12C.007 6.204 4.704 1.507 10.499 1.5h.001V0l3 3l-3 3V4.5h-.002a7.502 7.502 0 0 0-5.299 12.812l-2.112 2.124a10.397 10.397 0 0 1-3.088-7.407v-.03v.002z"/>
+                </svg>
+            </div>
+            <div class="vit-btn vit-btn-create" (click)="signState = false">Create account</div>
+        </div>
+    </form>
+    <form *ngIf="!signState" [formGroup]="formGroupRegister" class="form-control" (ngSubmit)="onSubmitRegister()">
+        <h2 class="auth-title">User registration</h2>
+        <div class="auth-error"><span *ngIf="message">{{message}}</span></div>
+        <div class="auth-control">
+            <h3 class="control-title">Login</h3>
+            <input formControlName="username" type="text" class="input-field" placeholder="Enter username">
+            <div class="error-container">
+                <span class="control-error" *ngIf="formGroupRegister.hasError('required', 'username') && !formGroupRegister.get('username').untouched">
+                    Required usename
+                </span>
+            </div>
+            <h3 class="control-title">Email</h3>
+            <input formControlName="email" type="email" class="input-field" placeholder="Enter email">
+            <div class="error-container">
+                <span class="control-error" *ngIf="formGroupRegister.hasError('email', 'email') && !formGroupRegister.get('email').untouched ||
+                    formGroupRegister.hasError('required', 'email') && !formGroupRegister.get('email').untouched">
+                    Required email
+                </span>
+            </div>
+            <h3 class="control-title">Password</h3>
+            <input formControlName="password" type="password" class="input-field" placeholder="Enter password">
+            <div class="error-container">
+                <span class="control-error" *ngIf="formGroupRegister.hasError('required', 'password') && !formGroupRegister.get('password').untouched ||
+                    formGroupRegister.hasError('minlength', 'password') && !formGroupRegister.get('password').untouched">
+                    Required password of at least 6 characters
+                </span>
+            </div>
+            <h3 class="control-title">Repeat password</h3>
+            <input formControlName="checkPassword" type="password" class="input-field" placeholder="Enter password">
+            <div class="error-container">
+                <span class="control-error" *ngIf="formGroupRegister.hasError('required', 'checkPassword') && !formGroupRegister.get('checkPassword').untouched ||
+                    checkPasswordState && !formGroupRegister.get('checkPassword').untouched">
+                    Required repeat password
+                </span>
+            </div>
+        </div>
+        <div class="auth-button-container">
+            <button class="vit-btn submit-btn" [disabled]="formGroupRegister.invalid || checkPasswordState" type="submit" *ngIf="!loadingState">REGISTER</button>
+            <div class="vit-btn submit-btn" style="width: 80.47px; height: 28px;" *ngIf="loadingState">
+                <svg class="rotate-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 21 24">
+                    <path fill="currentColor" d="m7.5 21l2.999-3v1.5a7.501 7.501 0 0 0 5.299-12.811l2.114-2.124A10.465 10.465 0 0 1 21 12.002C21 17.8 16.3 22.5 10.502 22.5H10.5V24zM0 12C.007 6.204 4.704 1.507 10.499 1.5h.001V0l3 3l-3 3V4.5h-.002a7.502 7.502 0 0 0-5.299 12.812l-2.112 2.124a10.397 10.397 0 0 1-3.088-7.407v-.03v.002z"/>
+                </svg>
+            </div>
+            <div class="vit-btn vit-btn-create" (click)="signState = true; message = null">Sign</div>
+        </div>
+    </form>
+</div>

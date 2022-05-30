@@ -1,0 +1,60 @@
+<div class="users-container">
+    <div class="user-table-container">
+        <div class="control-panel">
+            <div class="control-panel-buttons"></div>
+            <div class="control-panel-search">
+                <div class="search-container">
+                    <div style="height: 18px; width: 18px; position: absolute; top: 5px; left: 4px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                            <g transform="translate(24 0) scale(-1 1)"><path fill="var(--colorb1)" d="M10 2.5a7.5 7.5 0 0 1 5.964 12.048l4.743 4.745a1 1 0 0 1-1.32 1.497l-.094-.083l-4.745-4.743A7.5 7.5 0 1 1 10 2.5Zm0 2a5.5 5.5 0 1 0 0 11a5.5 5.5 0 0 0 0-11Z"/></g>
+                        </svg>
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20">
+                            <path fill="var(--colorb1)" d="M10 2a4 4 0 1 0 0 8a4 4 0 0 0 0-8Zm4.865 14.797c-1.071.683-2.454 1.064-3.962 1.171a1.497 1.497 0 0 0-.342-.529l-2-1.999A4.482 4.482 0 0 0 9 13.5a4.48 4.48 0 0 0-.758-2.5H15a2 2 0 0 1 2 2c0 1.691-.833 2.966-2.135 3.797ZM4.5 17c.786 0 1.512-.26 2.096-.697l2.55 2.55a.5.5 0 1 0 .708-.707l-2.55-2.55A3.5 3.5 0 1 0 4.5 17Zm0-1a2.5 2.5 0 1 1 0-5a2.5 2.5 0 0 1 0 5Z"/>
+                        </svg> -->
+                    </div>
+                    <input type="text" class="search-input" id="user-search">
+                </div>
+            </div>
+        </div>
+        <div class="table-scroll">
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th scope="col" width="50">#</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col" width="100">Role</th>
+                        <th scope="col" width="100">Last login</th>
+                        <th scope="col">Active</th>
+                        <th scope="col">Not Locked</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of userData let index = index">
+                        <td scope="row" width="50">{{rowNumber+index+1}}</td>
+                        <td>{{user.username}}</td>
+                        <td>{{user.email}}</td>
+                        <td width="100">{{user.role}}</td>
+                        <td width="100">{{user.lastLoginDateDisplay | date:'dd.MM.YYYY'}}</td>
+                        <td>{{user.activeString}}</td>
+                        <td>{{user.notLockedString}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination-container">
+            <div class="arrow-container" style="margin-left: 10px;">
+                <div class="arrow" (click)="onClickArrow('LEFT')"><</div>
+            </div>
+            <ng-container *ngFor="let page of pagePaginator let index=index">
+                <div *ngIf="page.state" [ngClass]="page.class" (click)="onClickPage($event, index)">{{page.number}}</div>
+            </ng-container>
+            <div class="arrow-container" style="margin-right: 10px;">
+                <div class="arrow" style="justify-self: end;" (click)="onClickArrow('RIGHT')">></div>
+            </div>
+        </div>
+        <div *ngIf="loadState" class="spinner-container">
+            <app-spinner></app-spinner>
+        </div>
+    </div>
+</div>

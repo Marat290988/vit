@@ -1,0 +1,35 @@
+@import url('./assets/fonts/fonts.css');
+
+:root {
+    --f400: 'RobotoCondensed-Regular';
+    --f100: 'RobotoCondensed-Light';
+    --f700: 'RobotoCondensed-Bold';
+    --fitalic: 'RobotoCondensed-Italic';
+    --fitalicbold: 'RobotoCondensed-BoldItalic';
+    --colorb1: #41b3a3;
+    --colorblight1: #c7f1eb;
+    --colorf1: #5c3c3c;
+    --colorf2: #4d4d4d;
+    --colorerror: #c50b0b;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    font-family: var(--f400);
+}
+
+.vit-btn {
+    font-family: var(--f700);
+    color: var(--colorf1);
+    font-size: 17px;
+    border: 1px solid var(--colorf1);
+    padding: 3px 5px;
+    width: fit-content;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+}

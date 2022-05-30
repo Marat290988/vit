@@ -1,0 +1,32 @@
+.vit-container {
+    width: 100%;
+}
+
+.sign-popup-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: background 1s;
+}
+
+.sign-popup {
+    max-width: 350px;
+    width: 100%;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.vit-container.main {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 5px;
+}

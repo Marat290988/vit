@@ -1,0 +1,23 @@
+<div class="flex-container">
+    <div class="vit-container">
+        <app-header
+            (signEvent)="onSing()"
+            (logoutEvent)="onLogoutEmit()"
+        ></app-header>
+    </div>
+    <div class="vit-container main">
+        <router-outlet></router-outlet>
+    </div>
+    <div class="vit-container">
+        <app-footer></app-footer>
+    </div>
+</div>
+<div class="sign-popup-container" #signPopupCont>
+    <div class="sign-popup">
+        <app-auth
+            (closePopup)="closeSignPopup()"
+            (submitEmit)="onSubmitSign($event)"
+        ></app-auth>
+    </div>
+</div>
+<app-help-popup></app-help-popup>

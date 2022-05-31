@@ -132,4 +132,20 @@ public class UserController {
         return new ResponseEntity<Page<UserEntity>>(users, HttpStatus.OK);
     }
 
+    @PostMapping("/adduser")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    public ResponseEntity<UserEntity> addUser(
+            @RequestBody UserEntity user
+    ) throws UserNotFoundException, EmailExistException, UsernameExistException {
+        UserEntity newUser = this.userService.addNewUser(
+                user.getUsername(),
+                user.getPassword(),
+                user.getEmail(),
+                user.getRole(),
+                user.isNotLocked(),
+                user.isActive()
+        );
+        return new ResponseEntity<>(newUser, HttpStatus.OK);
+    }
+
 }

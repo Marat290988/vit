@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { debounceTime, fromEvent, Subscription } from 'rxjs';
 import { UserService } from './../../../../../services/user/user.service';
 import { User } from './../../../../../models/user';
 import { map } from 'rxjs';
 import { tap } from 'rxjs';
+import { AddEditUserComponent } from './add-edit-user/add-edit-user.component';
 
 @Component({
   selector: 'app-admin-user',
@@ -39,6 +40,9 @@ export class AdminUserComponent implements OnInit, OnDestroy {
   userStream$;
   inputSearch = '';
   userId: string;
+  @ViewChild('addCont') addCont: ElementRef;
+  @ViewChild('tableScroll') tableScroll: ElementRef;
+  @ViewChild(AddEditUserComponent) addEditComp;
 
   constructor(
     private userService: UserService
@@ -270,6 +274,19 @@ export class AdminUserComponent implements OnInit, OnDestroy {
         el.classList.remove('active');
       })
     }
+  }
+
+  onAdd() {
+    this.addCont.nativeElement.style.height = '100%';
+    this.tableScroll.nativeElement.style.overflow = 'hidden';
+    this.addEditComp.toggleSlide();
+  }
+
+  closeAddEdit() {
+    setTimeout(()=> {
+      this.addCont.nativeElement.style.height = '';
+      this.tableScroll.nativeElement.style.overflow = 'auto';
+    }, 500);
   }
 
 }

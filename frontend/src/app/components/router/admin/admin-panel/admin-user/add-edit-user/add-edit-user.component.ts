@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild, AfterContentInit, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterContentInit, ElementRef, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import { FormGroup, NgForm, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-edit-user',
@@ -8,16 +9,56 @@ import { Component, OnInit, ViewChild, AfterContentInit, ElementRef, AfterViewIn
 export class AddEditUserComponent implements OnInit, AfterViewInit {
 
   @ViewChild('sideSlide') sideSlide: ElementRef;
+  @Output() closeEmit = new EventEmitter();
+  formGroup: FormGroup;
 
   constructor() { }
 
   ngAfterViewInit(): void {
-    const slideWidth = window.getComputedStyle(this.sideSlide.nativeElement, 'width');
-    console.log(slideWidth)
-    this.sideSlide.nativeElement.style.transform;
+    this.setTranslate();
   }
   
   ngOnInit(): void {
+    this.formGroup = new FormGroup({
+      username: new FormControl('', [
+        Validators.required,
+        Validators.minLength(6)
+      ]),
+      email: new FormControl('', [
+        Validators.required,
+        Validators.email
+      ]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(6)
+      ]),
+      role: new FormControl('', [
+        Validators.required
+      ]),
+      isActive: new FormControl('', [
+        Validators.required
+      ]),
+      isNotLocked: new FormControl('', [
+        Validators.required
+      ])
+    });
   }
 
+  toggleSlide() {
+    this.sideSlide.nativeElement.style.transform = `translateX(0px)`;
+  }
+
+  close() {
+    this.setTranslate();
+    this.closeEmit.emit();
+  }
+
+  setTranslate() {
+    const slideWidth = Math.ceil(parseInt(window.getComputedStyle(this.sideSlide.nativeElement).width));
+    this.sideSlide.nativeElement.style.transform = `translateX(-${slideWidth+1}px)`;
+  }
+
+  onAddNewUser() {
+
+  }
 }

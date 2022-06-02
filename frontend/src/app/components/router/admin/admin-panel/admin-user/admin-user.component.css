@@ -16,7 +16,6 @@
     max-width: 800px;
     width: 100%;
     margin-top: 10px;
-    padding: 5px;
     border-radius: 5px;
     position: relative;
 }
@@ -216,6 +215,7 @@
     padding: 2px;
     opacity: 1;
     background-color: #c6f3ec;
+    transition: background-color 0.5s linear;
 }
 
 .iconremove-container {
@@ -234,6 +234,15 @@ tbody tr.active {
 
 .active.icon-container, .active.iconremove-container {
     opacity: 1;
+    transition: background-color 0.5s linear;
+}
+
+.active.iconremove-container:hover {
+    background-color: #f9bcbc;
+}
+
+.active.icon-container:hover, .icon-container-add:hover {
+    background-color: #90f5e5;
 }
 
 .user-add-edit-container {

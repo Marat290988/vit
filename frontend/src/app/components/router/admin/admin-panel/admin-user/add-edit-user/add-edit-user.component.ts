@@ -45,7 +45,7 @@ export class AddEditUserComponent implements OnInit, AfterViewInit {
   }
 
   toggleSlide() {
-    this.sideSlide.nativeElement.style.transform = `translateX(0px)`;
+    this.sideSlide.nativeElement.style.transform = `translate3d(0px, 0px, 0px)`;
   }
 
   close() {
@@ -55,7 +55,7 @@ export class AddEditUserComponent implements OnInit, AfterViewInit {
 
   setTranslate() {
     const slideWidth = Math.ceil(parseInt(window.getComputedStyle(this.sideSlide.nativeElement).width));
-    this.sideSlide.nativeElement.style.transform = `translateX(-${slideWidth+1}px)`;
+    this.sideSlide.nativeElement.style.transform = `translate3d(-${slideWidth+1}px, 0px, 0px)`;
   }
 
   onAddNewUser() {

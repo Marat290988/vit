@@ -1,7 +1,13 @@
 .slide {
-    height: 100%; 
-    width: 100%; 
-    background: red;
+    height: 100%;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.788);
     transition: transform 0.5s ease-in-out;
     overflow-y: auto;
+}
+
+.slide-close {
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
 }

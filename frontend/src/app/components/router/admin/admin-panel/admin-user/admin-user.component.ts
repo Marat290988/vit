@@ -278,7 +278,8 @@ export class AdminUserComponent implements OnInit, OnDestroy {
 
   onAdd() {
     this.addCont.nativeElement.style.height = '100%';
-    this.tableScroll.nativeElement.style.overflow = 'hidden';
+    // this.tableScroll.nativeElement.style.overflow = 'hidden';
+    // this.tableScroll.nativeElement.scroll(0, 0);
     this.addEditComp.toggleSlide();
   }
 

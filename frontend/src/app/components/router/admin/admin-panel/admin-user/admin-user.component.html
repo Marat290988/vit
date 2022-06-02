@@ -1,5 +1,10 @@
 <div class="users-container">
     <div class="user-table-container">
+        <div class="user-add-edit-container" #addCont>
+            <app-add-edit-user
+                (closeEmit)="closeAddEdit()"
+            ></app-add-edit-user>
+        </div>
         <div class="control-panel">
             <div class="control-panel-buttons">
                 <div style="height: 100%; width: 25px; align-items: center; display: flex; margin-right: 5px;">
@@ -45,11 +50,6 @@
             </div>
         </div>
         <div class="table-scroll" #tableScroll>
-            <div class="user-add-edit-container" #addCont>
-                <app-add-edit-user
-                    (closeEmit)="closeAddEdit()"
-                ></app-add-edit-user>
-            </div>
             <table class="user-table">
                 <thead>
                     <tr>

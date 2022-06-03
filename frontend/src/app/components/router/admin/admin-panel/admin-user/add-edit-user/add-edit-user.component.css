@@ -1,9 +1,10 @@
 .slide {
     height: 100%;
     width: 100%;
-    background: rgba(255, 255, 255, 0.788);
+    background: rgb(231 231 231);
     transition: transform 0.5s ease-in-out;
     overflow-y: auto;
+    border-radius: 5px;
 }
 
 .slide-close {
@@ -11,3 +12,22 @@
     width: 25px;
     cursor: pointer;
 }
+
+.slide-close svg path {
+    fill: var(--colorb1);
+}
+
+.slide-header {
+    padding: 5px;
+    display: flex;
+    justify-content: flex-end;
+    border-bottom: 3px solid var(--colorb1);
+}
+
+.slide-title {
+    color: var(--colorb1);
+    margin-left: 20px;
+    font-size: 18px;
+}
+
+

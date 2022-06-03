@@ -1,21 +1,27 @@
 import { Component, OnInit, ViewChild, AfterContentInit, ElementRef, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, NgForm, FormControl, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-edit-user',
   templateUrl: './add-edit-user.component.html',
-  styleUrls: ['./add-edit-user.component.css']
+  styleUrls: ['./add-edit-user.component.css', '../../../../../../../assets/styles/form.css']
 })
 export class AddEditUserComponent implements OnInit, AfterViewInit {
 
   @ViewChild('sideSlide') sideSlide: ElementRef;
   @Output() closeEmit = new EventEmitter();
   formGroup: FormGroup;
+  valueBox = [
+    {role: 'ROLE_USER'},
+    {role: 'ROLE_ADMIN'}
+  ]
 
   constructor() { }
 
   ngAfterViewInit(): void {
     this.setTranslate();
+    this.formGroup.valueChanges.subscribe(data => console.log(data))
   }
   
   ngOnInit(): void {
@@ -60,5 +66,19 @@ export class AddEditUserComponent implements OnInit, AfterViewInit {
 
   onAddNewUser() {
 
+  }
+
+  onInput(event: InputEvent | any) {
+    if (event.data === ' ') {
+      event.target.value = event.target.value.slice(0 ,event.target.value.length-1);
+    }
+    console.log(this.formGroup.value)
+  }
+
+  addActive(event) {
+    document.querySelectorAll('.radio.active').forEach((el: HTMLElement)=> {
+      el.classList.remove('active');
+    });
+    event.target.classList.add('active');
   }
 }

@@ -2,6 +2,7 @@ package com.vitshop.vitshop.controller;
 
 import com.vitshop.vitshop.domain.HttpResponse;
 import com.vitshop.vitshop.domain.user.CutUser;
+import com.vitshop.vitshop.domain.user.Role;
 import com.vitshop.vitshop.domain.user.UserEntity;
 import com.vitshop.vitshop.domain.user.UserPrincipal;
 import com.vitshop.vitshop.exceptions.*;
@@ -135,15 +136,20 @@ public class UserController {
     @PostMapping("/adduser")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<UserEntity> addUser(
-            @RequestBody UserEntity user
+            @RequestParam("username") String username,
+            @RequestParam("password") String password,
+            @RequestParam("email") String email,
+            @RequestParam("role") String role,
+            @RequestParam("isActive") String isActive,
+            @RequestParam("isNotLocked") String isNotLocked
     ) throws UserNotFoundException, EmailExistException, UsernameExistException {
         UserEntity newUser = this.userService.addNewUser(
-                user.getUsername(),
-                user.getPassword(),
-                user.getEmail(),
-                user.getRole(),
-                user.isNotLocked(),
-                user.isActive()
+                username,
+                password,
+                email,
+                Role.valueOf(role),
+                Boolean.parseBoolean(isActive),
+                Boolean.parseBoolean(isNotLocked)
         );
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }

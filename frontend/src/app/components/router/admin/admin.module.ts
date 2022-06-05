@@ -6,6 +6,7 @@ import { AdminUserComponent } from './admin-panel/admin-user/admin-user.componen
 import { SpinnerComponent } from "../../ui/spinner/spinner.component";
 import { AddEditUserComponent } from './admin-panel/admin-user/add-edit-user/add-edit-user.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { DirectiveModule } from "src/app/directives/directive.module";
 
 @NgModule({
     declarations: [
@@ -28,7 +29,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
             { path: '**', redirectTo: '', pathMatch: 'full' }
         ]),
         ReactiveFormsModule,
-        FormsModule
+        FormsModule,
+        DirectiveModule
     ],
     exports: [
         SpinnerComponent

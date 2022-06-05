@@ -48,4 +48,19 @@ export class UserService {
     return this.http.get(`${this.host}/user/searchlist?size=${size}&page=${number}&sort=${sort}&search=${search}`);
   }
 
+  addUser(user) {
+    return this.http.post(`${this.host}/user/adduser`, user);
+  }
+
+  createUserForm(user) {
+    const formData = new FormData();
+    formData.append('username', user.username);
+    formData.append('password', user.password);
+    formData.append('email', user.email);
+    formData.append('role', user.role);
+    formData.append('isActive', user.isActive);
+    formData.append('isNotLocked', user.isNotLocked);
+    return formData;
+  }
+
 }

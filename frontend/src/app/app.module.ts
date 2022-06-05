@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/main/header/header.component';
-import { ClickStopPropagationDirective } from './directives/click-stop-propagation.directive';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthModule } from './components/auth/auth.module';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -27,12 +26,12 @@ import { AdminModule } from './components/router/admin/admin.module';
 import { AdminGuard } from './guards/admin.guard';
 import { SpinnerComponent } from './components/ui/spinner/spinner.component';
 import { ErrorComponent } from './components/pop-up/error/error.component';
+import { DirectiveModule } from './directives/directive.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    ClickStopPropagationDirective,
     FooterComponent,
     ProfileComponent,
     OrdersComponent,
@@ -55,7 +54,8 @@ import { ErrorComponent } from './components/pop-up/error/error.component';
     AuthStoreModule,
     EffectsModule.forRoot([]),
     AppRoutingModule,
-    AdminModule
+    AdminModule,
+    DirectiveModule
   ],
   providers: [
     UserService,

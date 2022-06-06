@@ -52,6 +52,10 @@ export class UserService {
     return this.http.post(`${this.host}/user/adduser`, user);
   }
 
+  editUser(user) {
+    return this.http.post(`${this.host}/user/edituser`, user);
+  }
+
   createUserForm(user) {
     const formData = new FormData();
     formData.append('username', user.username);
@@ -60,6 +64,7 @@ export class UserService {
     formData.append('role', user.role);
     formData.append('isActive', user.isActive);
     formData.append('isNotLocked', user.isNotLocked);
+    formData.append('id', '');
     return formData;
   }
 

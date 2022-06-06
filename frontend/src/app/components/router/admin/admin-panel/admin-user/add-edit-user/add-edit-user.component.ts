@@ -5,6 +5,16 @@ import { UserService } from './../../../../../../services/user/user.service';
 import { User } from './../../../../../../models/user';
 import { PopupMessageService } from './../../../../../../services/pop-up/popup-message.service';
 
+export interface addEditData {
+  id?: string,
+  username: string,
+  email: string,
+  password: string,
+  role: string,
+  isActive: boolean,
+  isNotLocked: boolean
+}
+
 @Component({
   selector: 'app-add-edit-user',
   templateUrl: './add-edit-user.component.html',
@@ -16,12 +26,24 @@ export class AddEditUserComponent implements OnInit, AfterViewInit {
   @Output() closeEmit = new EventEmitter();
   formGroup: FormGroup;
   valueBox = [
-    {role: 'ROLE_USER', id: 'user', name: 'User'},
-    {role: 'ROLE_ADMIN', id: 'admin', name: 'Admin'}
+    {role: 'ROLE_USER', id: 'ROLE_USER', name: 'User'},
+    {role: 'ROLE_ADMIN', id: 'ROLE_ADMIN', name: 'Admin'}
   ]
   loadingState = false;
   message = '';
   addEditSubs: Subscription;
+  initFormData = {
+    username: null,
+    email: null,
+    password: null,
+    role: 'ROLE_USER',
+    isActive: false,
+    isNotLocked: false
+  }
+  editState = false;
+  currentUserId: string = null;
+  @Output() updateEmit = new EventEmitter();
+  title: string;
 
   constructor(
     private userService: UserService,
@@ -43,8 +65,7 @@ export class AddEditUserComponent implements OnInit, AfterViewInit {
         Validators.email
       ]),
       password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(6)
+        
       ]),
       role: new FormControl('ROLE_USER', [
         Validators.required
@@ -58,11 +79,32 @@ export class AddEditUserComponent implements OnInit, AfterViewInit {
     });
   }
 
-  toggleSlide() {
+  toggleSlide(editState: boolean, editUserData?: addEditData) {
     this.sideSlide.nativeElement.style.transform = `translate3d(0px, 0px, 0px)`;
+    if (editState) {  
+      this.title = 'Edit user';
+      this.currentUserId = editUserData.id;
+      this.editState = editState;
+      this.onAddEdit(editUserData);
+      this.formGroup.get('password').clearValidators();
+      this.formGroup.get('password').updateValueAndValidity();
+    } else {
+      this.title = 'Add new user';
+      this.editState = false;
+      this.onAddEdit(null);
+      this.formGroup.get('password').setValidators([Validators.required, Validators.minLength(6)]);
+      this.formGroup.get('password').updateValueAndValidity();
+    }
   }
 
   close() {
+    if (this.editState) {
+      this.resetForm()
+    } else {
+      for (let key in this.formGroup.value) {
+        this.initFormData[key] = this.formGroup.value[key];
+      }
+    }
     this.setTranslate();
     this.closeEmit.emit();
   }
@@ -74,8 +116,13 @@ export class AddEditUserComponent implements OnInit, AfterViewInit {
 
   onAddNewUser() {
     const data: FormData = this.userService.createUserForm(this.formGroup.value);
+    let funcName = 'addUser'
+    if (this.editState) {
+      funcName = 'editUser';
+      data.set('id', this.currentUserId);
+    }
     this.loadingState = true;
-    this.addEditSubs = this.userService.addUser(data).subscribe({
+    this.addEditSubs = this.userService[funcName](data).subscribe({
       next: response => {
         this.message = 'You have successfully added user';
         this.showMessage(this.message);
@@ -90,11 +137,15 @@ export class AddEditUserComponent implements OnInit, AfterViewInit {
         this.showMessage(this.message);
         this.addEditSubs.unsubscribe();
         this.resetForm();
+        this.editState = false;
       },
       complete: () => {
         this.loadingState = false;
         this.addEditSubs.unsubscribe();
         this.resetForm();
+        this.updateEmit.emit();
+        this.editState = false;
+        this.close();
       }
     })
   }
@@ -130,15 +181,60 @@ export class AddEditUserComponent implements OnInit, AfterViewInit {
   resetForm() {
     this.formGroup.reset();
     this.formGroup.get('role').setValue('ROLE_USER');
+    this.resetAllActiveClass();
+    document.querySelector(`[for='${this.valueBox[0].id}']`).classList.add('active');
+    this.formGroup.get('isActive').setValue(false);
+    this.formGroup.get('isNotLocked').setValue(false);
+    this.initFormData = {
+      username: null,
+      email: null,
+      password: null,
+      role: 'ROLE_USER',
+      isActive: false,
+      isNotLocked: false
+    };
+  }
+
+  resetAllActiveClass() {
     document.querySelectorAll(`[for='${this.valueBox[0].id}'].active, [for='${this.valueBox[1].id}'].active`).forEach((el: HTMLElement)=> {
       el.classList.remove('active');
     });
     document.querySelectorAll(`.checkbox.active`).forEach((el: HTMLElement)=> {
       el.classList.remove('active');
     });
-    document.querySelector(`[for='${this.valueBox[0].id}']`).classList.add('active');
-    this.formGroup.get('isActive').setValue(false);
-    this.formGroup.get('isNotLocked').setValue(false);
+  }
+
+  onAddEdit(userData?: addEditData) {
+    userData ? this.setForm(userData) : this.setForm(this.initFormData);
+  }
+
+  setForm(userData: addEditData) {
+    this.resetAllActiveClass();
+    for (let key in userData) {
+      switch(key) {
+        case 'role':
+          document.querySelector(`[for='${userData[key]}']`).classList.add('active');
+          this.formGroup.get(key).setValue(userData[key]);
+          break;
+        case 'isActive':
+          if (userData[key]) {
+            document.querySelector(`[for='${key}']`).classList.add('active');
+          }
+          this.formGroup.get(key).setValue(userData[key]);
+          break;
+        case 'isNotLocked':
+          if (userData[key]) {
+            document.querySelector(`[for='${key}']`).classList.add('active');
+          }
+          this.formGroup.get(key).setValue(userData[key]);
+          break;
+        case 'id':
+          break;
+        default: 
+          this.formGroup.get(key).setValue(userData[key]);
+          break;
+      }
+    }
   }
 
 }

@@ -21,6 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -152,6 +153,36 @@ public class UserController {
                 Boolean.parseBoolean(isNotLocked)
         );
         return new ResponseEntity<>(newUser, HttpStatus.OK);
+    }
+
+    @PostMapping("/edituser")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    public ResponseEntity<UserEntity> editUser(
+            @RequestParam("id") Long id,
+            @RequestParam("username") String username,
+            @RequestParam("password") String password,
+            @RequestParam("email") String email,
+            @RequestParam("role") String role,
+            @RequestParam("isActive") String isActive,
+            @RequestParam("isNotLocked") String isNotLocked
+    ) throws UserNotFoundException, EmailExistException, UsernameExistException {
+        UserEntity currentUser = this.userService.findUserEntityById(id);
+        String updatePassword;
+        if (StringUtils.hasLength(password)) {
+            updatePassword = password;
+        } else {
+            updatePassword = currentUser.getPassword();
+        }
+        UserEntity updatedUser = this.userService.updateUser(
+                currentUser.getUsername(),
+                username,
+                email,
+                updatePassword,
+                Role.valueOf(role),
+                Boolean.parseBoolean(isActive),
+                Boolean.parseBoolean(isNotLocked)
+        );
+        return null;
     }
 
 }

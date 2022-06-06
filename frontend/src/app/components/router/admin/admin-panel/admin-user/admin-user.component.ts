@@ -4,7 +4,7 @@ import { UserService } from './../../../../../services/user/user.service';
 import { User } from './../../../../../models/user';
 import { map } from 'rxjs';
 import { tap } from 'rxjs';
-import { AddEditUserComponent } from './add-edit-user/add-edit-user.component';
+import { addEditData, AddEditUserComponent } from './add-edit-user/add-edit-user.component';
 
 @Component({
   selector: 'app-admin-user',
@@ -39,7 +39,7 @@ export class AdminUserComponent implements OnInit, OnDestroy {
   searchState = false;
   userStream$;
   inputSearch = '';
-  userId: string;
+  editUserData: addEditData = null;
   @ViewChild('addCont') addCont: ElementRef;
   @ViewChild('tableScroll') tableScroll: ElementRef;
   @ViewChild(AddEditUserComponent) addEditComp;
@@ -111,6 +111,7 @@ export class AdminUserComponent implements OnInit, OnDestroy {
           this.userData[index].lastLoginDate = user.lastLoginDate;
           this.userData[index].lastLoginDateDisplay = user.lastLoginDateDisplay;
           this.userData[index].joinDate = user.joinDate;
+          this.userData[index].password = '';
           if (user.active) {
             this.userData[index].activeString = 'Active';
           } else if (user.active === null) {
@@ -142,6 +143,9 @@ export class AdminUserComponent implements OnInit, OnDestroy {
           this.setPaginatorData(0);
         };
         this.subscriber.unsubscribe();
+      },
+      error: error => {
+        this.loadState = false;
       },
       complete: () => {
         this.loadState = false;
@@ -250,22 +254,34 @@ export class AdminUserComponent implements OnInit, OnDestroy {
     this.pagePaginator[index].class = 'page-num active';
   }
 
-  onSelectRow(tr: HTMLElement, userId) {
+  onSelectRow(tr: HTMLElement, editUserData) {
     if (document.querySelector('tbody tr.active')) {
       document.querySelector('tbody tr.active').classList.remove('active');
     }
-    if (userId === '') {
+    if (editUserData === null) {
       this.removeActiveButtons();
-      this.userId = '';
+      this.editUserData = null;
       return;
     }
-    this.userId = userId;
+    this.editUserData = editUserData;
     tr.classList.add('active');
     if (document.querySelectorAll('.icon-container, .iconremove-container').length > 0) {
       document.querySelectorAll('.icon-container, .iconremove-container').forEach((el: HTMLElement) => {
         el.classList.add('active');
       })
     }
+    this.seteditUserData(this.editUserData);
+  }
+
+  seteditUserData(data) {
+    this.editUserData = {username: '', email: '', password: '', isActive: false, isNotLocked: false, role: '', id: ''};
+    this.editUserData.username = data.username;
+    this.editUserData.email = data.email;
+    this.editUserData.password = data.password;
+    this.editUserData.isActive = data.isActive;
+    this.editUserData.isNotLocked = data.isNotLocked;
+    this.editUserData.role = data.role;
+    this.editUserData.id = data.id;
   }
 
   removeActiveButtons() {
@@ -278,9 +294,12 @@ export class AdminUserComponent implements OnInit, OnDestroy {
 
   onAdd() {
     this.addCont.nativeElement.style.height = '100%';
-    // this.tableScroll.nativeElement.style.overflow = 'hidden';
-    // this.tableScroll.nativeElement.scroll(0, 0);
-    this.addEditComp.toggleSlide();
+    this.addEditComp.toggleSlide(false, null);
+  }
+
+  onEdit() {
+    this.addCont.nativeElement.style.height = '100%';
+    this.addEditComp.toggleSlide(true, this.editUserData);
   }
 
   closeAddEdit() {

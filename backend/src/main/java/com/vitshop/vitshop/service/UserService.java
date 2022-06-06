@@ -48,4 +48,6 @@ public interface UserService {
     ) throws UserNotFoundException, EmailExistException, UsernameExistException;
 
     void deleteUser(String email);
+
+    UserEntity findUserEntityById(Long id);
 }

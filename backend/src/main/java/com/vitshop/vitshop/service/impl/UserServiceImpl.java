@@ -95,6 +95,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findUserEntityByUsername(username);
     }
 
+    public UserEntity findUserEntityById(Long id) {
+        return userRepository.findUserEntityById(id);
+    }
+
     @Override
     public UserEntity findUserEntityByEmail(String email) {
         return userRepository.findUserEntityByEmail(email);
@@ -135,8 +139,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             boolean isActive
     ) throws UserNotFoundException, EmailExistException, UsernameExistException {
         UserEntity currentUser = validateNewUsernameAndEmail(currentUsername, newUsername, newEmail);
-        currentUser.setPassword(newPassword);
-        currentUser.setUserId(generateUserId());
+        String encodedPass = passwordEncoder.encode(newPassword);
+        currentUser.setPassword(encodedPass);
         currentUser.setUsername(newUsername);
         currentUser.setEmail(newEmail);
         currentUser.setRole(role);

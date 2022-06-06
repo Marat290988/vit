@@ -12,6 +12,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     UserEntity findUserEntityByEmail(String email);
     UserEntity findUserEntityByUserId(String userId);
 
+    UserEntity findUserEntityById(Long id);
+
     @Query("Select u " +
             "From UserEntity u " +
             "where lower(u.email) like %:search% or lower(u.username) like %:search%"

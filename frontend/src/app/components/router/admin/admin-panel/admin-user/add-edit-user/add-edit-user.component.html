@@ -1,7 +1,7 @@
 <div class="slide" #sideSlide>
     <div class="slide-header">
         <div style="flex-grow: 1; align-items: center; display: flex;">
-            <h2 class="slide-title">Add new user</h2>
+            <h2 class="slide-title">{{title}}</h2>
         </div>
         <div class="slide-close" (click)="close()">
             <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
@@ -53,10 +53,9 @@
                 <div class="error-container">
                     <span class="control-error" 
                         *ngIf="
-                            formGroup.hasError('required', 'password') && !formGroup.get('password').untouched || 
-                            formGroup.hasError('minlength', 'password') && !formGroup.get('password').untouched"
+                            formGroup.hasError('required', 'password') && !formGroup.get('password').untouched || formGroup.hasError('minlength', 'password') && !formGroup.get('password').untouched"
                     >
-                        Required usename, minimum length 6 letters
+                        Required password, minimum length 6 letters
                     </span>
                 </div>
             </div>
@@ -80,7 +79,7 @@
                     <label for="isNotLocked" class="radio checkbox" (click)="toggleActive($event)">Not Locked</label>
                 </div>
             </div>
-            <div class="buttons-cont" (click)="resetForm()">
+            <div class="buttons-cont">
                 <button button class="vit-button" [disabled]="formGroup.invalid">
                     <p>Confirm</p>
                     <div class="vit-button-loading" *ngIf="loadingState">

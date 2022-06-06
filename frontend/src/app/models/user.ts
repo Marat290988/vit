@@ -10,6 +10,7 @@ export class User {
     public isNotLocked: boolean;
     public activeString: string;
     public notLockedString: string;
+    public password: string;
 
     constructor() {
         this.userId = '';
@@ -21,5 +22,6 @@ export class User {
         this.joinDate = null;
         this.isActive = false;
         this.isNotLocked = false;
+        this.password = '';
     }
 }

@@ -1,11 +1,13 @@
 package com.vitshop.vitshop.domain.product;
 
+import com.vitshop.vitshop.domain.file.FileEntity;
 import com.vitshop.vitshop.domain.user.UserPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "product_table")
@@ -33,6 +35,8 @@ public class ProductEntity {
     private String authorName;
     @Column
     private Date creationDate;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    private List<FileEntity> fileList;
 
     public ProductEntity(String productId, String name, String description, String composition, String manufacturer, String category, BigDecimal basePrice, String authorName, Date creationDate) {
         this.productId = productId;
@@ -49,6 +53,15 @@ public class ProductEntity {
     public ProductEntity() {
 
     }
+
+    public List<FileEntity> getFileList() {
+        return fileList;
+    }
+
+    public void setFileList(List<FileEntity> fileList) {
+        this.fileList = fileList;
+    }
+
 
     public Long getId() {
         return id;

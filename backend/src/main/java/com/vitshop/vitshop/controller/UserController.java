@@ -96,7 +96,8 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{username}")
-    public ResponseEntity<HttpResponse> deleteUser(@PathVariable("username") String username) {
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    public ResponseEntity<HttpResponse> deleteUser(@PathVariable("username") String username) throws UserNotFoundException {
         userService.deleteUser(username);
         return response(HttpStatus.OK, USER_DELETED_SUCCESSFULLY);
     }
@@ -182,7 +183,7 @@ public class UserController {
                 Boolean.parseBoolean(isActive),
                 Boolean.parseBoolean(isNotLocked)
         );
-        return null;
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
 }

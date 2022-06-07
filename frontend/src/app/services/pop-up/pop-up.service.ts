@@ -12,6 +12,7 @@ export class PopupService {
     
     showComponent(component) {
         this.subject.next({component: component, state: false});
+        return this.subject;
     }
 
     confirm() {

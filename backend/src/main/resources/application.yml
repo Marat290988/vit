@@ -26,6 +26,7 @@ server:
   error:
     whitelabel:
       enabled: false
+#  port: 8081
 jwt:
   secret: fff123
 

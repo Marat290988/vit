@@ -5,6 +5,9 @@ import { User } from './../../../../../models/user';
 import { map } from 'rxjs';
 import { tap } from 'rxjs';
 import { addEditData, AddEditUserComponent } from './add-edit-user/add-edit-user.component';
+import { PopupService } from 'src/app/services/pop-up/pop-up.service';
+import { SureComponent } from 'src/app/components/pop-up/sure/sure.component';
+import { PopupMessageService } from 'src/app/services/pop-up/popup-message.service';
 
 @Component({
   selector: 'app-admin-user',
@@ -36,6 +39,7 @@ export class AdminUserComponent implements OnInit, OnDestroy {
   changePagePag = false;
   inputSubs: Subscription;
   selectSubs: Subscription;
+  popUp: Subscription;
   searchState = false;
   userStream$;
   inputSearch = '';
@@ -45,7 +49,9 @@ export class AdminUserComponent implements OnInit, OnDestroy {
   @ViewChild(AddEditUserComponent) addEditComp;
 
   constructor(
-    private userService: UserService
+    private userService: UserService,
+    private popupService: PopupService,
+    private popupMessageService: PopupMessageService
   ) { 
     this.prepareUserData();
   }
@@ -258,9 +264,8 @@ export class AdminUserComponent implements OnInit, OnDestroy {
     if (document.querySelector('tbody tr.active')) {
       document.querySelector('tbody tr.active').classList.remove('active');
     }
-    if (editUserData === null) {
+    if (editUserData.username === '') {
       this.removeActiveButtons();
-      this.editUserData = null;
       return;
     }
     this.editUserData = editUserData;
@@ -307,6 +312,41 @@ export class AdminUserComponent implements OnInit, OnDestroy {
       this.addCont.nativeElement.style.height = '';
       this.tableScroll.nativeElement.style.overflow = 'auto';
     }, 500);
+  }
+
+  onDeleteUser() {
+    this.popUp = this.popupService.showComponent(SureComponent)
+      .subscribe(
+        data => {
+          if (data) {
+            if (data.component === null && data.state) {
+              this.loadState = true;
+              this.subscriber = this.userService.deleteUser(this.editUserData.username)
+                .subscribe({
+                  next: response => {
+                    this.removeActiveButtons();
+                    this.loadState = false;
+                    this.subscriber.unsubscribe();
+                    this.getUser(this.currentPage-1);
+                  },
+                  error: error => {
+                    this.loadState = false;
+                    if (error.error.message !== undefined) {
+                      this.popupMessageService.showMessage(error.error.message);
+                    }
+                    this.subscriber.unsubscribe();
+                  },
+                  complete: () => {
+                    
+                  }
+                })
+              this.popUp.unsubscribe();
+            } else if (data.component === null && !data.state) {
+              this.popUp.unsubscribe();
+            }
+          }
+        }
+      )
   }
 
 }

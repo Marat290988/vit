@@ -47,7 +47,7 @@ public interface UserService {
             boolean isActive
     ) throws UserNotFoundException, EmailExistException, UsernameExistException;
 
-    void deleteUser(String email);
+    void deleteUser(String email) throws UserNotFoundException;
 
     UserEntity findUserEntityById(Long id);
 }

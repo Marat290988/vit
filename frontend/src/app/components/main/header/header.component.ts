@@ -35,6 +35,8 @@ export class HeaderComponent implements OnInit {
         if (data.component === null && data.state) {
           this.onLogout();
           this.subs.unsubscribe();
+        } else if (data.component === null && !data.state) {
+          this.subs.unsubscribe();
         }
       }
     });

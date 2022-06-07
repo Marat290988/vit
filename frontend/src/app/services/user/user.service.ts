@@ -56,6 +56,10 @@ export class UserService {
     return this.http.post(`${this.host}/user/edituser`, user);
   }
 
+  deleteUser(username: string) {
+    return this.http.delete(`${this.host}/user/delete/${username}`);
+  }
+
   createUserForm(user) {
     const formData = new FormData();
     formData.append('username', user.username);

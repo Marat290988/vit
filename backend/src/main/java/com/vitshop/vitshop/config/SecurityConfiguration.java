@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final String[] PUBLIC_URLS = { "/api/user/login", "/api/user/register", "api/image/**" };
+    private final String[] PUBLIC_URLS = { "/api/user/login", "/api/user/register", "/api/product/image/**" };
 
     private JWTAuthorizationFilter jwtAuthorizationFilter;
     private JwtAccessDeniedHandler jwtAccessDeniedHandler;

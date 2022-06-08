@@ -1,5 +1,6 @@
 package com.vitshop.vitshop.domain.product;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.vitshop.vitshop.domain.file.FileEntity;
 import com.vitshop.vitshop.domain.user.UserPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,7 +36,8 @@ public class ProductEntity {
     private String authorName;
     @Column
     private Date creationDate;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<FileEntity> fileList;
 
     public ProductEntity(String productId, String name, String description, String composition, String manufacturer, String category, BigDecimal basePrice, String authorName, Date creationDate) {

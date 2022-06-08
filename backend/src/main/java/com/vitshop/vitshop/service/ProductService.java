@@ -3,6 +3,9 @@ package com.vitshop.vitshop.service;
 import com.vitshop.vitshop.domain.product.ProductEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 public interface ProductService {
     Page<ProductEntity> getProducts(Pageable page);
@@ -14,6 +17,9 @@ public interface ProductService {
             String manufacturer,
             String category,
             double dPrice,
-            String author
-    );
+            String author,
+            MultipartFile[] files
+    ) throws IOException;
+
+    byte[] getProductImage(String productId, String fileName) throws IOException;
 }

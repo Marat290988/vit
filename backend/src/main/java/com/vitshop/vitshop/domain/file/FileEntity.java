@@ -1,5 +1,6 @@
 package com.vitshop.vitshop.domain.file;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.vitshop.vitshop.domain.product.ProductEntity;
 
 import javax.persistence.*;
@@ -17,8 +18,9 @@ public class FileEntity {
     @Column
     boolean mainFlag;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
+    @JsonBackReference
     ProductEntity product;
 
     public FileEntity(){}

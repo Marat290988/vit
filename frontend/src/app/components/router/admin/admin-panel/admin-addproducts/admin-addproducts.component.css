@@ -1,0 +1,32 @@
+.addproduct-head {
+    border: 2px solid var(--colorb1);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding: 5px;
+    background-color: var(--colorblight1);
+}
+
+.addproduct-head h3 {
+    text-align: center;
+    color: var(--colorf1);
+}
+
+.addproduct-cont {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    height: calc(100% - 63px);
+    max-width: 1300px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.addproduct-form {
+    border-right: 2px solid var(--colorb1);
+    border-left: 2px solid var(--colorb1);
+    border-bottom: 2px solid var(--colorb1);
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    height: calc(100% - 32px);
+    box-shadow: 12px 4px 15px 0px rgb(34 60 80 / 20%);
+}

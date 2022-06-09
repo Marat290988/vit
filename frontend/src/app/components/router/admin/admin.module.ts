@@ -7,13 +7,17 @@ import { SpinnerComponent } from "../../ui/spinner/spinner.component";
 import { AddEditUserComponent } from './admin-panel/admin-user/add-edit-user/add-edit-user.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { DirectiveModule } from "src/app/directives/directive.module";
+import { AdminProductlistComponent } from './admin-panel/admin-productlist/admin-productlist.component';
+import { AdminAddproductsComponent } from './admin-panel/admin-addproducts/admin-addproducts.component';
 
 @NgModule({
     declarations: [
         AdminPanelComponent,
         AdminUserComponent,
         SpinnerComponent,
-        AddEditUserComponent
+        AddEditUserComponent,
+        AdminProductlistComponent,
+        AdminAddproductsComponent
     ],
     imports: [
         CommonModule,
@@ -25,6 +29,14 @@ import { DirectiveModule } from "src/app/directives/directive.module";
             {
                 path: 'admin-user',
                 component: AdminUserComponent
+            },
+            {
+                path: 'admin-productlist',
+                component: AdminProductlistComponent
+            },
+            {
+                path: 'admin-addproduct',
+                component: AdminAddproductsComponent
             },
             { path: '**', redirectTo: '', pathMatch: 'full' }
         ]),

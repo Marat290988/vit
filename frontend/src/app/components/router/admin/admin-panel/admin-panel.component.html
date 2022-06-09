@@ -1,1 +1,9 @@
+<div class="admin-nav">
+    <div class="link-cont">
+        <a class="admin-link" (click)="onClickLink(0)" routerLink="admin-user">User List</a>
+        <a class="admin-link" (click)="onClickLink(1)" routerLink="admin-productlist">Product List</a>
+        <a class="admin-link" (click)="onClickLink(2)" routerLink="admin-addproduct">Add Product</a>
+        <div class="moving-back" #movingBlock></div>
+    </div>
+</div>
 <router-outlet></router-outlet>

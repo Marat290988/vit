@@ -6,6 +6,8 @@ import com.vitshop.vitshop.domain.user.UserEntity;
 import com.vitshop.vitshop.service.FileService;
 import com.vitshop.vitshop.service.ProductService;
 import com.vitshop.vitshop.utility.JWTTokenProvider;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import static com.vitshop.vitshop.service.FileService.VIT_FOLDER;
 import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
@@ -74,4 +79,11 @@ public class ProductController {
     ) throws IOException {
         return new ResponseEntity<>(productService.getProductImage(productId, fileName), HttpStatus.OK);
     }
-}
+
+    @GetMapping("/product_data")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    public ResponseEntity<HashMap<String, Object>> getProductData() {
+        HashMap<String, Object> mapCatAndMan = productService.getCategoryAndManufacturer();
+        return new ResponseEntity<>(mapCatAndMan, HttpStatus.OK);
+    }
+ }

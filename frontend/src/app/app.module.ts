@@ -39,7 +39,7 @@ import { DirectiveModule } from './directives/directive.module';
     CartComponent,
     SureComponent,
     HelpPopupComponent,
-    ErrorComponent
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,

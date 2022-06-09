@@ -6,6 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public interface ProductService {
     Page<ProductEntity> getProducts(Pageable page);
@@ -22,4 +25,6 @@ public interface ProductService {
     ) throws IOException;
 
     byte[] getProductImage(String productId, String fileName) throws IOException;
+
+    HashMap<String, Object> getCategoryAndManufacturer();
 }

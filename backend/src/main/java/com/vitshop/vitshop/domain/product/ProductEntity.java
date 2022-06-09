@@ -29,6 +29,7 @@ public class ProductEntity {
     @Column
     private String manufacturer;
     @Column
+    @JsonManagedReference
     private String category;
     @Column
     private BigDecimal basePrice;

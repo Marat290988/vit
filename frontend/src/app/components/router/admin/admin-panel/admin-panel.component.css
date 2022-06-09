@@ -1,0 +1,42 @@
+.admin-nav {
+    margin: 5px;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+}
+
+.link-cont {
+    display: flex;
+    padding: 5px 0;
+    border-radius: 5px;
+    background-color: #c6f3ec;
+    box-shadow: 7px 6px 9px -5px rgb(34 60 80 / 20%);
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-link {
+    font-size: 16px;
+    line-height: 18px;
+    display: block;
+    margin: 0 5px;
+    cursor: pointer;
+    min-width: 80px;
+    text-align: center;
+    color: #298376;
+    z-index: 10;
+}
+
+.admin-link:hover{
+    color: #11423b;
+}
+
+.moving-back {
+    min-width: 90px;
+    height: 100%;
+    background-color: #ffeb3b;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: left 0.3s linear;
+}

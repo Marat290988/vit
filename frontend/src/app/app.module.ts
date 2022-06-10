@@ -27,6 +27,7 @@ import { AdminGuard } from './guards/admin.guard';
 import { SpinnerComponent } from './components/ui/spinner/spinner.component';
 import { ErrorComponent } from './components/pop-up/error/error.component';
 import { DirectiveModule } from './directives/directive.module';
+import { ProductService } from './services/product/product.service';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { DirectiveModule } from './directives/directive.module';
   ],
   providers: [
     UserService,
+    ProductService,
     AuthGuard,
     AdminGuard,
     {

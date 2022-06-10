@@ -40,8 +40,10 @@ public class ProductEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<FileEntity> fileList;
+    @Column
+    boolean isActive;
 
-    public ProductEntity(String productId, String name, String description, String composition, String manufacturer, String category, BigDecimal basePrice, String authorName, Date creationDate) {
+    public ProductEntity(String productId, String name, String description, String composition, String manufacturer, String category, BigDecimal basePrice, String authorName, Date creationDate, boolean isActive) {
         this.productId = productId;
         this.name = name;
         this.description = description;
@@ -51,10 +53,19 @@ public class ProductEntity {
         this.basePrice = basePrice;
         this.authorName = authorName;
         this.creationDate = creationDate;
+        this.isActive = isActive;
     }
 
     public ProductEntity() {
 
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public List<FileEntity> getFileList() {

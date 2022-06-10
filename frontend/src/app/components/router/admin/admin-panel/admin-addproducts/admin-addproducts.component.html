@@ -3,6 +3,134 @@
         <h3>Add product</h3>
     </div>
     <div class="addproduct-form">
-        FORM
+        <div class="half-form">
+            <div class="inner-half-form">
+                <form [formGroup]="formGroup" (ngSubmit)="onAddNewProduct()" style="height: 100%; padding: 10px 5px;">
+                    <!-- Product Name -->
+                    <div class="form-stadart-cont">
+                        <h3>Product name</h3>
+                        <div class="input-cont">
+                            <input formControlName="name" type="text" class="input-field" placeholder="Enter product name" readonly onfocus="this.removeAttribute('readonly')">
+                        </div>
+                        <div class="error-container">
+                            <span class="control-error" 
+                                *ngIf="formGroup.hasError('required', 'name') && !formGroup.get('name').untouched"
+                            >
+                                Required product name
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-flex">
+                        <!-- Product Category -->
+                        <div class="form-stadart-cont">
+                            <h3>Category</h3>
+                            <div class="input-cont selection">
+                                <input 
+                                    formControlName="category" type="text" 
+                                    class="input-field" 
+                                    (input)="onInputForPrompt($event, 'catList', 'catListBase')" 
+                                    (blur)="onBlur(catList)" 
+                                    placeholder="Enter category" readonly 
+                                    onfocus="this.removeAttribute('readonly')"
+                                >
+                                <div class="prompt" *ngIf="catList.length > 0">
+                                    <p *ngFor="let cat of catList" (click)="onPickPrompt(cat, 'category')">{{cat}}</p>
+                                </div>
+                            </div>
+                            <div class="error-container">
+                                <span class="control-error" 
+                                    *ngIf="formGroup.hasError('required', 'category') && !formGroup.get('category').untouched"
+                                >
+                                    Required category
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Product Manufacturer -->
+                        <div class="form-stadart-cont">
+                            <h3>Manufacturer</h3>
+                            <div class="input-cont selection">
+                                <input 
+                                    formControlName="manufacturer" type="text" 
+                                    class="input-field" 
+                                    (input)="onInputForPrompt($event, 'manList', 'manListBase')"
+                                    (blur)="onBlur(manList)" 
+                                    placeholder="Enter manufacturer" readonly 
+                                    onfocus="this.removeAttribute('readonly')"
+                                >
+                                <div class="prompt" *ngIf="manList.length > 0">
+                                    <p *ngFor="let man of manList" (click)="onPickPrompt(man, 'manufacturer')">{{man}}</p>
+                                </div>
+                            </div>
+                            <div class="error-container">
+                                <span class="control-error" 
+                                    *ngIf="formGroup.hasError('required', 'manufacturer') && !formGroup.get('manufacturer').untouched"
+                                >
+                                    Required manufacturer
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Description -->
+                    <div class="form-stadart-cont">
+                        <h3>Description</h3>
+                        <div class="textarea-cont">
+                            <textarea formControlName="description" rows="3" type="text" class="textarea-field" placeholder="Enter description" readonly onfocus="this.removeAttribute('readonly')"></textarea>
+                        </div>
+                        <div class="error-container">
+                            <span class="control-error" 
+                                *ngIf="formGroup.hasError('required', 'description') && !formGroup.get('description').untouched"
+                            >
+                                Required description
+                            </span>
+                        </div>
+                    </div>
+                    <!-- Product Composition -->
+                    <div class="form-stadart-cont">
+                        <h3>Composition</h3>
+                        <div class="input-cont-composition">
+                            <div class="form-composition">
+                                <div class="form-composition-input">
+                                    <h6>Suplement</h6>
+                                    <div>
+                                        <input type="text" #nameComposition>
+                                    </div>
+                                </div>
+                                <div class="form-composition-qty">
+                                    <h6>Q-ty</h6>
+                                    <div>
+                                        <input type="text" #qtyComposition>
+                                    </div>
+                                </div>
+                                <div class="form-composition-plus" [attr.data-active]="addCompState">
+                                    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="22px" height="22px" preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20">
+                                        <path fill="currentColor" d="M16 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4H9v-4H5V9h4V5h2v4h4v2z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div *ngIf="compositionEditList.length > 0" class="comp-list">
+                                <div class="comp-list-table">
+                                    <div *ngFor="let comp of compositionEditList let index = index" class="comp-list-row">
+                                        <div style="width: 15px; text-align: center;">{{index+1}}</div>
+                                        <div style="width: calc(100% - 36px);">{{comp.supl}}</div>
+                                        <div>
+                                            <div style="width: 15px; height: 15px;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1024 1024">
+                                                    <path fill="currentColor" d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zM704 536c0 4.4-3.6 8-8 8H328c-4.4 0-8-3.6-8-8v-48c0-4.4 3.6-8 8-8h368c4.4 0 8 3.6 8 8v48z"/>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="half-form">
+            <div class="inner-half-form">
+
+            </div>
+        </div>
     </div>
 </div>

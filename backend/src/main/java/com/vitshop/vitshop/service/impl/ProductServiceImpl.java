@@ -55,7 +55,8 @@ public class ProductServiceImpl implements ProductService {
             String category,
             double dPrice,
             String author,
-            MultipartFile[] files
+            MultipartFile[] files,
+            boolean isActive
     ) throws IOException {
         ProductEntity product = new ProductEntity();
         product.setProductId(generateProductId());
@@ -67,6 +68,7 @@ public class ProductServiceImpl implements ProductService {
         product.setBasePrice(dPrice);
         product.setAuthorName(author);
         product.setCreationDate(new Date());
+        product.setActive(isActive);
         List<FileEntity> fileEntityList = fileService.saveProductImage(product, files);
         product.setFileList(fileEntityList);
         productRepository.save(product);

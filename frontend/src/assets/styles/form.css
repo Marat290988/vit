@@ -37,6 +37,21 @@
     background-color: inherit;
 }
 
+.textarea-cont {
+    min-height: 34px;
+}
+
+.textarea-field {
+    outline: 0;
+    height: 100%;
+    width: 100%;
+    background-color: inherit;
+    resize: none;
+    border: 2px solid var(--colorb1);
+    border-radius: 5px;
+    padding: 5px 4px;
+}
+
 .error-container {
     max-height: 12px;
     min-height: 12px;
@@ -104,4 +119,42 @@ label.radio:after {
     font-size: 14px;
     color: var(--colorerror);
     text-align: center;
+}
+
+.input-cont.selection {
+    position: relative;
+}
+
+.input-cont.selection .prompt {
+    max-height: 100px;
+    overflow: auto;
+    position: absolute;
+    left: 0;
+    top: 34px;
+    width: 100%;
+    border: 1px solid var(--colorblight1);
+    z-index: 10;
+    background-color: #fff;
+}
+
+.input-cont.selection .prompt>p {
+    padding: 3px;
+    cursor: pointer;
+    font-size: 13px;
+    background-color: inherit;
+}
+
+.input-cont.selection .prompt>p:hover {
+    background-color: var(--colorblight1);
+}
+
+.form-flex {
+    display: flex;
+}
+
+.form-flex>.form-stadart-cont {
+    min-width: 150px;
+    width: 100%;
+    padding: 0 20px;
+    margin-bottom: 5px;
 }

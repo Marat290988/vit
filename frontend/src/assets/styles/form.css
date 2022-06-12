@@ -29,6 +29,13 @@
     border: 2px solid var(--colorb1);
 }
 
+.input-cont-file {
+    padding: 0 4px;
+    border-radius: 5px;
+    margin: auto;
+    border: 2px solid var(--colorb1);
+}
+
 .input-field {
     border: 0;
     outline: 0;
@@ -157,4 +164,19 @@ label.radio:after {
     width: 100%;
     padding: 0 20px;
     margin-bottom: 5px;
+}
+
+.file-field {
+    background: repeating-linear-gradient(135deg, rgb(255, 255, 255), rgb(255, 255, 255) 5px, rgb(136, 143, 136) 0, rgb(136, 143, 136) 10px);
+    height: 30px;
+    width: 95%;
+    margin: 10px auto;
+    border: 1px solid rgb(136, 143, 136);
+    border-radius: 5px;
+    transition: 0.5s ease-in-out;
+    cursor: pointer;
+}
+
+.file-field:hover {
+    background: repeating-linear-gradient(135deg, rgb(255, 255, 255), rgb(255, 255, 255) 5px, var(--colorb1) 0, var(--colorb1) 10px);
 }

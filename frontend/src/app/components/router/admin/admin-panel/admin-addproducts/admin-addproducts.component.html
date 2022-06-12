@@ -101,7 +101,7 @@
                                         <input type="text" #qtyComposition>
                                     </div>
                                 </div>
-                                <div class="form-composition-plus" [attr.data-active]="addCompState">
+                                <div class="form-composition-plus" [attr.data-active]="addCompState" (click)="addToCompEditList()">
                                     <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="22px" height="22px" preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20">
                                         <path fill="currentColor" d="M16 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4H9v-4H5V9h4V5h2v4h4v2z"/>
                                     </svg>
@@ -110,10 +110,11 @@
                             <div *ngIf="compositionEditList.length > 0" class="comp-list">
                                 <div class="comp-list-table">
                                     <div *ngFor="let comp of compositionEditList let index = index" class="comp-list-row">
-                                        <div style="width: 15px; text-align: center;">{{index+1}}</div>
-                                        <div style="width: calc(100% - 36px);">{{comp.supl}}</div>
+                                        <div style="min-width: 15px; text-align: center;">{{index+1}}.</div>
+                                        <div style="width: calc(80% - 34px);">{{comp.supl}}</div>
+                                        <div style="width: 20%;">{{comp.qty}}</div>
                                         <div>
-                                            <div style="width: 15px; height: 15px;">
+                                            <div style="width: 15px; height: 15px;" (click)="onRemoveFromCompEditList(index)">
                                                 <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1024 1024">
                                                     <path fill="currentColor" d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zM704 536c0 4.4-3.6 8-8 8H328c-4.4 0-8-3.6-8-8v-48c0-4.4 3.6-8 8-8h368c4.4 0 8 3.6 8 8v48z"/>
                                                 </svg>
@@ -124,12 +125,59 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-flex" style="margin-top: 12px;">
+                         <!-- Product Price -->
+                        <div class="form-stadart-cont">
+                            <h3>Price</h3>
+                            <div class="input-cont-composition">
+                                <div class="form-composition">
+                                    <div class="form-composition-input">
+                                        <h6>Whole number</h6>
+                                        <div>
+                                            <input type="text" style="text-align: right;" maxlength="10" #wholeNumber (input)="blockNotNumeric($event)">
+                                        </div>
+                                    </div>
+                                    <div class="form-composition-qty">
+                                        <h6>Cents</h6>
+                                        <div>
+                                            <input type="text" style="text-align: right;" maxlength="2" #cents (input)="blockNotNumeric($event)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="error-container">
+                                    <span class="control-error" 
+                                        *ngIf="priceState"
+                                    >
+                                        Required price
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- isActive -->
+                        <div class="form-stadart-cont">
+                            <h3>is Active</h3>
+                            <div class="input-cont-checkbox" style="height: calc(100% - 14px);">
+                                <div class="form-composition">
+                                    <input type="checkbox" id="isActive">
+                                    <label for="isActive" class="radio checkbox" (click)="toggleActive($event)">Is Active</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   <!-- Product Files -->
+                   <div class="form-stadart-cont">
+                    <h3>Product images</h3>
+                    <div class="input-cont-file">
+                        <div class="file-field" (drop)="dropFiles($event)" (click)="fileInput.click()"></div>
+                        <input type="file" accept="image/jpeg,image/png" #fileInput hidden="true" multiple (change)="addFiles($event)">
+                    </div>
+                </div>
                 </form>
             </div>
         </div>
         <div class="half-form">
             <div class="inner-half-form">
-
+                <div #compPreview></div>
             </div>
         </div>
     </div>

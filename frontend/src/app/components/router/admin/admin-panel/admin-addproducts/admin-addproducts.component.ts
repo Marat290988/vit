@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { combineLatest, fromEvent, map, Observable, Subscription, switchMap } from 'rxjs';
 import { ProductService } from 'src/app/services/product/product.service';
 
@@ -26,7 +27,10 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
   addCompState = false;
   priceState = false;
   files: File[] = [];
-  dataTransfer = new DataTransfer();  
+  dataTransfer = new DataTransfer();
+  listUrl = [];
+  currentIndex = 0;
+  loadingState = false
   
   @ViewChild('nameComposition') nameComposition: ElementRef;
   @ViewChild('qtyComposition') qtyComposition: ElementRef;
@@ -38,7 +42,8 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
   
 
   constructor(
-    private productService: ProductService
+    private productService: ProductService,
+    private sanitazer: DomSanitizer
   ) {
       
    }
@@ -108,7 +113,8 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
   }
 
   onAddNewProduct() {
-    
+    this.formGroup.get('files').setValue(this.dataTransfer.files);
+    this.productService.addProduct(this.formGroup.value);
   }
 
   onInputForPrompt(event, list: string, listBase: string) {
@@ -192,13 +198,7 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
 
   dropFiles(event) {
     event.preventDefault();
-    if (event.dataTransfer.items) {
-      for (let i = 0; i < event.dataTransfer.items.length; i++) {
-        if (event.dataTransfer.items[i].kind === 'file') {
-          this.dataTransfer.items.add(event.dataTransfer.items[i].getAsFile());
-        }
-      }
-    }
+    this.handlingFileList(true, event);
   }
 
   addFiles(event) {
@@ -206,13 +206,90 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
   }
 
   handlingFileList(dropState: boolean, event) {
-    if (event.target.files) {
-      for (let i = 0; i < event.target.files.length; i++) {
-        this.dataTransfer.items.add(event.target.files[i]);
+    let fileList = dropState ? event.dataTransfer : event.target;
+    if (fileList) {
+      if (this.dataTransfer.files.length === 0) {
+        for (let j = 0; j < fileList.files.length; j++) {
+          this.checkFileOnImg(fileList.files[j], true, this);
+        }
+      } else {
+        for (let j = 0; j < fileList.files.length; j++) {
+          let flag = true;
+          const file: File = fileList.files[j];
+          for (let i = 0; i < this.dataTransfer.files.length; i++) {
+            if (
+                  file.name === this.dataTransfer.items[i].getAsFile().name || 
+                  file.lastModified === this.dataTransfer.items[i].getAsFile().lastModified || 
+                  file.size === this.dataTransfer.items[i].getAsFile().size 
+            ) {
+              flag = false;
+            }
+            if (i == this.dataTransfer.files.length-1 && flag) {
+              this.checkFileOnImg(fileList.files[j], false, this);
+            }
+          }
+        }
       }
     }
-    event.target.files = this.dataTransfer.files;
-    console.log(event.target.files)
+    
+    event.target.value = '';
+  }
+
+  checkFileOnImg(file: File, firstAdd: boolean, a: AdminAddproductsComponent) {
+    let fileReader = new FileReader();
+    fileReader.onloadend = function(e: any) {
+      let arr = (new Uint8Array(e.target.result).subarray(0, 4));
+      let header = '';
+      for (let i = 0; i < arr.length; i++) {
+        header += arr[i].toString(16);
+      }
+      switch (header) {
+          case '89504e47':
+              //type = 'image/png';
+              a.addUrlList(file, firstAdd, a);
+              break;
+          case '47494638':
+              //type = 'image/gif';
+              a.addUrlList(file, firstAdd, a);
+              break;
+          case 'ffd8ffe0':
+          case 'ffd8ffe1':
+          case 'ffd8ffe2':
+          case 'ffd8ffe3':
+          case 'ffd8ffe8':
+              //type = 'image/jpeg';
+              a.addUrlList(file, firstAdd, a);
+              break;
+          default:
+              //type = '';
+              break;
+      }
+    }
+    fileReader.readAsArrayBuffer(file);
+  }
+
+  addUrlList(file: File, firstAdd: boolean, a: AdminAddproductsComponent) {
+    a.dataTransfer.items.add(file);
+    const url = a.sanitazer.bypassSecurityTrustUrl(URL.createObjectURL(file));
+    a.listUrl.push({url, active: ''});
+    if (firstAdd) {
+      a.listUrl[0].active = 'active';
+    }
+  }
+
+  changeMainImg(index: number) {
+    this.listUrl[this.currentIndex].active = '';
+    this.currentIndex = index;
+    this.listUrl[this.currentIndex].active = 'active';
+  }
+
+  removeImage(index: number) {
+    this.dataTransfer.items.remove(index);
+    this.listUrl.splice(index, 1);
+    if (this.listUrl.length > 0) {
+      this.listUrl[0].active = 'active';
+      this.currentIndex = 0;
+    }
   }
 
 }

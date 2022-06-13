@@ -57,14 +57,15 @@ public class ProductController {
     public ResponseEntity<ProductEntity> addProduct(
             @RequestParam("name") String name,
             @RequestParam("description") String description,
-            @RequestParam("composition") String composition,
+            @RequestParam(value = "composition", required = false) String composition,
             @RequestParam("manufacturer") String manufacturer,
             @RequestParam("category") String category,
             @RequestParam("dPrice") double dPrice,
             @RequestHeader("Authorization") String bToken,
-            @RequestParam("files") MultipartFile[] files,
-            @RequestParam("isActive") String isActive
+            @RequestParam(value = "files", required = false) MultipartFile[] files,
+            @RequestParam(value = "isActive") String isActive
             ) throws IOException {
+        System.out.println(files.toString());
         String token = bToken.substring("Bearer ".length());
         String authorName = jwtTokenProvider.getSubject(token);
         ProductEntity newProduct = productService.addProduct(

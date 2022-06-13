@@ -114,7 +114,15 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
 
   onAddNewProduct() {
     this.formGroup.get('files').setValue(this.dataTransfer.files);
-    this.productService.addProduct(this.formGroup.value);
+    //this.loadingState = true;
+    this.productService.addProduct(this.formGroup.value)
+    this.subs = this.productService.addProduct(this.formGroup.value).subscribe({
+      next: res => {
+        console.log(res)
+        this.subs.unsubscribe();
+        this.loadingState = false;
+      }
+    })
   }
 
   onInputForPrompt(event, list: string, listBase: string) {

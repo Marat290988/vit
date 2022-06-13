@@ -22,7 +22,8 @@ public interface ProductService {
             double dPrice,
             String author,
             MultipartFile[] files,
-            boolean isActive
+            boolean isActive,
+            int activeImg
     ) throws IOException;
 
     byte[] getProductImage(String productId, String fileName) throws IOException;

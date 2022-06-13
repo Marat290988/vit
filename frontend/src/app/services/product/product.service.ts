@@ -29,7 +29,7 @@ export class ProductService {
         return this.http.get(`${this.host}/product/product_data`);
     }
 
-    addProduct(product: Product) {
+    addProduct(product: Product, activeImg) {
         const formData = new FormData();
         formData.append('name', product.name);
         formData.append('description', product.description);
@@ -38,11 +38,13 @@ export class ProductService {
         formData.append('category', product.category);
         formData.append('dPrice', product.dPrice);
         formData.append('isActive', product.isActive);
+        formData.append('activeImg', activeImg);
         if (product.files.length > 0) {
-            console.log(product.files)
             for (let j = 0; j < product.files.length; j++) {
                 formData.append('files', product.files[j], product.files[j].name)
             }
+        } else {
+            formData.append('files', product.files)
         }
         return this.http.post(`${this.host}/product/addproduct`, formData);
     }

@@ -56,7 +56,8 @@ public class ProductServiceImpl implements ProductService {
             double dPrice,
             String author,
             MultipartFile[] files,
-            boolean isActive
+            boolean isActive,
+            int activeImg
     ) throws IOException {
         ProductEntity product = new ProductEntity();
         product.setProductId(generateProductId());
@@ -69,8 +70,11 @@ public class ProductServiceImpl implements ProductService {
         product.setAuthorName(author);
         product.setCreationDate(new Date());
         product.setActive(isActive);
-        List<FileEntity> fileEntityList = fileService.saveProductImage(product, files);
-        product.setFileList(fileEntityList);
+        System.out.println(files);
+        if (files != null) {
+            List<FileEntity> fileEntityList = fileService.saveProductImage(product, files, activeImg);
+            product.setFileList(fileEntityList);
+        }
         productRepository.save(product);
         LOGGER.info("Have been created new product: " + product.getName());
         return product;

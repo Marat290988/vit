@@ -35,13 +35,13 @@ public class FileService {
         this.fileRepository = fileRepository;
     }
 
-    public List<FileEntity> saveProductImage(ProductEntity product, MultipartFile[] listFile) throws IOException {
+    public List<FileEntity> saveProductImage(ProductEntity product, MultipartFile[] listFile, int activeImg) throws IOException {
         List<FileEntity> productFileList = new ArrayList<>();
         int n = 1;
         for (MultipartFile file: listFile) {
             System.out.println(n);
             FileEntity fileEntity = new FileEntity();
-            boolean mainState = n == 1 ? true : false;
+            boolean mainState = n == activeImg+1 ? true : false;
             fileEntity.setMainFlag(mainState);
             fileEntity.setProduct(product);
             Path productFolder = Paths.get(VIT_FOLDER + product.getProductId()).toAbsolutePath().normalize();

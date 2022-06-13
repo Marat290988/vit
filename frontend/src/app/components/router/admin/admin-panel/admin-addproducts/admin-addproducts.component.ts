@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
-import { combineLatest, fromEvent, map, Observable, Subscription, switchMap } from 'rxjs';
+import { combineLatest, forkJoin, fromEvent, map, Observable, Subscription, switchMap, tap } from 'rxjs';
 import { ProductService } from 'src/app/services/product/product.service';
 
 @Component({
@@ -19,6 +19,7 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
   subs: Subscription;
   subsComposition: Subscription;
   subsPrice: Subscription;
+  subsDrag: Subscription;
   compositionEditList: {supl: string, qty: string}[] = [];
   tempCompData: {supl: string, qty: string};
   nameCompStream$: Observable<any>;
@@ -84,39 +85,38 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
         }
       })
     });
-    this.subsPrice = combineLatest([
-      fromEvent(this.wholeNumber.nativeElement, 'input').pipe(
-        map((event: any) => event.target.value)
-      ),
-      fromEvent(this.cents.nativeElement, 'input').pipe(
-        map((event: any) => event.target.value)
-      )
-    ]).subscribe((data: string[]) => {
-      this.formGroup.get('dPrice').setValue(`${data[0]}.${data[1] === '' ? '00' : data[1]}`);
-      data.every((el): any => {
-        if (el !== '') {
-          this.priceState = false;
-        } else {
-          this.priceState = true;
-          return false;
-        }
-      })
-    });
-    fromEvent(document.querySelector('.file-field'), 'dragover').subscribe(event => {
-      event.preventDefault();
-    })
+    // this.subsPrice = combineLatest([
+    //   fromEvent(this.wholeNumber.nativeElement, 'input').pipe(
+    //     map((event: any) => event.target.value)
+    //   ),
+    //   fromEvent(this.cents.nativeElement, 'input').pipe(
+    //     map((event: any) => event.target.value)
+    //   )
+    // ]).subscribe((data: string[]) => {
+    //   console.log(data)
+    //   this.formGroup.get('dPrice').setValue(`${data[0]}.${data[1] === '' ? '00' : data[1]}`);
+    //   data.every((el): any => {
+    //     if (el !== '') {
+    //       this.priceState = false;
+    //     } else {
+    //       this.priceState = true;
+    //       return false;
+    //     }
+    //   })
+    // });
+    
   }
 
   ngOnDestroy() {
     this.subsComposition.unsubscribe();
-    this.subsPrice.unsubscribe();
+    //this.subsPrice.unsubscribe();
+    this.subsDrag.unsubscribe();
   }
 
   onAddNewProduct() {
     this.formGroup.get('files').setValue(this.dataTransfer.files);
     //this.loadingState = true;
-    this.productService.addProduct(this.formGroup.value)
-    this.subs = this.productService.addProduct(this.formGroup.value).subscribe({
+    this.subs = this.productService.addProduct(this.formGroup.value, this.currentIndex).subscribe({
       next: res => {
         console.log(res)
         this.subs.unsubscribe();
@@ -130,6 +130,17 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
       this[list] = this[listBase].filter(el => el.toLowerCase().indexOf(event.target.value.toLowerCase()) > -1);
     } else {
       this[list] = [];
+    }
+  }
+
+  onInputPrice() {
+    const wholePrice = this.wholeNumber.nativeElement.value;
+    const cents = this.cents.nativeElement.value;
+    if (wholePrice === '') {
+      this.priceState = true;
+    } else {
+      this.priceState = false;
+      this.formGroup.get('dPrice').setValue(`${wholePrice}.${cents === '' ? '00' : cents}`);
     }
   }
 

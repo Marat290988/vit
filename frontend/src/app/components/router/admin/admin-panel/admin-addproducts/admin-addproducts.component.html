@@ -130,27 +130,27 @@
                         <div class="form-stadart-cont">
                             <h3>Price</h3>
                             <div class="input-cont-composition">
-                                <div class="form-composition">
+                                <div class="form-composition" style="justify-content: center;">
                                     <div class="form-composition-input">
                                         <h6>Whole number</h6>
                                         <div>
-                                            <input type="text" style="text-align: right;" maxlength="10" #wholeNumber (input)="blockNotNumeric($event)">
+                                            <input type="text" style="text-align: right;" maxlength="10" #wholeNumber (input)="blockNotNumeric($event); onInputPrice();">
                                         </div>
                                     </div>
                                     <div class="form-composition-qty">
                                         <h6>Cents</h6>
                                         <div>
-                                            <input type="text" style="text-align: right;" maxlength="2" #cents (input)="blockNotNumeric($event)">
+                                            <input type="text" style="text-align: right;" maxlength="2" #cents (input)="blockNotNumeric($event); onInputPrice();">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="error-container">
-                                    <span class="control-error" 
-                                        *ngIf="priceState"
-                                    >
-                                        Required price
-                                    </span>
-                                </div>
+                            </div>
+                            <div class="error-container">
+                                <span class="control-error" 
+                                    *ngIf="priceState"
+                                >
+                                    Required price
+                                </span>
                             </div>
                         </div>
                         <!-- isActive -->

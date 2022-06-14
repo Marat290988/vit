@@ -156,10 +156,10 @@
                         <!-- isActive -->
                         <div class="form-stadart-cont">
                             <h3>is Active</h3>
-                            <div class="input-cont-checkbox" style="height: calc(100% - 14px);">
+                            <div class="input-cont-checkbox" style="height: calc(100% - 26px);">
                                 <div class="form-composition">
                                     <input type="checkbox" id="isActive">
-                                    <label for="isActive" class="radio checkbox" (click)="toggleActive($event)">Is Active</label>
+                                    <label for="isActive" class="radio checkbox active" (click)="toggleActive($event)">Is Active</label>
                                 </div>
                             </div>
                         </div>
@@ -202,7 +202,18 @@
         </div>
         <div class="half-form">
             <div class="inner-half-form">
-                <div #compPreview></div>
+                <app-addproduct-preview
+                    [name]="formGroup.get('name').value"
+                    [category]="formGroup.get('category').value"
+                    [manufacturer]="formGroup.get('category').value"
+                    [description]="formGroup.get('description').value"
+                    [composition]="this.formGroup.get('composition').value"
+                    [price]="this.formGroup.get('dPrice').value"
+                    [listUrl]="listUrl"
+                    [currentIndex]="currentIndex"
+                >
+
+                </app-addproduct-preview>
             </div>
         </div>
     </div>

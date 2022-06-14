@@ -57,7 +57,7 @@ public class ProductController {
     public ResponseEntity<ProductEntity> addProduct(
             @RequestParam("name") String name,
             @RequestParam("description") String description,
-            @RequestParam(value = "composition", required = false) String composition,
+            @RequestParam(name = "composition", required = false) String composition,
             @RequestParam("manufacturer") String manufacturer,
             @RequestParam("category") String category,
             @RequestParam("dPrice") double dPrice,

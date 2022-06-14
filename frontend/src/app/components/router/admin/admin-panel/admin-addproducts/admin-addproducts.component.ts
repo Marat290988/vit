@@ -2,6 +2,7 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/co
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { combineLatest, forkJoin, fromEvent, map, Observable, Subscription, switchMap, tap } from 'rxjs';
+import { PopupMessageService } from 'src/app/services/pop-up/popup-message.service';
 import { ProductService } from 'src/app/services/product/product.service';
 
 @Component({
@@ -44,7 +45,8 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
 
   constructor(
     private productService: ProductService,
-    private sanitazer: DomSanitizer
+    private sanitazer: DomSanitizer,
+    private popupMessageService: PopupMessageService
   ) {
       
    }
@@ -85,42 +87,38 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
         }
       })
     });
-    // this.subsPrice = combineLatest([
-    //   fromEvent(this.wholeNumber.nativeElement, 'input').pipe(
-    //     map((event: any) => event.target.value)
-    //   ),
-    //   fromEvent(this.cents.nativeElement, 'input').pipe(
-    //     map((event: any) => event.target.value)
-    //   )
-    // ]).subscribe((data: string[]) => {
-    //   console.log(data)
-    //   this.formGroup.get('dPrice').setValue(`${data[0]}.${data[1] === '' ? '00' : data[1]}`);
-    //   data.every((el): any => {
-    //     if (el !== '') {
-    //       this.priceState = false;
-    //     } else {
-    //       this.priceState = true;
-    //       return false;
-    //     }
-    //   })
-    // });
-    
   }
 
   ngOnDestroy() {
     this.subsComposition.unsubscribe();
     //this.subsPrice.unsubscribe();
-    this.subsDrag.unsubscribe();
+    //this.subsDrag.unsubscribe();
   }
 
   onAddNewProduct() {
     this.formGroup.get('files').setValue(this.dataTransfer.files);
-    //this.loadingState = true;
+    this.loadingState = true;
     this.subs = this.productService.addProduct(this.formGroup.value, this.currentIndex).subscribe({
       next: res => {
         console.log(res)
         this.subs.unsubscribe();
         this.loadingState = false;
+        this.resetForm();
+      },
+      error: error => {
+        let message;
+        if (error.status > 0) {
+          message = error.error.message;
+        } else {
+          message = 'No connection';
+        }
+        this.loadingState = false;
+        this.popupMessageService.showMessage(message); 
+        this.subs.unsubscribe();
+      },
+      complete: () => {
+        this.loadingState = false;
+        this.subs.unsubscribe();
       }
     })
   }
@@ -309,6 +307,28 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
       this.listUrl[0].active = 'active';
       this.currentIndex = 0;
     }
+  }
+
+  resetForm() {
+    this.formGroup.get('name').setValue('');
+    this.formGroup.get('name').markAsTouched();
+    this.formGroup.get('description').setValue('');
+    this.formGroup.get('description').markAsTouched();
+    this.formGroup.get('composition').setValue('');
+    this.nameComposition.nativeElement.value = '';
+    this.qtyComposition.nativeElement.value = '';
+    this.addCompState = false;
+    this.formGroup.get('manufacturer').setValue('');
+    this.formGroup.get('manufacturer').markAsTouched();
+    this.formGroup.get('category').setValue('');
+    this.formGroup.get('category').markAsTouched();
+    this.formGroup.get('dPrice').setValue('');
+    this.wholeNumber.nativeElement.value = '';
+    this.cents.nativeElement.value = '';
+    this.formGroup.get('isActive').setValue(true);
+    document.querySelector('.radio.checkbox').classList.add('active');
+    this.listUrl = [];
+    this.dataTransfer.items.clear();
   }
 
 }

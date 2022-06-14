@@ -191,6 +191,7 @@ label.radio:after {
     margin-top: 10px;
     flex-wrap: wrap;
     padding: 5px 14px;
+    justify-content: center;
 }
 
 .images-list img {

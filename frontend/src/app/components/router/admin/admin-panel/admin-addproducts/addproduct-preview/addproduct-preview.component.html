@@ -1,0 +1,36 @@
+<!-- <div>{{name}}</div>
+<div [innerHTML]="nl2br(description)"></div> -->
+<div class="product-card">
+    <div class="product-card-flex">
+        <div class="image-cont">
+            <div class="main-image">
+                <img [src]="listUrl[currentIndex].url" *ngIf="listUrl.length > 0">
+                <div *ngIf="!(listUrl.length > 0)" class="img-replace">
+                    <div style="height: 150px; width: 150px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+                            <mask id="svgIDa">
+                                <g fill="none" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" fill="#fff" stroke="#fff" rx="3"/>
+                                    <path stroke="#000" stroke-linecap="round" d="m6 28l10.693-9.802a2 2 0 0 1 2.653-.044L32 29m-4-5l4.773-4.773a2 2 0 0 1 2.615-.186L42 24"/><path stroke="#fff" stroke-linecap="round" d="M6 20v10m36-10v10"/>
+                                </g>
+                            </mask><path fill="#fff" d="M0 0h48v48H0z" mask="url(#svgIDa)"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="list-img" *ngIf="listUrl.length > 0">
+                <div class="img-arrow left" *ngIf="listUrl.length > 3" (click)="onClickArrow('LEFT')"><</div>
+                <div class="img-arrow right" *ngIf="listUrl.length > 3" (click)="onClickArrow('RIGHT')">></div>
+                <div style="display: flex; transition: transform 0.5s ease-in-out;" #imgList>
+                    <ng-container *ngFor="let img of listUrl let index = index">
+                        <div class="mini-img-cont">
+                            <img 
+                                style="width: 100%; height: 100%;" 
+                                [src]="img.url"
+                            >
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

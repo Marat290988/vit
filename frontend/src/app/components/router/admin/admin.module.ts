@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { DirectiveModule } from "src/app/directives/directive.module";
 import { AdminProductlistComponent } from './admin-panel/admin-productlist/admin-productlist.component';
 import { AdminAddproductsComponent } from './admin-panel/admin-addproducts/admin-addproducts.component';
+import { AddproductPreviewComponent } from "./admin-panel/admin-addproducts/addproduct-preview/addproduct-preview.component";
 
 @NgModule({
     declarations: [
@@ -17,7 +18,8 @@ import { AdminAddproductsComponent } from './admin-panel/admin-addproducts/admin
         SpinnerComponent,
         AddEditUserComponent,
         AdminProductlistComponent,
-        AdminAddproductsComponent
+        AdminAddproductsComponent,
+        AddproductPreviewComponent
     ],
     imports: [
         CommonModule,

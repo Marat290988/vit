@@ -4,7 +4,7 @@
     <div class="product-card-flex">
         <div class="image-cont">
             <div class="main-image">
-                <img [src]="listUrl[currentIndex].url" *ngIf="listUrl.length > 0">
+                <img [src]="listUrl[0].url" *ngIf="listUrl.length > 0" #imgMain>
                 <div *ngIf="!(listUrl.length > 0)" class="img-replace">
                     <div style="height: 150px; width: 150px;">
                         <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
@@ -18,11 +18,11 @@
                 </div>
             </div>
             <div class="list-img" *ngIf="listUrl.length > 0">
-                <div class="img-arrow left" *ngIf="listUrl.length > 3" (click)="onClickArrow('LEFT')"><</div>
-                <div class="img-arrow right" *ngIf="listUrl.length > 3" (click)="onClickArrow('RIGHT')">></div>
+                <div class="img-arrow left" *ngIf="listUrl.length > 3" (click)="onClickArrow('RIGHT')"><</div>
+                <div class="img-arrow right" *ngIf="listUrl.length > 3" (click)="onClickArrow('LEFT')">></div>
                 <div style="display: flex; transition: transform 0.5s ease-in-out;" #imgList>
                     <ng-container *ngFor="let img of listUrl let index = index">
-                        <div class="mini-img-cont">
+                        <div class="mini-img-cont" #miniImg (click)="selectImg(index, miniImg)" [ngClass]="index === 0 ? 'active' : ''">
                             <img 
                                 style="width: 100%; height: 100%;" 
                                 [src]="img.url"

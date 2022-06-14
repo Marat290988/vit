@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
-import { combineLatest, forkJoin, fromEvent, map, Observable, Subscription, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, forkJoin, fromEvent, map, Observable, Subscription, switchMap, tap } from 'rxjs';
 import { PopupMessageService } from 'src/app/services/pop-up/popup-message.service';
 import { ProductService } from 'src/app/services/product/product.service';
 
@@ -33,6 +33,8 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
   listUrl = [];
   currentIndex = 0;
   loadingState = false
+  currentIndexObserve$ = new BehaviorSubject<number>(null);
+  imgId = 0;
   
   @ViewChild('nameComposition') nameComposition: ElementRef;
   @ViewChild('qtyComposition') qtyComposition: ElementRef;
@@ -288,7 +290,8 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
   addUrlList(file: File, firstAdd: boolean, a: AdminAddproductsComponent) {
     a.dataTransfer.items.add(file);
     const url = a.sanitazer.bypassSecurityTrustUrl(URL.createObjectURL(file));
-    a.listUrl.push({url, active: ''});
+    a.listUrl.push({url, active: '', id: a.imgId});
+    a.imgId++;
     if (firstAdd) {
       a.listUrl[0].active = 'active';
     }
@@ -297,6 +300,7 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
   changeMainImg(index: number) {
     this.listUrl[this.currentIndex].active = '';
     this.currentIndex = index;
+    this.currentIndexObserve$.next(this.listUrl[this.currentIndex].id);
     this.listUrl[this.currentIndex].active = 'active';
   }
 
@@ -306,6 +310,7 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
     if (this.listUrl.length > 0) {
       this.listUrl[0].active = 'active';
       this.currentIndex = 0;
+      this.currentIndexObserve$.next(this.currentIndex);
     }
   }
 

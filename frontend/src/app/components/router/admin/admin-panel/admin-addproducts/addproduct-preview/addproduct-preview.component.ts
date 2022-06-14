@@ -1,4 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-addproduct-preview',
@@ -14,13 +15,33 @@ export class AddproductPreviewComponent implements OnInit {
   @Input() composition;
   @Input() price;
   @Input() listUrl: any[];
-  @Input() currentIndex;
+  @Input() currentIndexObserve$: Observable<number>;
   @ViewChild('imgList') imgList: ElementRef;
+  @ViewChild('imgMain') imgMain: ElementRef;
   transform = 0;
+  indexSub: Subscription;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.indexSub = this.currentIndexObserve$.subscribe(id => {
+      if (id !== null) {
+        let ind;
+        this.listUrl = [...this.listUrl];
+        let cutEl = this.listUrl.filter((el, index):any => {
+          if (el.id === id) {
+            ind = index;
+            return el;
+          }
+        });
+        this.listUrl.splice(ind, 1);
+        this.listUrl.unshift(...cutEl);
+      }
+    })
+  }
+
+  ngOnDestroy() {
+    this.indexSub.unsubscribe();
   }
 
   nl2br(str: string): string {
@@ -36,5 +57,14 @@ export class AddproductPreviewComponent implements OnInit {
     }
     this.imgList.nativeElement.style.transform = `translateX(${this.transform}px)`;
   }
+
+  selectImg(index, miniImg) {
+    if (document.querySelector('.mini-img-cont.active')) {
+      document.querySelector('.mini-img-cont.active').classList.remove('active');
+    }
+    miniImg.classList.add('active')
+    this.imgMain.nativeElement.src = this.listUrl[index].url.changingThisBreaksApplicationSecurity;
+  }
+
 
 }

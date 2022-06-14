@@ -8,12 +8,12 @@
 }
 
 .image-cont {
-    max-width: 200px;
+    max-width: 205px;
     width: 100%;
 }
 
 .list-img {
-    max-width: 200px;
+    max-width: 205px;
     width: 100%;
     overflow: hidden;
     height: 82px;
@@ -47,6 +47,11 @@
     width: 65px;
     display: inline-block;
     margin-right: 5px;
+}
+
+.mini-img-cont.active {
+    padding: 1px;
+    background-color: var(--colorf2);
 }
 
 .img-arrow {

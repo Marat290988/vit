@@ -1,5 +1,6 @@
 package com.vitshop.vitshop.service;
 
+import com.vitshop.vitshop.domain.product.ProductDTO;
 import com.vitshop.vitshop.domain.product.ProductEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface ProductService {
-    Page<ProductEntity> getProducts(Pageable page);
+    Page<ProductDTO> getProducts(Pageable page);
 
     ProductEntity addProduct(
             String name,

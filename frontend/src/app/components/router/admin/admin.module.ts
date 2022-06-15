@@ -1,5 +1,5 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from '@angular/common';
+import { LOCALE_ID, NgModule } from "@angular/core";
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { RouterModule } from "@angular/router";
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 import { AdminUserComponent } from './admin-panel/admin-user/admin-user.component';
@@ -10,6 +10,9 @@ import { DirectiveModule } from "src/app/directives/directive.module";
 import { AdminProductlistComponent } from './admin-panel/admin-productlist/admin-productlist.component';
 import { AdminAddproductsComponent } from './admin-panel/admin-addproducts/admin-addproducts.component';
 import { AddproductPreviewComponent } from "./admin-panel/admin-addproducts/addproduct-preview/addproduct-preview.component";
+import localeRu from '@angular/common/locales/ru';
+
+registerLocaleData(localeRu)
 
 @NgModule({
     declarations: [
@@ -19,7 +22,7 @@ import { AddproductPreviewComponent } from "./admin-panel/admin-addproducts/addp
         AddEditUserComponent,
         AdminProductlistComponent,
         AdminAddproductsComponent,
-        AddproductPreviewComponent
+        AddproductPreviewComponent,
     ],
     imports: [
         CommonModule,
@@ -45,6 +48,12 @@ import { AddproductPreviewComponent } from "./admin-panel/admin-addproducts/addp
         ReactiveFormsModule,
         FormsModule,
         DirectiveModule
+    ],
+    providers: [
+        {
+            provide: LOCALE_ID,
+            useValue: 'ru-RU'
+        },
     ],
     exports: [
         SpinnerComponent

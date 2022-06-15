@@ -39,7 +39,6 @@ public class FileService {
         List<FileEntity> productFileList = new ArrayList<>();
         int n = 1;
         for (MultipartFile file: listFile) {
-            System.out.println(n);
             FileEntity fileEntity = new FileEntity();
             boolean mainState = n == activeImg+1 ? true : false;
             fileEntity.setMainFlag(mainState);

@@ -150,3 +150,41 @@
     display: flex;
     align-items: center;
 }
+
+.addproduct-option {
+    display: none;
+    font-size: 12px;
+    background-color: #fdb956;
+    color: #607d8b;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.addproduct-option>div {
+    display: flex;
+    align-items: center;
+    padding: 3px;
+}
+
+@media(max-width: 875px) {
+    .half-form.right {
+        display: none;
+    }
+    .half-form {
+        width: 100%;
+    }
+    .addproduct-head {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 15px;
+    }
+    .addproduct-option {
+        display: flex;
+    }
+}
+
+@media(max-width: 430px) {
+    .form-flex {
+        flex-wrap: wrap;
+    }
+}

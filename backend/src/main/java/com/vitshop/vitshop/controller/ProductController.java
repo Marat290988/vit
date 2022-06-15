@@ -46,10 +46,9 @@ public class ProductController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<Page<ProductEntity>> productList() {
-        Pageable page = PageRequest.of(0, 100);
-        Page<ProductEntity> products = productService.getProducts(page);
-        return new ResponseEntity<>(products, HttpStatus.OK);
+    public ResponseEntity<Page<ProductDTO>> productList(Pageable page) {
+        Page<ProductDTO> products = productService.getProducts(page);
+        return new ResponseEntity<Page<ProductDTO>>(products, HttpStatus.OK);
     }
 
     @PostMapping("/addproduct")

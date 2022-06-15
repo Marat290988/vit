@@ -1,5 +1,3 @@
-<!-- <div>{{name}}</div>
-<div [innerHTML]="nl2br(description)"></div> -->
 <div class="product-card">
     <div class="product-card-flex">
         <div class="image-cont">
@@ -32,5 +30,20 @@
                 </div>
             </div>
         </div>
+        <div class="product-short-info">
+            <h2>{{name == '' ? 'Title' : name}}</h2>
+            <p><b>Category:</b> {{category}}</p>
+            <p><b>Manufacturer:</b> {{manufacturer}}</p>
+            <p class="price"><b>Price:</b> ${{price | number:'1.2-2'}}</p>
+        </div>
     </div>
+    <div class="product-short-info-d">
+        <p><b>Descripion</b></p>
+    </div>
+    <div class="product-description" [innerHTML]="nl2br(description)">
+    </div>
+    <div class="product-short-info-d">
+        <p><b>Composition</b></p>
+    </div>
+    <div class="product-composition" #compositionDiv></div>
 </div>

@@ -33,7 +33,8 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
   listUrl = [];
   currentIndex = 0;
   loadingState = false
-  currentIndexObserve$ = new BehaviorSubject<number>(null);
+  currentIndexObserve$ = new BehaviorSubject<{id: number, listUrl: any[]}>(null);
+  compositionObserve$ = new BehaviorSubject(null);
   imgId = 0;
   
   @ViewChild('nameComposition') nameComposition: ElementRef;
@@ -102,7 +103,6 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
     this.loadingState = true;
     this.subs = this.productService.addProduct(this.formGroup.value, this.currentIndex).subscribe({
       next: res => {
-        console.log(res)
         this.subs.unsubscribe();
         this.loadingState = false;
         this.resetForm();
@@ -138,6 +138,7 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
     const cents = this.cents.nativeElement.value;
     if (wholePrice === '') {
       this.priceState = true;
+      this.formGroup.get('dPrice').setValue(`${wholePrice}.${cents === '' ? '00' : cents}`);
     } else {
       this.priceState = false;
       this.formGroup.get('dPrice').setValue(`${wholePrice}.${cents === '' ? '00' : cents}`);
@@ -164,8 +165,9 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
 
   onBlur(list: string[]) {
     setTimeout(()=>{
-      list = [];
-    }, 1)
+      this.catList = [];
+      this.manList = [];
+    }, 100)
   }
 
   addToCompEditList() {
@@ -187,13 +189,15 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
     let drawEl = '';
     this.compositionEditList.forEach((comp: {supl: string, qty: string}, i) => {
       drawEl += 
-        `<div style="min-width: 15px;">${i+1}<div>
-         <div style="width: calc(100% - 8pxpx);">${comp.supl}</div>  
-         <div style="width: calc(20% - 7px);">${comp.qty}</div>      
+        `<div class="preview-composition">
+          <div style="min-width: 15px;">${i+1}</div>
+          <div style="width: calc(100% - 65px);">${comp.supl}</div>  
+          <div style="min-width: 50px;">${comp.qty}</div>
+         </div>      
       `;
     });
+    this.compositionObserve$.next(drawEl);
     this.formGroup.get('composition').setValue(drawEl);
-    this.compPreview.nativeElement.innerHTML = drawEl;
   }
 
   blockNotNumeric(event) {
@@ -295,12 +299,13 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
     if (firstAdd) {
       a.listUrl[0].active = 'active';
     }
+    this.currentIndexObserve$.next({id: this.listUrl[this.currentIndex].id, listUrl: this.listUrl});
   }
 
   changeMainImg(index: number) {
     this.listUrl[this.currentIndex].active = '';
     this.currentIndex = index;
-    this.currentIndexObserve$.next(this.listUrl[this.currentIndex].id);
+    this.currentIndexObserve$.next({id: this.listUrl[this.currentIndex].id, listUrl: this.listUrl});
     this.listUrl[this.currentIndex].active = 'active';
   }
 
@@ -310,23 +315,25 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
     if (this.listUrl.length > 0) {
       this.listUrl[0].active = 'active';
       this.currentIndex = 0;
-      this.currentIndexObserve$.next(this.currentIndex);
+      this.currentIndexObserve$.next({id: this.listUrl[this.currentIndex].id, listUrl: this.listUrl});
+    } else {
+      this.currentIndexObserve$.next({id: null, listUrl: this.listUrl});
     }
   }
 
   resetForm() {
     this.formGroup.get('name').setValue('');
-    this.formGroup.get('name').markAsTouched();
+    this.formGroup.get('name').markAsUntouched();
     this.formGroup.get('description').setValue('');
-    this.formGroup.get('description').markAsTouched();
+    this.formGroup.get('description').markAsUntouched();
     this.formGroup.get('composition').setValue('');
     this.nameComposition.nativeElement.value = '';
     this.qtyComposition.nativeElement.value = '';
     this.addCompState = false;
     this.formGroup.get('manufacturer').setValue('');
-    this.formGroup.get('manufacturer').markAsTouched();
+    this.formGroup.get('manufacturer').markAsUntouched();
     this.formGroup.get('category').setValue('');
-    this.formGroup.get('category').markAsTouched();
+    this.formGroup.get('category').markAsUntouched();
     this.formGroup.get('dPrice').setValue('');
     this.wholeNumber.nativeElement.value = '';
     this.cents.nativeElement.value = '';
@@ -334,6 +341,16 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
     document.querySelector('.radio.checkbox').classList.add('active');
     this.listUrl = [];
     this.dataTransfer.items.clear();
+    this.currentIndexObserve$.next({id: null, listUrl: this.listUrl});
+    this.compositionObserve$.next('');
+    this.compositionEditList = [];
+  }
+
+  switchBlock(on: HTMLElement, off: HTMLElement, event) {
+    on.style.display = 'block';
+    off.style.display = 'none';
+    document.querySelectorAll('.addproduct-option div').forEach((el: any) => el.style.backgroundColor = '');
+    event.target.style.backgroundColor = '#ffeb3b';
   }
 
 }

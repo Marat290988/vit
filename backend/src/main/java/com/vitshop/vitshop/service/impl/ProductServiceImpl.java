@@ -1,6 +1,7 @@
 package com.vitshop.vitshop.service.impl;
 
 import com.vitshop.vitshop.domain.file.FileEntity;
+import com.vitshop.vitshop.domain.product.ProductDTO;
 import com.vitshop.vitshop.domain.product.ProductEntity;
 import com.vitshop.vitshop.repository.ProductRepository;
 import com.vitshop.vitshop.service.FileService;
@@ -42,8 +43,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductEntity> getProducts(Pageable page) {
-        return productRepository.findAll(page);
+    public Page<ProductDTO> getProducts(Pageable page) {
+        return productRepository.getAllProducts(page);
     }
 
     @Override
@@ -70,7 +71,6 @@ public class ProductServiceImpl implements ProductService {
         product.setAuthorName(author);
         product.setCreationDate(new Date());
         product.setActive(isActive);
-        System.out.println(files);
         if (files != null) {
             List<FileEntity> fileEntityList = fileService.saveProductImage(product, files, activeImg);
             product.setFileList(fileEntityList);

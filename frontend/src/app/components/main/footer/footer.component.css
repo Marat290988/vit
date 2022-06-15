@@ -6,3 +6,9 @@
     padding: 10px;
     color: #fff;
 }
+
+@media(max-width: 500px) {
+    :host {
+        display: none;
+    }
+}

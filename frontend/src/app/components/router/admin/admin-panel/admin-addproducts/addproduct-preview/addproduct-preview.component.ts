@@ -1,4 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Observable, Subscription } from 'rxjs';
 
 @Component({
@@ -14,34 +15,50 @@ export class AddproductPreviewComponent implements OnInit {
   @Input() description;
   @Input() composition;
   @Input() price;
-  @Input() listUrl: any[];
-  @Input() currentIndexObserve$: Observable<number>;
+  @Input() currentIndexObserve$: Observable<{id: number, listUrl: any[]}>;
+  @Input() compositionObserve$: Observable<any>;
   @ViewChild('imgList') imgList: ElementRef;
   @ViewChild('imgMain') imgMain: ElementRef;
+  @ViewChild('compositionDiv') compositionDiv: ElementRef;
   transform = 0;
   indexSub: Subscription;
+  compSub: Subscription;
+  listUrl: any[] = [];
 
-  constructor() { }
+  constructor(
+    private sanitazer: DomSanitizer
+  ) { }
 
   ngOnInit(): void {
-    this.indexSub = this.currentIndexObserve$.subscribe(id => {
-      if (id !== null) {
+    this.indexSub = this.currentIndexObserve$.subscribe((data: {id: number, listUrl: any[]}) => {
+      if (data !== null) {
         let ind;
-        this.listUrl = [...this.listUrl];
-        let cutEl = this.listUrl.filter((el, index):any => {
-          if (el.id === id) {
-            ind = index;
-            return el;
+        this.listUrl = [...data.listUrl];
+        if (data.id !== null) {
+          let cutEl = this.listUrl.filter((el, index):any => {
+            if (el.id === data.id) {
+              ind = index;
+              return el;
+            }
+          });
+          this.listUrl.splice(ind, 1);
+          this.listUrl.unshift(...cutEl);
+          if (this.listUrl.length <= 3 && this.imgList) {
+            this.imgList.nativeElement.style.transform = `translateX(${0}px)`;
           }
-        });
-        this.listUrl.splice(ind, 1);
-        this.listUrl.unshift(...cutEl);
+        }
+      }
+    });
+    this.compSub = this.compositionObserve$.subscribe(innerHTML => {
+      if (innerHTML !== null) {
+        this.compositionDiv.nativeElement.innerHTML = innerHTML;
       }
     })
   }
 
   ngOnDestroy() {
     this.indexSub.unsubscribe();
+    this.compSub.unsubscribe();
   }
 
   nl2br(str: string): string {
@@ -64,6 +81,10 @@ export class AddproductPreviewComponent implements OnInit {
     }
     miniImg.classList.add('active')
     this.imgMain.nativeElement.src = this.listUrl[index].url.changingThisBreaksApplicationSecurity;
+  }
+
+  sanitezeHTML() {
+    return this.sanitazer.bypassSecurityTrustHtml(this.composition);
   }
 
 

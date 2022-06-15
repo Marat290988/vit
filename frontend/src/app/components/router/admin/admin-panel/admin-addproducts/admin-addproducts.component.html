@@ -1,9 +1,13 @@
 <div class="addproduct-cont">
     <div class="addproduct-head">
         <h3>Add product</h3>
+        <div class="addproduct-option">
+            <div (click)="switchBlock(leftHalf, rightHalf, $event)" style="background-color: #ffeb3b;">Add Form</div>
+            <div (click)="switchBlock(rightHalf, leftHalf, $event)">Preview</div>
+        </div>
     </div>
     <div class="addproduct-form">
-        <div class="half-form">
+        <div class="half-form" #leftHalf>
             <div class="inner-half-form">
                 <form [formGroup]="formGroup" (ngSubmit)="onAddNewProduct()" style="height: 100%; padding: 10px 5px;">
                     <!-- Product Name -->
@@ -200,17 +204,17 @@
                 </form>
             </div>
         </div>
-        <div class="half-form">
+        <div class="half-form right" #rightHalf>
             <div class="inner-half-form">
                 <app-addproduct-preview
                     [name]="formGroup.get('name').value"
                     [category]="formGroup.get('category').value"
-                    [manufacturer]="formGroup.get('category').value"
+                    [manufacturer]="formGroup.get('manufacturer').value"
                     [description]="formGroup.get('description').value"
                     [composition]="this.formGroup.get('composition').value"
                     [price]="this.formGroup.get('dPrice').value"
-                    [listUrl]="listUrl"
                     [currentIndexObserve$]="currentIndexObserve$"
+                    [compositionObserve$]="compositionObserve$"
                 >
 
                 </app-addproduct-preview>

@@ -25,6 +25,10 @@ export class ProductService {
         private http: HttpClient
     ){}
 
+    getAllProducts(size: number, number: number, sort: string): Observable<any> {
+        return this.http.get(`${this.host}/product/list?size=${size}&page=${number}&sort=${sort}`)
+    }
+
     getProductData(): Observable<any>{
         return this.http.get(`${this.host}/product/product_data`);
     }

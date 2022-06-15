@@ -20,4 +20,73 @@ public class ProductDTO {
         this.category = product.getCategory();
         this.basePrice = product.getBasePrice();
     }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getComposition() {
+        return composition;
+    }
+
+    public void setComposition(String composition) {
+        this.composition = composition;
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public BigDecimal getBasePrice() {
+        return basePrice;
+    }
+
+    public void setBasePrice(BigDecimal basePrice) {
+        this.basePrice = basePrice;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductDTO{" +
+                "productId='" + productId + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", composition='" + composition + '\'' +
+                ", manufacturer='" + manufacturer + '\'' +
+                ", category='" + category + '\'' +
+                ", basePrice=" + basePrice +
+                '}';
+    }
 }

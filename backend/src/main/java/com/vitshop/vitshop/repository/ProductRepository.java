@@ -13,7 +13,8 @@ import java.util.List;
 
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
     ProductEntity findProductEntityByProductId(String productId);
-    @Query("Select new com.vitshop.vitshop.domain.product.ProductDTO(u) From ProductEntity u")
+
+    @Query(value = "Select new com.vitshop.vitshop.domain.product.ProductDTO(pr) From ProductEntity pr", countQuery = "Select count(*) From ProductEntity")
     Page<ProductDTO> getAllProducts(Pageable page);
 
     @Query("Select Distinct u.category From ProductEntity u")

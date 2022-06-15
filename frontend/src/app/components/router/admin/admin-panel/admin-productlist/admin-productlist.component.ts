@@ -8,11 +8,24 @@ import { ProductService } from 'src/app/services/product/product.service';
 })
 export class AdminProductlistComponent implements OnInit {
 
+  productListSize = 10;
+  pageNumber = 0;
+  sort = 'id';
+
   constructor(
-    productService: ProductService
+    private productService: ProductService
   ) { }
 
   ngOnInit(): void {
+    this.getProduct()
+  }
+
+  getProduct() {
+    this.productService.getAllProducts(this.productListSize, this.pageNumber, this.sort).subscribe({
+      next: res => {
+        console.log(res)
+      }
+    })
   }
 
 }

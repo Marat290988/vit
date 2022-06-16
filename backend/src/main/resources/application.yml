@@ -1,18 +1,20 @@
 spring:
   datasource:
-    url: jdbc:oracle:thin:@localhost:1521:XE
-    username: vit
-    password: vit
-#    url: jdbc:postgresql://localhost:5432/vit
-#    username: postgres
-#    password: oracle
+#    url: jdbc:oracle:thin:@localhost:1521:XE
+#    username: vit
+#    password: vit
+    url: jdbc:postgresql://localhost:5432/vit
+    username: postgres
+    password: oracle
+    driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
-    properties:
-      dialect: org.hibernate.dialect.Oracle10gDialect
-      database-platform: org.hibernate.dialect.Oracle10gDialect
+    database: postgresql
+  #    properties:
+#      dialect: org.hibernate.dialect.Oracle10gDialect
+#      database-platform: org.hibernate.dialect.Oracle10gDialect
   mvc:
     throw-exception-if-no-handler-found: true
   web:

@@ -41,7 +41,7 @@ public class ProductEntity {
     @JsonManagedReference
     private List<FileEntity> fileList;
     @Column
-    boolean isActive;
+    Boolean isActive;
 
     public ProductEntity(String productId, String name, String description, String composition, String manufacturer, String category, BigDecimal basePrice, String authorName, Date creationDate, boolean isActive) {
         this.productId = productId;

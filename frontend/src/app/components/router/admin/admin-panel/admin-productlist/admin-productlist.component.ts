@@ -8,7 +8,7 @@ import { ProductService } from 'src/app/services/product/product.service';
 })
 export class AdminProductlistComponent implements OnInit {
 
-  productListSize = 10;
+  productListSize = 100;
   pageNumber = 0;
   sort = 'id';
 

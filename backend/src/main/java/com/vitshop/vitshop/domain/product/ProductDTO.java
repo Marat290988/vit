@@ -1,6 +1,9 @@
 package com.vitshop.vitshop.domain.product;
 
+import com.vitshop.vitshop.domain.file.FileEntity;
+
 import java.math.BigDecimal;
+import java.util.List;
 
 public class ProductDTO {
     private String productId;
@@ -10,6 +13,7 @@ public class ProductDTO {
     private String manufacturer;
     private String category;
     private BigDecimal basePrice;
+    private List<FileEntity> fileEntityList;
 
     public ProductDTO(ProductEntity product) {
         this.productId = product.getProductId();
@@ -19,6 +23,7 @@ public class ProductDTO {
         this.manufacturer = product.getManufacturer();
         this.category = product.getCategory();
         this.basePrice = product.getBasePrice();
+        this.fileEntityList = product.getFileList();
     }
 
     public String getProductId() {
@@ -75,6 +80,14 @@ public class ProductDTO {
 
     public void setBasePrice(BigDecimal basePrice) {
         this.basePrice = basePrice;
+    }
+
+    public List<FileEntity> getFileEntityList() {
+        return fileEntityList;
+    }
+
+    public void setFileEntityList(List<FileEntity> fileEntityList) {
+        this.fileEntityList = fileEntityList;
     }
 
     @Override

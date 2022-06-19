@@ -5,13 +5,18 @@ import com.vitshop.vitshop.domain.product.ProductDTO;
 import com.vitshop.vitshop.domain.product.ProductEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
+
+public interface ProductRepository extends CrudRepository<ProductEntity, Long>, JpaSpecificationExecutor<ProductEntity> {
     ProductEntity findProductEntityByProductId(String productId);
 
     @Query(value = "Select new com.vitshop.vitshop.domain.product.ProductDTO(pr) From ProductEntity pr", countQuery = "Select count(*) From ProductEntity")
@@ -22,5 +27,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 
     @Query("Select Distinct u.manufacturer From ProductEntity u")
     List<String> getAllManufacturer();
+
+    //List<ProductEntity> findProductEntities (searchWithFilter());
 
 }

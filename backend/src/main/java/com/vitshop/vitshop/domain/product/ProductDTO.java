@@ -12,8 +12,8 @@ public class ProductDTO {
     private String composition;
     private String manufacturer;
     private String category;
-    private BigDecimal basePrice;
-    private List<FileEntity> fileEntityList;
+    private BigDecimal dPrice;
+    private List<FileEntity> files;
 
     public ProductDTO(ProductEntity product) {
         this.productId = product.getProductId();
@@ -22,8 +22,8 @@ public class ProductDTO {
         this.composition = product.getComposition();
         this.manufacturer = product.getManufacturer();
         this.category = product.getCategory();
-        this.basePrice = product.getBasePrice();
-        this.fileEntityList = product.getFileList();
+        this.dPrice = product.getBasePrice();
+        this.files = product.getFileList();
     }
 
     public String getProductId() {
@@ -75,19 +75,19 @@ public class ProductDTO {
     }
 
     public BigDecimal getBasePrice() {
-        return basePrice;
+        return dPrice;
     }
 
     public void setBasePrice(BigDecimal basePrice) {
-        this.basePrice = basePrice;
+        this.dPrice = basePrice;
     }
 
     public List<FileEntity> getFileEntityList() {
-        return fileEntityList;
+        return files;
     }
 
     public void setFileEntityList(List<FileEntity> fileEntityList) {
-        this.fileEntityList = fileEntityList;
+        this.files = fileEntityList;
     }
 
     @Override
@@ -99,7 +99,7 @@ public class ProductDTO {
                 ", composition='" + composition + '\'' +
                 ", manufacturer='" + manufacturer + '\'' +
                 ", category='" + category + '\'' +
-                ", basePrice=" + basePrice +
+                ", basePrice=" + dPrice +
                 '}';
     }
 }

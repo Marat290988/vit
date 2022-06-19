@@ -32,7 +32,7 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
   dataTransfer = new DataTransfer();
   listUrl = [];
   currentIndex = 0;
-  loadingState = false
+  loadingState = false;
   currentIndexObserve$ = new BehaviorSubject<{id: number, listUrl: any[]}>(null);
   compositionObserve$ = new BehaviorSubject(null);
   imgId = 0;

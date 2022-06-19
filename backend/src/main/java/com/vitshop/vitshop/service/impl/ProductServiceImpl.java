@@ -4,6 +4,7 @@ import com.vitshop.vitshop.domain.file.FileEntity;
 import com.vitshop.vitshop.domain.product.ProductDTO;
 import com.vitshop.vitshop.domain.product.ProductEntity;
 import com.vitshop.vitshop.repository.ProductRepository;
+import com.vitshop.vitshop.repository.specification.ProductSpecification;
 import com.vitshop.vitshop.service.FileService;
 import com.vitshop.vitshop.service.ProductService;
 import com.zaxxer.hikari.HikariDataSource;
@@ -11,11 +12,18 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,16 +38,19 @@ public class ProductServiceImpl implements ProductService {
     private Logger LOGGER = LoggerFactory.getLogger(getClass());
     private FileService fileService;
     private HikariDataSource hikariDataSource;
+    private EntityManager entityManager;
 
     @Autowired
     public ProductServiceImpl(
         ProductRepository productRepository,
         FileService fileService,
-        HikariDataSource hikariDataSource
+        HikariDataSource hikariDataSource,
+        EntityManager entityManager
     ) {
         this.productRepository = productRepository;
         this.fileService = fileService;
         this.hikariDataSource = hikariDataSource;
+        this.entityManager = entityManager;
     }
 
     @Override
@@ -96,6 +107,12 @@ public class ProductServiceImpl implements ProductService {
 
     private String generateProductId() {
         return RandomStringUtils.randomAlphanumeric(12);
+    }
+
+    public Page<ProductDTO> getProductWithFilter(Specification<ProductEntity> spec, Pageable page) {
+        Page<ProductEntity> pageProductEntity = productRepository.findAll(spec, page);
+        Page<ProductDTO> pageProductDTO = pageProductEntity.map(el -> new ProductDTO(el));
+        return pageProductDTO;
     }
 
 }

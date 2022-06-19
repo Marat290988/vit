@@ -13,7 +13,7 @@ export class UserService {
   authData$: Observable<any> = this.store$.pipe(select(auth.getAuthData));
   user: User;
   host = environment.apiUrl;
-
+  
   constructor(
     private store$: Store,
     private http: HttpClient

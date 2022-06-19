@@ -3,17 +3,17 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
 
-export interface Product {
-    name: string,
-    description: string,
-    composition?: string,
-    manufacturer: string,
-    category: string,
-    dPrice: string,
-    files?: any,
-    isActive: any,
-    productId?: string,
-    id?: string
+export class Product {
+    name: string;
+    description: string;
+    composition?: string;
+    manufacturer: string;
+    category: string;
+    dPrice: string;
+    files?: any;
+    isActive: any;
+    productId?: string;
+    id?: string;
 }
 
 @Injectable()
@@ -25,8 +25,17 @@ export class ProductService {
         private http: HttpClient
     ){}
 
-    getAllProducts(size: number, number: number, sort: string): Observable<any> {
-        return this.http.get(`${this.host}/product/list?size=${size}&page=${number}&sort=${sort}`)
+    getAllProducts(
+        size: number, 
+        number: number, 
+        sort: string, 
+        name: string,
+        manufacturer: string, 
+        category: string
+    ): Observable<any> {
+        return this.http.get
+            (`${this.host}/product/list?size=
+                ${size}&page=${number}&sort=${sort}&name=${name}&manufacturer=${manufacturer}&category=${category}`);
     }
 
     getProductData(): Observable<any>{

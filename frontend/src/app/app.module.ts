@@ -1,4 +1,4 @@
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { Injector, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -28,6 +28,8 @@ import { SpinnerComponent } from './components/ui/spinner/spinner.component';
 import { ErrorComponent } from './components/pop-up/error/error.component';
 import { DirectiveModule } from './directives/directive.module';
 import { ProductService } from './services/product/product.service';
+import { ListComponent } from './inheriteds/ListComponent';
+import { InjectService } from './services/inject/inject.service';
 
 @NgModule({
   declarations: [
@@ -71,4 +73,11 @@ import { ProductService } from './services/product/product.service';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  constructor(
+    private injector: Injector
+  ) {
+    InjectService.setInject(this.injector);
+  }
+
+}

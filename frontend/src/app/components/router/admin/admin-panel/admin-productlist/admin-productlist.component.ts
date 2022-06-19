@@ -1,31 +1,56 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService } from 'src/app/services/product/product.service';
+import { Product } from 'src/app/services/product/product.service';
+import { ListComponent } from './../../../../../inheriteds/ListComponent';
 
 @Component({
   selector: 'app-admin-productlist',
   templateUrl: './admin-productlist.component.html',
   styleUrls: ['./admin-productlist.component.css']
 })
-export class AdminProductlistComponent implements OnInit {
+export class AdminProductlistComponent extends ListComponent {
 
-  productListSize = 100;
-  pageNumber = 0;
-  sort = 'id';
+  manufacturer = '';
+  category = '';
+  name = '';
 
   constructor(
-    private productService: ProductService
-  ) { }
+    
+  ) { 
+    super();
+  }
 
   ngOnInit(): void {
-    this.getProduct()
+    this.dataStream$ = this.productService.getAllProducts(
+      this.listSize,
+      this.pageNumber,
+      this.sort,
+      this.name,
+      this.manufacturer,
+      this.category
+    );
+    this.refClass = Product;
+    this.classToRow = (productList: Product[]) => {
+      productList.forEach((product, index) => {
+        this.tableData[index] = {...product};
+        if (product.isActive) {
+          this.tableData[index].isActive = 'is Active';
+        };
+      })
+    }
   }
 
-  getProduct() {
-    this.productService.getAllProducts(this.productListSize, this.pageNumber, this.sort).subscribe({
-      next: res => {
-        console.log(res)
-      }
-    })
-  }
+  // getProduct() {
+  //   this.productService.getAllProducts(
+  //     this.listSize, 
+  //     this.pageNumber, 
+  //     this.sort,
+  //     this.manufacturer,
+  //     this.category
+  //   ).subscribe({
+  //     next: res => {
+  //       console.log(res)
+  //     }
+  //   })
+  // }
 
 }

@@ -39,6 +39,8 @@ export class ListComponent {
     tableData = [];
     refClass;
     classToRow: Function;
+    editData;
+    cssClassPage = 'page-num';
 
     subsData: Subscription;
     dataStream$: Observable<any>;
@@ -141,5 +143,70 @@ export class ListComponent {
         };
         this.pagePaginator[index].class = 'page-num active';
     }
-    
+
+    onSelectRow(tr: HTMLElement, editData) {
+        if (document.querySelector('tbody tr.active')) {
+          document.querySelector('tbody tr.active').classList.remove('active');
+        }
+        if (editData.isActive === '') {
+          this.removeActiveButtons();
+          return;
+        }
+        this.editData = editData;
+        tr.classList.add('active');
+        if (document.querySelectorAll('.icon-container, .iconremove-container').length > 0) {
+          document.querySelectorAll('.icon-container, .iconremove-container').forEach((el: HTMLElement) => {
+            el.classList.add('active');
+          })
+        }
+    }
+
+    onClickPage(event, index: number) {
+        if (this.currentPage == event.target.innerText || this.loadState) {
+            return;
+        }
+        this.setPageNum(event.target.innerText, index);
+        if (this.currentPage === event.target.innerText-1) {
+            return;
+        }
+        this.pageNumber = event.target.innerText-1;
+        this.getData();
+    }
+
+    setPageNum(pageNumber: string, index: number) {
+        this.currentPage = Number.parseInt(pageNumber);
+        if (index === 2 && this.beginPage > 1) {
+          this.beginPage = this.beginPage - 1;
+          this.setPaginatorData(index+1);
+        } else if (index === this.pagePaginator.length-4 && this.totalPage > this.beginPage+5) {
+          this.beginPage = this.beginPage + 1;
+          this.setPaginatorData(index-1);
+        } else if (index === this.pagePaginator.length-1 && this.totalPage > 5) {
+          this.beginPage = this.totalPage - 5;
+          this.setPaginatorData(index);
+        } else if (index === 0) {
+          this.beginPage = 1;
+          this.setPaginatorData(index);
+        } else {
+          this.setPaginatorData(index);
+        }
+      }
+
+    onClickArrow(direction: string) {
+        if (direction === 'LEFT' && this.currentPage > 1) {
+            document.querySelectorAll(this.cssClassPage).forEach((el: HTMLElement) => {
+            if (this.currentPage-1 === Number.parseInt(el.innerText.match(/\d+/)[0])) {
+                el.click();
+            }
+            });
+        } else if (direction === 'RIGHT' && this.currentPage < this.totalPage) {
+            document.querySelectorAll(this.cssClassPage).forEach((el: HTMLElement) => {
+            const plusPage = this.currentPage + 1;
+            if (plusPage == Number.parseInt(el.innerText.match(/\d+/)[0])) {
+                el.click();
+            }
+            });
+        }
+    }
+
 }

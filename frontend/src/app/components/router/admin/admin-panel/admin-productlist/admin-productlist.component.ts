@@ -39,18 +39,4 @@ export class AdminProductlistComponent extends ListComponent {
     }
   }
 
-  // getProduct() {
-  //   this.productService.getAllProducts(
-  //     this.listSize, 
-  //     this.pageNumber, 
-  //     this.sort,
-  //     this.manufacturer,
-  //     this.category
-  //   ).subscribe({
-  //     next: res => {
-  //       console.log(res)
-  //     }
-  //   })
-  // }
-
 }

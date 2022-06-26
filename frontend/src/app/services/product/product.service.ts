@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, Subscription } from "rxjs";
 import { environment } from "src/environments/environment";
 
 export class Product {
@@ -20,10 +20,19 @@ export class Product {
 export class ProductService {
 
     host = environment.apiUrl;
+    catListBase: string[] = [];
+    manListBase: string[] = [];
+    subs: Subscription;
 
     constructor(
         private http: HttpClient
-    ){}
+    ){
+        this.subs = this.getProductData().subscribe(res => {
+            this.catListBase = res.category;
+            this.manListBase = res.manufacturer;
+            this.subs.unsubscribe();
+        })
+    }
 
     getAllProducts(
         size: number, 

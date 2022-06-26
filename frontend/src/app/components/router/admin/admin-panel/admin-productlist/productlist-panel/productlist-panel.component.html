@@ -1,0 +1,43 @@
+<div class="productlist-panel">
+    <div class="productlist-panel-inner">
+        <!-- Search -->
+        <div class="form-stadart-cont">
+            <div class="input-cont">
+                <input type="text" 
+                    class="input-field" 
+                    placeholder="Search Products" 
+                    readonly onfocus="this.removeAttribute('readonly')" 
+                    id="product-search"
+                />
+            </div>
+        </div>
+        <!-- Category -->
+        <div class="form-stadart-cont" style="margin-top: 15px;" [attr.data-filter]="'catList'">
+            <div class="input-cont selection">
+                <input 
+                    type="text" 
+                    class="input-field" 
+                    (input)="onInputForPrompt($event, 'catList', 'catListBase')"
+                    placeholder="Chose category" readonly 
+                    onfocus="this.removeAttribute('readonly')"
+                />
+                <div class="prompt" *ngIf="catList.length > 0">
+                    <p *ngFor="let cat of catList let index = index" (click)="onPickPrompt('catList', index, 'catListSelected')">{{cat}}</p>
+                </div>
+            </div>
+            <div class="filter-container">
+                <ng-container *ngFor="let selectedCat of catListSelected let index = index">
+                    <div>
+                        <div class="selected-item">{{selectedCat}}</div>
+                        <div class="svg-remove" (click)="removeSelectedFilter(index, 'catList')">
+                            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="13px" height="13px" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32">
+                                <path fill="#fff" d="M16 2C8.2 2 2 8.2 2 16s6.2 14 14 14s14-6.2 14-14S23.8 2 16 2zm0 26C9.4 28 4 22.6 4 16S9.4 4 16 4s12 5.4 12 12s-5.4 12-12 12z"/>
+                                <path fill="#fff" d="M21.4 23L16 17.6L10.6 23L9 21.4l5.4-5.4L9 10.6L10.6 9l5.4 5.4L21.4 9l1.6 1.6l-5.4 5.4l5.4 5.4z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

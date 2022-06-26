@@ -11,6 +11,7 @@ import { AdminProductlistComponent } from './admin-panel/admin-productlist/admin
 import { AdminAddproductsComponent } from './admin-panel/admin-addproducts/admin-addproducts.component';
 import { AddproductPreviewComponent } from "./admin-panel/admin-addproducts/addproduct-preview/addproduct-preview.component";
 import localeRu from '@angular/common/locales/ru';
+import { ProductlistPanelComponent } from './admin-panel/admin-productlist/productlist-panel/productlist-panel.component';
 
 registerLocaleData(localeRu)
 
@@ -23,6 +24,7 @@ registerLocaleData(localeRu)
         AdminProductlistComponent,
         AdminAddproductsComponent,
         AddproductPreviewComponent,
+        ProductlistPanelComponent,
     ],
     imports: [
         CommonModule,

@@ -1,0 +1,24 @@
+.productlist-panel {
+    height: 100%;
+    padding: 10px;
+    width: 300px;
+}
+
+.productlist-panel-inner {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, #bffef8, #ffe1e1);
+    box-shadow: 1px -3px 9px 3px rgb(114 255 255 / 16%);
+    border-radius: 10px;
+    padding: 10px 0;
+}
+
+:host .input-cont {
+    background-color: #f3e2f3;
+    height: 28px;
+}
+
+:host .input-cont.selection .prompt {
+    top: 27px;
+    border: 2px solid var(--colorb1);
+}

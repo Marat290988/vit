@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/services/product/product.service';
 import { ListComponent } from './../../../../../inheriteds/ListComponent';
+import { SearchFilter } from './productlist-panel/productlist-panel.component';
 
 @Component({
   selector: 'app-admin-productlist',
@@ -37,6 +38,10 @@ export class AdminProductlistComponent extends ListComponent {
         };
       })
     }
+  }
+
+  onSearchEmit(searchData: SearchFilter) {
+    console.log(searchData)
   }
 
 }

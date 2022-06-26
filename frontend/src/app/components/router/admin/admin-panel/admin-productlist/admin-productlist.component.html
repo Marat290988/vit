@@ -1,2 +1,11 @@
-<p>admin-productlist works!</p>
-
+<div class="productlist-cont">
+    <div class="productlist-head">
+        <h3>Product List</h3>
+    </div>
+    <div class="productlist-main">
+        <app-productlist-panel
+            (searchEmit)="onSearchEmit($event)"
+        >
+        </app-productlist-panel>
+    </div>
+</div>

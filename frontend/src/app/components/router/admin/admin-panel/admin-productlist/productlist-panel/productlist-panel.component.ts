@@ -6,7 +6,8 @@ import { PopupMessageService } from './../../../../../../services/pop-up/popup-m
 
 export interface SearchFilter {
   product: string,
-  catListSelected: string[]
+  catListSelected: string[],
+  manListSelected: string []
 }
 
 @Component({
@@ -20,13 +21,16 @@ export class ProductlistPanelComponent implements OnInit {
   windowClickEventSubs: Subscription;
   filterData: SearchFilter = {
     product: '',
-    catListSelected: []
+    catListSelected: [],
+    manListSelected: []
   };
   @Output() searchEmit = new EventEmitter<SearchFilter>();
   catList = [];
   catListComponent = [];
   catListSelected = [];
   manList = [];
+  manListComponent = [];
+  manListSelected = [];
   windowCliclEvent$: Observable<any> = fromEvent(window, 'click').pipe(
     map(event => event.target)
   );
@@ -75,7 +79,7 @@ export class ProductlistPanelComponent implements OnInit {
     }
   }
 
-  //Fill selectef filter list
+  //Fill selected filter list
   onPickPrompt(list, index: number, selectedList: string) {
     if (this[selectedList].length > 3) {
       this.popupMessageService.showMessage('Number of filters maximum 5');
@@ -86,13 +90,14 @@ export class ProductlistPanelComponent implements OnInit {
       this[selectedList].push(this[list].splice(index, 1)[0]);
       this[list + 'Component'].splice(indexComponent, 1);
       this.filterData[selectedList] = [...this[selectedList]];
+      this.searchEmit.emit(this.filterData);
     }, 100);
   }
 
   removeSelectedFilter(index: number, list: string) {
     this[list + 'Component'].push(this[list + 'Selected'].splice(index, 1)[0]);
     this.filterData[list + 'Selected'] = this[list + 'Selected'];
-    console.log(this[list + 'Selected']);
+    this.searchEmit.emit(this.filterData);
   }
 
 }

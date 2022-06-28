@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { debounceTime, fromEvent, map, Subscription } from 'rxjs';
 import { ProductService } from 'src/app/services/product/product.service';
 import { Observable } from 'rxjs';
@@ -7,7 +7,9 @@ import { PopupMessageService } from './../../../../../../services/pop-up/popup-m
 export interface SearchFilter {
   product: string,
   catListSelected: string[],
-  manListSelected: string []
+  manListSelected: string [],
+  minPrice: number,
+  maxPrice: number
 }
 
 @Component({
@@ -22,9 +24,12 @@ export class ProductlistPanelComponent implements OnInit {
   filterData: SearchFilter = {
     product: '',
     catListSelected: [],
-    manListSelected: []
+    manListSelected: [],
+    minPrice: null,
+    maxPrice: null
   };
   @Output() searchEmit = new EventEmitter<SearchFilter>();
+  @Input() buttonAction = true;
   catList = [];
   catListComponent = [];
   catListSelected = [];
@@ -34,6 +39,7 @@ export class ProductlistPanelComponent implements OnInit {
   windowCliclEvent$: Observable<any> = fromEvent(window, 'click').pipe(
     map(event => event.target)
   );
+  buttonState = false;
 
   constructor(
     private productService: ProductService,
@@ -97,6 +103,18 @@ export class ProductlistPanelComponent implements OnInit {
   removeSelectedFilter(index: number, list: string) {
     this[list + 'Component'].push(this[list + 'Selected'].splice(index, 1)[0]);
     this.filterData[list + 'Selected'] = this[list + 'Selected'];
+    this.searchEmit.emit(this.filterData);
+  }
+
+  setPrice(typePrice: string, event) {
+    if (event.data === '.') {
+      return;
+    }
+    if (event.target.value.match(/^0\d/)) {
+      event.target.value = event.target.value.slice(1, event.target.value.length);
+    }
+    const price = parseFloat(event.target.value).toFixed(2);
+    this.filterData[typePrice + 'Price'] = event.target.value === '' ? null :  price;
     this.searchEmit.emit(this.filterData);
   }
 

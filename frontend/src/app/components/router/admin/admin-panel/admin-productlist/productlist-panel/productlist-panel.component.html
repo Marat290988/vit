@@ -25,6 +25,50 @@
                     <p *ngFor="let cat of catList let index = index" (click)="onPickPrompt('catList', index, 'catListSelected')">{{cat}}</p>
                 </div>
             </div>
+        </div>
+        <!-- Manufacturer -->
+        <div class="form-stadart-cont" style="margin-top: 15px;" [attr.data-filter]="'manList'">
+            <div class="input-cont selection">
+                <input 
+                    type="text" 
+                    class="input-field" 
+                    (input)="onInputForPrompt($event, 'manList', 'manListBase')"
+                    placeholder="Chose manufacturer" readonly 
+                    onfocus="this.removeAttribute('readonly')"
+                />
+                <div class="prompt" *ngIf="manList.length > 0">
+                    <p *ngFor="let man of manList let index = index" (click)="onPickPrompt('manList', index, 'manListSelected')">{{man}}</p>
+                </div>
+            </div>
+        </div>
+        <!--Price-->
+        <div class="form-stadart-cont" style="margin-top: 15px; display: flex; align-items: center;">
+            <div>
+                <div class="input-cont">
+                    <input type="number" 
+                        class="input-field" 
+                        placeholder="Min price" 
+                        readonly onfocus="this.removeAttribute('readonly')" 
+                        id="product-price-from"
+                        (input)="setPrice('min', $event)"
+                    />
+                </div>
+            </div>
+            <p style="margin: 0 10px; color: #119d89;">TO</p>
+            <div>
+                <div class="input-cont">
+                    <input type="number" 
+                        class="input-field" 
+                        placeholder="Max price" 
+                        readonly onfocus="this.removeAttribute('readonly')" 
+                        id="product-price-to"
+                        (input)="setPrice('max', $event)"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="filter" *ngIf="catListSelected.length > 0">
+            <p>Selected categories:</p>
             <div class="filter-container">
                 <ng-container *ngFor="let selectedCat of catListSelected let index = index">
                     <div>
@@ -39,20 +83,8 @@
                 </ng-container>
             </div>
         </div>
-        <!-- Manufacturer -->
-        <div class="form-stadart-cont" style="margin-top: 10px;" [attr.data-filter]="'manList'">
-            <div class="input-cont selection">
-                <input 
-                    type="text" 
-                    class="input-field" 
-                    (input)="onInputForPrompt($event, 'manList', 'manListBase')"
-                    placeholder="Chose manufacturer" readonly 
-                    onfocus="this.removeAttribute('readonly')"
-                />
-                <div class="prompt" *ngIf="manList.length > 0">
-                    <p *ngFor="let man of manList let index = index" (click)="onPickPrompt('manList', index, 'manListSelected')">{{man}}</p>
-                </div>
-            </div>
+        <div class="filter" *ngIf="manListSelected.length > 0" style="margin-top: 5px;">
+            <p>Selected manufactureries:</p>
             <div class="filter-container">
                 <ng-container *ngFor="let selectedMan of manListSelected let index = index">
                     <div>
@@ -65,6 +97,18 @@
                         </div>
                     </div>
                 </ng-container>
+            </div>
+        </div>
+        <div class="form-stadart-cont" style="margin-top: 10px; display: flex; align-items: center; justify-content: space-between;" *ngIf="buttonAction">
+            <div class="buttons-cont">
+                <button button class="vit-button" [disabled]="buttonState">
+                    <p>Edit product</p>
+                </button>
+            </div>
+            <div class="buttons-cont">
+                <button button class="vit-button del" [disabled]="buttonState">
+                    <p>Delete product</p>
+                </button>
             </div>
         </div>
     </div>

@@ -105,6 +105,7 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
       next: res => {
         this.subs.unsubscribe();
         this.loadingState = false;
+        this.popupMessageService.showMessage('Product has added successfully.');
         this.resetForm();
       },
       error: error => {

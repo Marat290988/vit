@@ -7,5 +7,21 @@
             (searchEmit)="onSearchEmit($event)"
         >
         </app-productlist-panel>
+        <div class="productlist-table">
+            <div class="table-scroll" #tableScroll>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th scope="col" width="50">#</th>
+                            <th scope="col">Product name</th>
+                            <th scope="col">Manufacturer</th>
+                            <th scope="col">Category</th>
+                            <th scope="col" width="100">Price</th>
+                            <th scope="col">Active</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
     </div>
 </div>

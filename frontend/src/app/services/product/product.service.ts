@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, Subscription } from "rxjs";
 import { environment } from "src/environments/environment";
+import { SearchFilter } from './../../components/router/admin/admin-panel/admin-productlist/productlist-panel/productlist-panel.component';
 
 export class Product {
     name: string;
@@ -38,13 +39,10 @@ export class ProductService {
         size: number, 
         number: number, 
         sort: string, 
-        name: string,
-        manufacturer: string, 
-        category: string
+        filter: SearchFilter
     ): Observable<any> {
-        return this.http.get
-            (`${this.host}/product/list?size=
-                ${size}&page=${number}&sort=${sort}&name=${name}&manufacturer=${manufacturer}&category=${category}`);
+        return this.http.post
+            (`${this.host}/product/list?size=${size}&page=${number}&sort=${sort}`, filter);
     }
 
     getProductData(): Observable<any>{

@@ -77,6 +77,7 @@ export class ListComponent {
             },
             error: error => {
                 this.loadState = false;
+                this.subsData.unsubscribe();
             },
             complete: () => {
                 this.loadState = false;

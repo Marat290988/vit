@@ -8,8 +8,8 @@ export interface SearchFilter {
   product: string,
   catListSelected: string[],
   manListSelected: string [],
-  minPrice: number,
-  maxPrice: number
+  minPrice: string,
+  maxPrice: string
 }
 
 @Component({

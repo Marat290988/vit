@@ -3,6 +3,7 @@ package com.vitshop.vitshop.controller;
 import com.vitshop.vitshop.domain.product.ProductDTO;
 import com.vitshop.vitshop.domain.product.ProductEntity;
 import com.vitshop.vitshop.domain.user.UserEntity;
+import com.vitshop.vitshop.repository.specification.AdvanceProductSpec;
 import com.vitshop.vitshop.repository.specification.ProductSpecification;
 import com.vitshop.vitshop.service.FileService;
 import com.vitshop.vitshop.service.ProductService;
@@ -37,26 +38,22 @@ import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 public class ProductController {
     private ProductService productService;
     private JWTTokenProvider jwtTokenProvider;
+    private AdvanceProductSpec advanceProductSpec;
 
     @Autowired
     ProductController(
             ProductService productService,
-            JWTTokenProvider jwtTokenProvider
+            JWTTokenProvider jwtTokenProvider,
+            AdvanceProductSpec advanceProductSpec
     ) {
         this.productService = productService;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.advanceProductSpec = advanceProductSpec;
     }
 
-//    @GetMapping("/list")
-//    public ResponseEntity<Page<ProductDTO>> productList(Pageable page) {
-//        Page<ProductDTO> products = productService.getProducts(page);
-//        return new ResponseEntity<Page<ProductDTO>>(products, HttpStatus.OK);
-//    }
-
-    @GetMapping("/list")
-    public ResponseEntity<Page<ProductDTO>> productList(Pageable page) {
-        Specification<ProductEntity> spec = new ProductSpecification();
-        ((ProductSpecification) spec).setManufacturer("%Cali%");
+    @PostMapping("/list")
+    public ResponseEntity<Page<ProductDTO>> productList(Pageable page, @RequestBody HashMap<String, Object> filter) {
+        Specification<ProductEntity> spec = advanceProductSpec.getProducts(filter);
         return new ResponseEntity<>(productService.getProductWithFilter(spec, page), HttpStatus.OK);
     }
 
@@ -96,4 +93,36 @@ public class ProductController {
         HashMap<String, Object> mapCatAndMan = productService.getCategoryAndManufacturer();
         return new ResponseEntity<>(mapCatAndMan, HttpStatus.OK);
     }
+
+//    Specification<ProductEntity> initSpec(HashMap<String, Object> filter) {
+//        Specification<ProductEntity> spec = new ProductSpecification();
+//        if (filter.containsKey("product")) {
+//            ((ProductSpecification) spec).setProductName((String)filter.get("product"));
+//        }
+//        if (filter.containsKey("catListSelected")) {
+//            ((ProductSpecification) spec).setCatListSelected((ArrayList<String>) filter.get("catListSelected"));
+//        }
+//        if (filter.containsKey("manListSelected")) {
+//            ((ProductSpecification) spec).setManListSelected((ArrayList<String>) filter.get("manListSelected"));
+//        }
+//        if (filter.containsKey("minPrice")) {
+//            if (filter.get("minPrice").getClass() == Integer.class) {
+//                Integer i = (Integer) filter.get("minPrice");
+//                double d = i.doubleValue();
+//                ((ProductSpecification) spec).setMinPrice(d);
+//            } else {
+//                ((ProductSpecification) spec).setMinPrice((Double) filter.get("minPrice"));
+//            }
+//        }
+//        if (filter.containsKey("maxPrice")) {
+//            if (filter.get("maxPrice").getClass() == Integer.class) {
+//                Integer i = (Integer) filter.get("maxPrice");
+//                double d = i.doubleValue();
+//                ((ProductSpecification) spec).setMaxPrice(d);
+//            } else {
+//                ((ProductSpecification) spec).setMaxPrice((Double) filter.get("maxPrice"));
+//            }
+//        }
+//        return spec;
+//    }
  }

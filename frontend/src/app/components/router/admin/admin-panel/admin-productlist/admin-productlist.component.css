@@ -38,7 +38,6 @@
     position: relative;
     border: 1px solid var(--colorb1);
     border-radius: 5px;
-    padding: 5px;
 }
 
 .data-table {
@@ -49,7 +48,7 @@
 }
 
 .productlist-table {
-    padding: 10px;
+    padding: 10px 10px 0px 10px
 }
 
 .data-table td, .data-table th {
@@ -61,16 +60,15 @@
     top: 0;
     z-index: 1000;
     position: sticky;
-    background-color: #fff;
-    border-bottom: 0.5px solid #dee2e6;
+    background-color: var(--colorblight1);
     font-size: 13px;
 }
 
-.data-table th {
+.data-table th, .data-table td {
     border-right: 0.5px solid var(--colorb1);
 }
 
-.data-table th:last-child {
+.data-table th:last-child, .data-table td:last-child {
     border-right: none;
 }
 
@@ -81,5 +79,9 @@
 }
 
 .data-table tbody tr:hover {
-    background-color: var(--colorblight1);
+    background-color: #f3e2f3;
+}
+
+tbody tr.active {
+    background-color: #f3e2f3;
 }

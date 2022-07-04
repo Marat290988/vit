@@ -12,14 +12,24 @@
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th scope="col" width="50">#</th>
-                            <th scope="col">Product name</th>
-                            <th scope="col">Manufacturer</th>
-                            <th scope="col">Category</th>
-                            <th scope="col" width="100">Price</th>
-                            <th scope="col">Active</th>
+                            <th scope="col" width="50"><div>#</div></th>
+                            <th scope="col"><div>Product name</div></th>
+                            <th scope="col"><div>Manufacturer</div></th>
+                            <th scope="col"><div>Category</div></th>
+                            <th scope="col" width="100"><div>Price</div></th>
+                            <th scope="col"><div>Active</div></th>
                         </tr>
                     </thead>
+                    <tbody>
+                        <tr #tr *ngFor="let product of tableData let index = index" (click)="onSelectRow(tr, product)">
+                            <td scope="row" width="50">{{rowNumber+index+1}}</td>
+                            <td>{{product.name}}</td>
+                            <td>{{product.manufacturer}}</td>
+                            <td>{{product.category}}</td>
+                            <td>{{product.basePrice}}</td>
+                            <td>{{product.isActive}}</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>

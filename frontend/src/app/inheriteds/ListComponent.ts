@@ -160,6 +160,7 @@ export class ListComponent {
             el.classList.add('active');
           })
         }
+        console.log(tr)
     }
 
     onClickPage(event, index: number) {

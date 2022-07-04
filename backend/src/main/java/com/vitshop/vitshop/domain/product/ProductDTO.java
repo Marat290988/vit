@@ -13,6 +13,7 @@ public class ProductDTO {
     private String manufacturer;
     private String category;
     private BigDecimal dPrice;
+    private boolean isActive;
     private List<FileEntity> files;
 
     public ProductDTO(ProductEntity product) {
@@ -24,6 +25,7 @@ public class ProductDTO {
         this.category = product.getCategory();
         this.dPrice = product.getBasePrice();
         this.files = product.getFileList();
+        this.isActive = product.isActive();
     }
 
     public String getProductId() {
@@ -88,6 +90,14 @@ public class ProductDTO {
 
     public void setFileEntityList(List<FileEntity> fileEntityList) {
         this.files = fileEntityList;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
     @Override

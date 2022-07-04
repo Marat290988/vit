@@ -12,7 +12,8 @@ export class Product {
     category: string;
     dPrice: string;
     files?: any;
-    isActive: any;
+    isActive?: any;
+    active?: any;
     productId?: string;
     id?: string;
 }

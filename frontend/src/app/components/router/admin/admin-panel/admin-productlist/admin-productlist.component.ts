@@ -18,14 +18,6 @@ export class AdminProductlistComponent extends ListComponent {
     maxPrice: ''
   }
 
-  // searchFilter: SearchFilter = {
-  //   product: null,
-  //   catListSelected: null,
-  //   manListSelected: null,
-  //   minPrice: null,
-  //   maxPrice: null
-  // }
-
   constructor(
     
   ) { 
@@ -37,53 +29,60 @@ export class AdminProductlistComponent extends ListComponent {
       this.listSize,
       this.pageNumber,
       this.sort,
-      this.setFilter(this.searchFilter)
+      this.setFilter()
     );
     this.refClass = Product;
     //Function for prepare table data
     this.classToRow = (productList: Product[]) => {
       productList.forEach((product, index) => {
         this.tableData[index] = {...product};
-        if (product.isActive) {
+        if (product.active) {
           this.tableData[index].isActive = 'is Active';
         };
       })
     }
-    this.dataStream$.subscribe(data => console.log(data))
+    this.getData();
   }
 
   onSearchEmit(searchData: SearchFilter) {
     console.log(this.setFilter(searchData))
   }
 
-  setFilter(searchData: SearchFilter): SearchFilter {
-    const tempSearch = {...this.searchFilter};
-    if (searchData.product === '') {
-      tempSearch.product = null;
-    } else {
-      tempSearch.product = searchData.product;
+  setFilter(searchData?: SearchFilter): SearchFilter {
+    let tempSearch: SearchFilter = {
+      product: null,
+      catListSelected: null,
+      manListSelected: null,
+      minPrice: null,
+      maxPrice: null
     }
-    if (searchData.catListSelected.length === 0) {
-      tempSearch.catListSelected = null;
-    } else {
-      tempSearch.catListSelected = searchData.catListSelected;
-    }
-    if (searchData.manListSelected.length === 0) {
-      tempSearch.manListSelected = null;
-    } else {
-      tempSearch.manListSelected = searchData.manListSelected;
-    }
-    if (searchData.minPrice === '') {
-      tempSearch.minPrice = null;
-    } else {
-      tempSearch.minPrice = searchData.minPrice;
-    }
-    if (searchData.maxPrice === '') {
-      tempSearch.maxPrice = null;
-    } else {
-      tempSearch.maxPrice = searchData.maxPrice;
+    if (searchData) {
+      if (searchData.product === '') {
+        tempSearch.product = null;
+      } else {
+        tempSearch.product = searchData.product;
+      }
+      if (searchData.catListSelected.length === 0) {
+        tempSearch.catListSelected = null;
+      } else {
+        tempSearch.catListSelected = searchData.catListSelected;
+      }
+      if (searchData.manListSelected.length === 0) {
+        tempSearch.manListSelected = null;
+      } else {
+        tempSearch.manListSelected = searchData.manListSelected;
+      }
+      if (searchData.minPrice === '') {
+        tempSearch.minPrice = null;
+      } else {
+        tempSearch.minPrice = searchData.minPrice;
+      }
+      if (searchData.maxPrice === '') {
+        tempSearch.maxPrice = null;
+      } else {
+        tempSearch.maxPrice = searchData.maxPrice;
+      }
     }
     return tempSearch;
   }
-
 }

@@ -145,22 +145,17 @@ export class ListComponent {
         this.pagePaginator[index].class = 'page-num active';
     }
 
-    onSelectRow(tr: HTMLElement, editData) {
+    onSelectRow(tr: HTMLElement, editData, state: string) {
         if (document.querySelector('tbody tr.active')) {
           document.querySelector('tbody tr.active').classList.remove('active');
         }
         if (editData.isActive === '') {
-          this.removeActiveButtons();
+          this[state] = true;
           return;
         }
         this.editData = editData;
         tr.classList.add('active');
-        if (document.querySelectorAll('.icon-container, .iconremove-container').length > 0) {
-          document.querySelectorAll('.icon-container, .iconremove-container').forEach((el: HTMLElement) => {
-            el.classList.add('active');
-          })
-        }
-        console.log(tr)
+        this[state] = false;
     }
 
     onClickPage(event, index: number) {

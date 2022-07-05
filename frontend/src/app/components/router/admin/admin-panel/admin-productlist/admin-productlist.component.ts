@@ -10,13 +10,15 @@ import { SearchFilter } from './productlist-panel/productlist-panel.component';
 })
 export class AdminProductlistComponent extends ListComponent {
 
-  searchFilter: SearchFilter = {
-    product: '',
-    catListSelected: [],
-    manListSelected: [],
-    minPrice: '',
-    maxPrice: ''
-  }
+  // searchFilter: SearchFilter = {
+  //   product: '',
+  //   catListSelected: [],
+  //   manListSelected: [],
+  //   minPrice: '',
+  //   maxPrice: ''
+  // }
+
+  editDelStateDis = true;
 
   constructor(
     

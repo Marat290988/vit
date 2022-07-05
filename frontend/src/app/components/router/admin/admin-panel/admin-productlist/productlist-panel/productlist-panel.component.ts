@@ -30,6 +30,7 @@ export class ProductlistPanelComponent implements OnInit {
   };
   @Output() searchEmit = new EventEmitter<SearchFilter>();
   @Input() buttonAction = true;
+  @Input() buttonState = false;
   catList = [];
   catListComponent = [];
   catListSelected = [];
@@ -39,7 +40,6 @@ export class ProductlistPanelComponent implements OnInit {
   windowCliclEvent$: Observable<any> = fromEvent(window, 'click').pipe(
     map(event => event.target)
   );
-  buttonState = false;
 
   constructor(
     private productService: ProductService,

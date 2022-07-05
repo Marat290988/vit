@@ -5,6 +5,7 @@
     <div class="productlist-main">
         <app-productlist-panel
             (searchEmit)="onSearchEmit($event)"
+            [buttonState]="editDelStateDis"
         >
         </app-productlist-panel>
         <div class="productlist-table">
@@ -21,7 +22,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr #tr *ngFor="let product of tableData let index = index" (click)="onSelectRow(tr, product)">
+                        <tr #tr *ngFor="let product of tableData let index = index" (click)="onSelectRow(tr, product, 'editDelStateDis')">
                             <td scope="row" width="50">{{rowNumber+index+1}}</td>
                             <td>{{product.name}}</td>
                             <td>{{product.manufacturer}}</td>
@@ -31,6 +32,17 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <div class="pagination-container">
+                <div class="arrow-container" style="margin-left: 10px;">
+                    <div class="arrow" (click)="onClickArrow('LEFT')"><</div>
+                </div>
+                <ng-container *ngFor="let page of pagePaginator let index=index">
+                    <div *ngIf="page.state" [ngClass]="page.class" (click)="onClickPage($event, index)">{{page.number}}</div>
+                </ng-container>
+                <div class="arrow-container" style="margin-right: 10px;">
+                    <div class="arrow" style="justify-self: end;" (click)="onClickArrow('RIGHT')">></div>
+                </div>
             </div>
         </div>
     </div>

@@ -33,11 +33,13 @@
 }
 
 .table-scroll {
-    overflow: auto; 
-    max-height: calc(100% - 10px);
+    overflow: auto;
+    max-height: calc(100% - 48px);
     position: relative;
-    border: 1px solid var(--colorb1);
-    border-radius: 5px;
+    border: 0.5px solid var(--colorb1);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom: none;
 }
 
 .data-table {
@@ -84,4 +86,70 @@
 
 tbody tr.active {
     background-color: #f3e2f3;
+}
+
+.pagination-container {
+    width: 100%; 
+    background: #f4e5e4;
+    border: 0.5px solid var(--colorb1);
+    border-top: none;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.arrow-container {
+    flex-grow: 1;
+    display: grid;
+}
+
+.arrow {
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    user-select: none;
+    border: 1px solid var(--colorf2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--colorf2);
+    transition: background-color 0.5s linear;
+}
+
+.arrow:hover {
+    background-color: #d9f2ee;
+}
+
+.page-num {
+    margin-right: 5px;
+    cursor: pointer;
+    min-width: 28px;
+    min-height: 28px;
+    user-select: none;
+    border: 1px solid var(--colorf2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--colorf2);
+    transition: background-color 0.5s linear;
+}
+
+.page-num:hover {
+    background-color: #d9f2ee;
+}
+
+.three-dots {
+    margin-right: 5px;
+    min-width: 13px;
+    text-align: center;
+    user-select: none;
+}
+
+.page-num.active {
+    color: var(--colorb1);
+    border: 1px solid var(--colorb1);
 }

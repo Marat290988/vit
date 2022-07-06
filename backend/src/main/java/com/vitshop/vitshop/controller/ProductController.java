@@ -53,6 +53,7 @@ public class ProductController {
 
     @PostMapping("/list")
     public ResponseEntity<Page<ProductDTO>> productList(Pageable page, @RequestBody HashMap<String, Object> filter) {
+        System.out.println(page.toString());
         Specification<ProductEntity> spec = advanceProductSpec.getProducts(filter);
         return new ResponseEntity<>(productService.getProductWithFilter(spec, page), HttpStatus.OK);
     }

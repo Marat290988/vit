@@ -27,7 +27,7 @@
                             <td>{{product.name}}</td>
                             <td>{{product.manufacturer}}</td>
                             <td>{{product.category}}</td>
-                            <td>{{product.basePrice}}</td>
+                            <td>{{product.basePrice | price:'$'}}</td>
                             <td>{{product.isActive}}</td>
                         </tr>
                     </tbody>
@@ -38,7 +38,7 @@
                     <div class="arrow" (click)="onClickArrow('LEFT')"><</div>
                 </div>
                 <ng-container *ngFor="let page of pagePaginator let index=index">
-                    <div *ngIf="page.state" [ngClass]="page.class" (click)="onClickPage($event, index)">{{page.number}}</div>
+                    <div *ngIf="page.state" [ngClass]="page.class" (click)="onClickPage($event, index, setFilter())">{{page.number}}</div>
                 </ng-container>
                 <div class="arrow-container" style="margin-right: 10px;">
                     <div class="arrow" style="justify-self: end;" (click)="onClickArrow('RIGHT')">></div>

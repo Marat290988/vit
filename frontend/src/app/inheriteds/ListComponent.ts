@@ -41,6 +41,8 @@ export class ListComponent {
     classToRow: Function;
     editData;
     cssClassPage = 'page-num';
+    service: string = '';
+    serviceMethod: string = '';
 
     subsData: Subscription;
     dataStream$: Observable<any>;
@@ -52,8 +54,14 @@ export class ListComponent {
         this.popupMessageService = InjectService.injector.get(PopupMessageService);
     }
 
-    getData() {
+    getData(filter) {
         this.loadState = true;
+        this.dataStream$ = this[this.service][this.serviceMethod](
+          this.listSize,
+          this.pageNumber,
+          this.sort,
+          filter
+        );
         this.subsData = this.dataStream$.subscribe({
             next: res => {
                 this.removeActiveButtons();
@@ -158,7 +166,7 @@ export class ListComponent {
         this[state] = false;
     }
 
-    onClickPage(event, index: number) {
+    onClickPage(event, index: number, filter) {
         if (this.currentPage == event.target.innerText || this.loadState) {
             return;
         }
@@ -167,7 +175,7 @@ export class ListComponent {
             return;
         }
         this.pageNumber = event.target.innerText-1;
-        this.getData();
+        this.getData(filter);
     }
 
     setPageNum(pageNumber: string, index: number) {
@@ -205,5 +213,6 @@ export class ListComponent {
             });
         }
     }
+
 
 }

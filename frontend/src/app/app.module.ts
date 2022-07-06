@@ -30,6 +30,7 @@ import { DirectiveModule } from './directives/directive.module';
 import { ProductService } from './services/product/product.service';
 import { ListComponent } from './inheriteds/ListComponent';
 import { InjectService } from './services/inject/inject.service';
+import { PricePipe } from './pipes/price.pipe';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,7 @@ import { InjectService } from './services/inject/inject.service';
     CartComponent,
     SureComponent,
     HelpPopupComponent,
-    ErrorComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,

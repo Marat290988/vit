@@ -27,12 +27,14 @@ export class AdminProductlistComponent extends ListComponent {
   }
 
   ngOnInit(): void {
-    this.dataStream$ = this.productService.getAllProducts(
-      this.listSize,
-      this.pageNumber,
-      this.sort,
-      this.setFilter()
-    );
+    // this.dataStream$ = this.productService.getAllProducts(
+    //   this.listSize,
+    //   this.pageNumber,
+    //   this.sort,
+    //   this.setFilter()
+    // );
+    this.service = 'productService';
+    this.serviceMethod = 'getAllProducts';
     this.refClass = Product;
     //Function for prepare table data
     this.classToRow = (productList: Product[]) => {
@@ -43,7 +45,7 @@ export class AdminProductlistComponent extends ListComponent {
         };
       })
     }
-    this.getData();
+    this.getData(this.setFilter());
   }
 
   onSearchEmit(searchData: SearchFilter) {

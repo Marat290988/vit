@@ -10,14 +10,6 @@ import { SearchFilter } from './productlist-panel/productlist-panel.component';
 })
 export class AdminProductlistComponent extends ListComponent {
 
-  // searchFilter: SearchFilter = {
-  //   product: '',
-  //   catListSelected: [],
-  //   manListSelected: [],
-  //   minPrice: '',
-  //   maxPrice: ''
-  // }
-
   editDelStateDis = true;
 
   constructor(
@@ -27,12 +19,6 @@ export class AdminProductlistComponent extends ListComponent {
   }
 
   ngOnInit(): void {
-    // this.dataStream$ = this.productService.getAllProducts(
-    //   this.listSize,
-    //   this.pageNumber,
-    //   this.sort,
-    //   this.setFilter()
-    // );
     this.service = 'productService';
     this.serviceMethod = 'getAllProducts';
     this.refClass = Product;

@@ -157,7 +157,7 @@ export class ListComponent {
         if (document.querySelector('tbody tr.active')) {
           document.querySelector('tbody tr.active').classList.remove('active');
         }
-        if (editData.isActive === '') {
+        if (editData.isActive === '' || editData.isActive === undefined) {
           this[state] = true;
           return;
         }

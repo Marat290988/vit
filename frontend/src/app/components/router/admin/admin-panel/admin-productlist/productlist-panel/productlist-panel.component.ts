@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { debounceTime, fromEvent, map, Subscription } from 'rxjs';
+import { BehaviorSubject, debounceTime, fromEvent, map, Subscription } from 'rxjs';
 import { ProductService } from 'src/app/services/product/product.service';
 import { Observable } from 'rxjs';
 import { PopupMessageService } from './../../../../../../services/pop-up/popup-message.service';
@@ -29,7 +29,10 @@ export class ProductlistPanelComponent implements OnInit {
     maxPrice: null
   };
   @Output() searchEmit = new EventEmitter<SearchFilter>();
-  @Input() buttonAction = true;
+  @Output() selectNumOfRow = new EventEmitter<number>();
+  @Output() delEmit = new EventEmitter();
+  @Output() editEmit = new EventEmitter();
+  @Input() adminAction = true;
   @Input() buttonState = false;
   catList = [];
   catListComponent = [];
@@ -40,6 +43,7 @@ export class ProductlistPanelComponent implements OnInit {
   windowCliclEvent$: Observable<any> = fromEvent(window, 'click').pipe(
     map(event => event.target)
   );
+  
 
   constructor(
     private productService: ProductService,
@@ -48,13 +52,11 @@ export class ProductlistPanelComponent implements OnInit {
 
   ngOnInit(): void {
     this.searchInputSubs = fromEvent(document.getElementById('product-search'), 'input').pipe(
-      map((event: any) => event.target.value),
-      debounceTime(1500)
+      map((event: any) => event.target.value)
     ).subscribe(input => {
       this.filterData.product = input;
       this.searchEmit.emit(this.filterData);
     });
-    
   }
 
   ngOnDestroy() {
@@ -86,7 +88,7 @@ export class ProductlistPanelComponent implements OnInit {
   }
 
   //Fill selected filter list
-  onPickPrompt(list, index: number, selectedList: string) {
+  onPickPrompt(list, index: number, selectedList: string, inputEl: HTMLInputElement) {
     if (this[selectedList].length > 3) {
       this.popupMessageService.showMessage('Number of filters maximum 5');
       return;
@@ -97,6 +99,8 @@ export class ProductlistPanelComponent implements OnInit {
       this[list + 'Component'].splice(indexComponent, 1);
       this.filterData[selectedList] = [...this[selectedList]];
       this.searchEmit.emit(this.filterData);
+      this[list] = [];
+      inputEl.value = '';
     }, 100);
   }
 
@@ -116,6 +120,10 @@ export class ProductlistPanelComponent implements OnInit {
     const price = parseFloat(event.target.value).toFixed(2);
     this.filterData[typePrice + 'Price'] = event.target.value === '' ? null :  price;
     this.searchEmit.emit(this.filterData);
+  }
+
+  onSelectChange(event) {
+    this.selectNumOfRow.emit(event.target.value);
   }
 
 }

@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, Subscription } from "rxjs";
 import { environment } from "src/environments/environment";
@@ -11,7 +11,9 @@ export class Product {
     manufacturer: string;
     category: string;
     dPrice: string;
+    basePrice?: string;
     files?: any;
+    fileEntityList?: any;
     isActive?: any;
     active?: any;
     productId?: string;
@@ -68,5 +70,21 @@ export class ProductService {
             formData.append('files', product.files)
         }
         return this.http.post(`${this.host}/product/addproduct`, formData);
+    }
+
+    editProduct(editData): Observable<Product> {
+        return this.http.post<Product>(`${this.host}/product/edit_product`, editData, {
+            // headers: new HttpHeaders({
+            //     'Content-Type':  'undefined',
+            // })
+        })
+    }
+
+    deleteProduct(productId: string) {
+        return this.http.delete(`${this.host}/product/delete/${productId}`);
+    }
+
+    getFileList(productId: string) {
+        return this.http.get(`${this.host}/product/filelist/${productId}`);
     }
 }

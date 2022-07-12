@@ -31,6 +31,7 @@ export class AddproductPreviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.indexSub = this.currentIndexObserve$.subscribe((data: {id: number, listUrl: any[]}) => {
+      this.listUrl = [];
       if (data !== null) {
         let ind;
         this.listUrl = [...data.listUrl];

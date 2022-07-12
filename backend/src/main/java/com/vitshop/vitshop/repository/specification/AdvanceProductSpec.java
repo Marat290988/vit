@@ -46,22 +46,26 @@ public class AdvanceProductSpec {
                 }
             }
             if (filter.containsKey("minPrice") && filter.get("minPrice") != null) {
-                if (filter.get("minPrice").getClass() == Integer.class) {
-                    Integer i = (Integer) filter.get("minPrice");
-                    double d = i.doubleValue();
-                    predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("basePrice"), d));
-                } else {
-                    predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("basePrice"), (Double)filter.get("minPrice")));
-                }
+                Double d = new Double((String)filter.get("minPrice"));
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("basePrice"), d));
+//                if (filter.get("minPrice").getClass() == Integer.class) {
+//                    Integer i = (Integer) filter.get("minPrice");
+//                    double d = i.doubleValue();
+//                    predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("basePrice"), d));
+//                } else {
+//                    predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("basePrice"), (Double)filter.get("minPrice")));
+//                }
             }
             if (filter.containsKey("maxPrice") && filter.get("maxPrice") != null) {
-                if (filter.get("maxPrice").getClass() == Integer.class) {
-                    Integer i = (Integer) filter.get("maxPrice");
-                    double d = i.doubleValue();
-                    predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("basePrice"), d));
-                } else {
-                    predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("basePrice"), (Double)filter.get("maxPrice")));
-                }
+                Double d = new Double((String)filter.get("maxPrice"));
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("basePrice"), d));
+//                if (filter.get("maxPrice").getClass() == Integer.class) {
+//                    Integer i = (Integer) filter.get("maxPrice");
+//                    double d = i.doubleValue();
+//                    predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("basePrice"), d));
+//                } else {
+//                    predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("basePrice"), (Double)filter.get("maxPrice")));
+//                }
             }
             query.orderBy(criteriaBuilder.asc(root.get("name")));
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

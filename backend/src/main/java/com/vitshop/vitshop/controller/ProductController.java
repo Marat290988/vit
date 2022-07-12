@@ -1,8 +1,10 @@
 package com.vitshop.vitshop.controller;
 
+import com.vitshop.vitshop.domain.HttpResponse;
 import com.vitshop.vitshop.domain.product.ProductDTO;
 import com.vitshop.vitshop.domain.product.ProductEntity;
 import com.vitshop.vitshop.domain.user.UserEntity;
+import com.vitshop.vitshop.exceptions.UserNotFoundException;
 import com.vitshop.vitshop.repository.specification.AdvanceProductSpec;
 import com.vitshop.vitshop.repository.specification.ProductSpecification;
 import com.vitshop.vitshop.service.FileService;
@@ -11,6 +13,8 @@ import com.vitshop.vitshop.utility.JWTTokenProvider;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,13 +24,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.multipart.MultipartFile;
+import sun.misc.IOUtils;
 
-import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static com.vitshop.vitshop.service.FileService.VIT_FOLDER;
@@ -53,7 +63,6 @@ public class ProductController {
 
     @PostMapping("/list")
     public ResponseEntity<Page<ProductDTO>> productList(Pageable page, @RequestBody HashMap<String, Object> filter) {
-        System.out.println(page.toString());
         Specification<ProductEntity> spec = advanceProductSpec.getProducts(filter);
         return new ResponseEntity<>(productService.getProductWithFilter(spec, page), HttpStatus.OK);
     }
@@ -80,6 +89,33 @@ public class ProductController {
         return new ResponseEntity<>(newProduct, HttpStatus.OK);
     }
 
+//    @Bean
+//    public FilterRegistrationBean registration(HiddenHttpMethodFilter filter) {
+//        FilterRegistrationBean registration = new FilterRegistrationBean(filter);
+//        registration.setEnabled(false);
+//        return registration;
+//    }
+
+    @PostMapping("/edit_product")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    public ResponseEntity<ProductEntity> editProduct(
+            //@RequestBody HashMap<String, Object> editProduct
+            HttpServletRequest req
+            ) throws IOException, ClassNotFoundException {
+        //byte[] processedText = req.getParameter()
+
+        //System.out.println(i.getClass());
+        //LinkedHashMap lM = (LinkedHashMap) editProduct.get("files");
+//        HashMap a = (LinkedHashMap)editProduct.get("files");
+        InputStream input = req.getInputStream();
+        ObjectInputStream ois = new ObjectInputStream(input);
+        HashMap<String, Object> data = (HashMap<String, Object>)ois.readObject();
+        System.out.println(data);
+//        System.out.println(a.getClass());
+        //System.out.println(t.toString());
+        return null;
+    }
+
     @GetMapping(path = "/image/{productId}/{fileName}", produces = {IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE})
     public ResponseEntity<byte[]> getProfileImage(
             @PathVariable("productId") String productId,
@@ -93,6 +129,27 @@ public class ProductController {
     public ResponseEntity<HashMap<String, Object>> getProductData() {
         HashMap<String, Object> mapCatAndMan = productService.getCategoryAndManufacturer();
         return new ResponseEntity<>(mapCatAndMan, HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "delete/{productId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    public ResponseEntity<HttpResponse> deleteProduct(@PathVariable("productId") String productId) throws UserNotFoundException {
+        productService.deleteProduct(productId);
+        return response(HttpStatus.OK, "PRODUCT DELETED SUCCESSFULLY");
+    }
+
+    @GetMapping("filelist/{productId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    public ResponseEntity<List<HashMap<String, Object>>> getFileList(
+            @PathVariable("productId") String productId
+    ) throws IOException, NoSuchFieldException, IllegalAccessException {
+        this.productService.getFileList(productId);
+//        List<byte[]> fileList = new ArrayList<>();
+//        for (HashMap<String, String> hMap : urlList) {
+//            fileList.add(productService.getProductImage((String) hMap.get("productId"), (String)hMap.get("fileName")));
+//        }
+//        return new ResponseEntity<>(fileList, HttpStatus.OK);
+        return new ResponseEntity(this.productService.getFileList(productId), HttpStatus.OK);
     }
 
 //    Specification<ProductEntity> initSpec(HashMap<String, Object> filter) {
@@ -126,4 +183,13 @@ public class ProductController {
 //        }
 //        return spec;
 //    }
+
+    private ResponseEntity<HttpResponse> response(HttpStatus httpStatus, String message) {
+        return new ResponseEntity<>(
+                new HttpResponse(httpStatus.value(),
+                        httpStatus,
+                        httpStatus.getReasonPhrase().toUpperCase(),
+                        message.toUpperCase()
+                ), httpStatus);
+    }
  }

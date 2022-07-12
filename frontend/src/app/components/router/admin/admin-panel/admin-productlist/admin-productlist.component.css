@@ -6,6 +6,8 @@
     width: 100%;
     margin-left: auto;
     margin-right: auto;
+    position: relative;
+    overflow: hidden;
 }
 
 .productlist-head {
@@ -27,8 +29,7 @@
     border-bottom: 2px solid var(--colorb1);
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    height: calc(100% - 32px);
-    box-shadow: 12px 4px 15px 0px rgb(34 60 80 / 20%);
+    height: calc(100% - 37px);
     display: flex;
 }
 
@@ -51,7 +52,8 @@
 }
 
 .productlist-table {
-    padding: 10px 10px 0px 10px
+    padding: 10px 10px 0px 10px;
+    position: relative;
 }
 
 .data-table td, .data-table th {
@@ -157,4 +159,28 @@ tbody tr:last-child td {
 .page-num.active {
     color: var(--colorb1);
     border: 1px solid var(--colorb1);
+}
+
+.spinner-container {
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-product {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #fff;
+    z-index: 1001;
+    transform: translate3d(-2000px, 0px, 0px);
+    transition: transform 0.5s ease-in-out;
 }

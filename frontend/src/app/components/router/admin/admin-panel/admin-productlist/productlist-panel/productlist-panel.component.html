@@ -20,9 +20,10 @@
                     (input)="onInputForPrompt($event, 'catList', 'catListBase')"
                     placeholder="Chose category" readonly 
                     onfocus="this.removeAttribute('readonly')"
+                    #catInput
                 />
                 <div class="prompt" *ngIf="catList.length > 0">
-                    <p *ngFor="let cat of catList let index = index" (click)="onPickPrompt('catList', index, 'catListSelected')">{{cat}}</p>
+                    <p *ngFor="let cat of catList let index = index" (click)="onPickPrompt('catList', index, 'catListSelected', catInput)">{{cat}}</p>
                 </div>
             </div>
         </div>
@@ -35,9 +36,10 @@
                     (input)="onInputForPrompt($event, 'manList', 'manListBase')"
                     placeholder="Chose manufacturer" readonly 
                     onfocus="this.removeAttribute('readonly')"
+                    #manInput
                 />
                 <div class="prompt" *ngIf="manList.length > 0">
-                    <p *ngFor="let man of manList let index = index" (click)="onPickPrompt('manList', index, 'manListSelected')">{{man}}</p>
+                    <p *ngFor="let man of manList let index = index" (click)="onPickPrompt('manList', index, 'manListSelected', manInput)">{{man}}</p>
                 </div>
             </div>
         </div>
@@ -99,16 +101,27 @@
                 </ng-container>
             </div>
         </div>
-        <div class="form-stadart-cont" style="margin-top: 10px; display: flex; align-items: center; justify-content: space-between;" *ngIf="buttonAction">
+        <div class="form-stadart-cont" style="margin-top: 10px; display: flex; align-items: center; justify-content: space-between;" *ngIf="adminAction">
             <div class="buttons-cont">
-                <button button class="vit-button" [disabled]="buttonState">
+                <button button class="vit-button" [disabled]="buttonState" (click)="editEmit.emit()">
                     <p>Edit product</p>
                 </button>
             </div>
             <div class="buttons-cont">
-                <button button class="vit-button del" [disabled]="buttonState">
+                <button button class="vit-button del" [disabled]="buttonState" (click)="delEmit.emit()">
                     <p>Delete product</p>
                 </button>
+            </div>
+        </div>
+        <div class="form-stadart-cont" *ngIf="adminAction">
+            <div class="select-cont">
+                <p>Select the number of rows</p>
+                <select class="select" id="select-qty" (change)="onSelectChange($event)">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
             </div>
         </div>
     </div>

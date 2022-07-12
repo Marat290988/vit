@@ -1,9 +1,9 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BehaviorSubject, combineLatest, forkJoin, fromEvent, map, Observable, Subscription, switchMap, tap } from 'rxjs';
 import { PopupMessageService } from 'src/app/services/pop-up/popup-message.service';
-import { ProductService } from 'src/app/services/product/product.service';
+import { Product, ProductService } from 'src/app/services/product/product.service';
 
 @Component({
   selector: 'app-admin-addproducts',
@@ -21,6 +21,7 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
   subsComposition: Subscription;
   subsPrice: Subscription;
   subsDrag: Subscription;
+  subsTransferData: Subscription;
   compositionEditList: {supl: string, qty: string}[] = [];
   tempCompData: {supl: string, qty: string};
   nameCompStream$: Observable<any>;
@@ -36,6 +37,9 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
   currentIndexObserve$ = new BehaviorSubject<{id: number, listUrl: any[]}>(null);
   compositionObserve$ = new BehaviorSubject(null);
   imgId = 0;
+  addList = [];
+  removeImgs = [];
+  productId: string;
   
   @ViewChild('nameComposition') nameComposition: ElementRef;
   @ViewChild('qtyComposition') qtyComposition: ElementRef;
@@ -43,6 +47,10 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
   @ViewChild('wholeNumber') wholeNumber: ElementRef;
   @ViewChild('cents') cents: ElementRef;
   @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('cont') cont: ElementRef;
+  @Input() isEdit = false;
+  @Input() transferData$: Observable<Product>;
+  @Output() closeEmit = new EventEmitter();
 
   
 
@@ -90,40 +98,169 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
         }
       })
     });
+    if (this.transferData$) {
+      this.subsTransferData = this.transferData$.subscribe(
+        product => {
+          if (product) {
+            this.productId = product.productId;
+            this.setEditForm(product);
+          }
+        }
+      )
+    }
+  }
+
+  setEditForm(product: Product) {
+    this.removeImgs = [];
+    this.addList = [];
+    this.formGroup.get('name').setValue(product.name);
+    this.formGroup.get('category').setValue(product.category);
+    this.formGroup.get('manufacturer').setValue(product.manufacturer);
+    this.formGroup.get('description').setValue(product.description);
+    this.formGroup.get('dPrice').setValue(product.basePrice);
+    this.setFileData(product.fileEntityList, product.productId);
+    this.setDPrice(String(product.basePrice));
+    this.setComposition(product.composition);
+    if (!product.active) {
+      document.querySelector('label[for="isActive"]').classList.remove('active');
+      this.formGroup.get('isActive').setValue(false);
+    } else {
+      document.querySelector('label[for="isActive"]').classList.add('active');
+      this.formGroup.get('isActive').setValue(true);
+    }
+  }
+
+  setComposition(composition: string) {
+    const div = document.createElement('div');
+    div.innerHTML = composition;
+    const node: NodeList = div.querySelectorAll('.preview-composition');
+    node.forEach((el: HTMLElement) => {
+      const innerNode = el.querySelectorAll('div');
+      let tempCompData = {
+        supl: innerNode[1].innerText,
+        qty: innerNode[2].innerText
+      };
+      this.compositionEditList.push(tempCompData);
+    });
+    this.drawComposition();
+  }
+
+  setFileData(fileListUrl: string[], productId: string) {
+    const fileList: {fileName: string, productId: string}[] = [];
+    fileListUrl.forEach((fileUrl: any) => {
+      const match = fileUrl.path.match(/\/.[^\/]+$/);
+      if (match) {
+        fileList.push(
+          {
+            fileName: match[0],
+            productId
+          }
+        );
+      }
+    });
+    this.productService.getFileList(productId).subscribe({
+      next: (fileList: any[]) => {
+        fileList.forEach((file, index) => {
+          const byteArray = new Uint8Array(atob(file.file).split('').map((char: any)=>char.charCodeAt(0)));
+          const jpgResult = new Blob([byteArray]);
+          let f = new File([jpgResult], "1");
+          const url = this.sanitazer.bypassSecurityTrustUrl(URL.createObjectURL(f));
+          this.dataTransfer.items.add(f);
+          this.listUrl.push({url: url, active: file.active ? 'active' : '', id: index, productId: file.id});
+          if (file.active) {
+            this.currentIndex = index;
+          }
+        });
+        if (fileList.length > 0) {
+          this.imgId = fileList.length;
+          this.currentIndexObserve$.next({id: this.listUrl[this.currentIndex].id, listUrl: this.listUrl});
+        }
+      }
+    });
+  }
+
+  setDPrice(dPrice: string) {
+    let match = dPrice.match(/^\d+/);
+    let wNumber = 0;
+    let cents = 0;
+    if (match) {
+      wNumber = Number.parseInt(match[0]);
+    }
+    match = dPrice.match(/\.\d+/);
+    if (match) {
+      cents = Number.parseInt(match[0].substring(1));
+    }
+    this.wholeNumber.nativeElement.value = wNumber;
+    this.cents.nativeElement.value = cents;
   }
 
   ngOnDestroy() {
     this.subsComposition.unsubscribe();
-    //this.subsPrice.unsubscribe();
-    //this.subsDrag.unsubscribe();
+    if (this.transferData$) {
+      this.subsTransferData.unsubscribe();
+    }
   }
 
   onAddNewProduct() {
     this.formGroup.get('files').setValue(this.dataTransfer.files);
     this.loadingState = true;
-    this.subs = this.productService.addProduct(this.formGroup.value, this.currentIndex).subscribe({
-      next: res => {
-        this.subs.unsubscribe();
-        this.loadingState = false;
-        this.popupMessageService.showMessage('Product has added successfully.');
-        this.resetForm();
-      },
-      error: error => {
-        let message;
-        if (error.status > 0) {
-          message = error.error.message;
-        } else {
-          message = 'No connection';
+    if (this.isEdit) {
+      const fileArr = [];
+      // let reader = new FileReader();
+      // reader.onloadend = (loadEvent) => {
+      //   console.log(loadEvent.target.result)
+      // }
+      // reader.readAsArrayBuffer(this.dataTransfer.files[0]);
+      let a;
+      new Blob([this.dataTransfer.files[0]]).arrayBuffer().then(
+        data => {
+          a = data;
+          const editData = {
+            productId: this.productId,
+            name: this.formGroup.get('name').value,
+            category: this.formGroup.get('category').value,
+            manufacturer: this.formGroup.get('dPrice').value,
+            description: this.formGroup.get('description').value,
+            dPrice: this.formGroup.get('dPrice').value,
+            files: a,
+            activeImg: this.currentIndex
+          }
+          console.log(editData)
+          this.subs = this.productService.editProduct(editData).subscribe({
+            next: res => {
+              this.subs.unsubscribe();
+              this.loadingState = false;
+              this.popupMessageService.showMessage('Product has edited successfully.');
+              this.resetForm();
+            },
+          })
         }
-        this.loadingState = false;
-        this.popupMessageService.showMessage(message); 
-        this.subs.unsubscribe();
-      },
-      complete: () => {
-        this.loadingState = false;
-        this.subs.unsubscribe();
-      }
-    })
+      )
+    } else {
+      this.subs = this.productService.addProduct(this.formGroup.value, this.currentIndex).subscribe({
+        next: res => {
+          this.subs.unsubscribe();
+          this.loadingState = false;
+          this.popupMessageService.showMessage('Product has added successfully.');
+          this.resetForm();
+        },
+        error: error => {
+          let message;
+          if (error.status > 0) {
+            message = error.error.message;
+          } else {
+            message = 'No connection';
+          }
+          this.loadingState = false;
+          this.popupMessageService.showMessage(message); 
+          this.subs.unsubscribe();
+        },
+        complete: () => {
+          this.loadingState = false;
+          this.subs.unsubscribe();
+        }
+      })
+    }
   }
 
   onInputForPrompt(event, list: string, listBase: string) {
@@ -300,6 +437,9 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
     if (firstAdd) {
       a.listUrl[0].active = 'active';
     }
+    if (this.isEdit) {
+      this.addList.push(a.imgId);
+    }
     this.currentIndexObserve$.next({id: this.listUrl[this.currentIndex].id, listUrl: this.listUrl});
   }
 
@@ -311,6 +451,11 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
   }
 
   removeImage(index: number) {
+    if (this.isEdit && this.listUrl[index].productId) {
+      this.removeImgs.push(
+        this.listUrl[index].productId
+      );
+    }
     this.dataTransfer.items.remove(index);
     this.listUrl.splice(index, 1);
     if (this.listUrl.length > 0) {
@@ -352,6 +497,10 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
     off.style.display = 'none';
     document.querySelectorAll('.addproduct-option div').forEach((el: any) => el.style.backgroundColor = '');
     event.target.style.backgroundColor = '#ffeb3b';
+  }
+
+  close() {
+    this.closeEmit.emit();
   }
 
 }

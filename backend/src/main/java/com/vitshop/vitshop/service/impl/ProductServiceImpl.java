@@ -3,6 +3,7 @@ package com.vitshop.vitshop.service.impl;
 import com.vitshop.vitshop.domain.file.FileEntity;
 import com.vitshop.vitshop.domain.product.ProductDTO;
 import com.vitshop.vitshop.domain.product.ProductEntity;
+import com.vitshop.vitshop.exceptions.UserNotFoundException;
 import com.vitshop.vitshop.repository.ProductRepository;
 import com.vitshop.vitshop.repository.specification.ProductSpecification;
 import com.vitshop.vitshop.service.FileService;
@@ -103,6 +104,21 @@ public class ProductServiceImpl implements ProductService {
         mapCatAndMan.put("category", categoryList);
         mapCatAndMan.put("manufacturer", manufacturerList);
         return mapCatAndMan;
+    }
+
+    @Override
+    public void deleteProduct(String productId) throws UserNotFoundException {
+        ProductEntity productEntity = productRepository.findProductEntityByProductId(productId);
+        if (productEntity == null) {
+            throw new UserNotFoundException("Product not found with this productId");
+        };
+        productRepository.deleteById(productEntity.getId());
+    }
+
+    @Override
+    public List<HashMap<String, Object>> getFileList(String productId) throws NoSuchFieldException, IllegalAccessException, IOException {
+        ProductEntity productEntity = productRepository.findProductEntityByProductId(productId);
+        return fileService.getFileList(productEntity.getId(), productId);
     }
 
     private String generateProductId() {

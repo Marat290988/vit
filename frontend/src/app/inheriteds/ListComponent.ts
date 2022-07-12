@@ -4,8 +4,9 @@ import { InjectService } from './../services/inject/inject.service';
 import { Product, ProductService } from 'src/app/services/product/product.service';
 import { PopupService } from './../services/pop-up/pop-up.service';
 import { PopupMessageService } from './../services/pop-up/popup-message.service';
-import { Subscription, filter } from 'rxjs';
+import { Subscription, filter, BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs';
+import { SureComponent } from '../components/pop-up/sure/sure.component';
 
 // @Injectable({providedIn: 'root'})
 export class ListComponent {
@@ -43,8 +44,13 @@ export class ListComponent {
     cssClassPage = 'page-num';
     service: string = '';
     serviceMethod: string = '';
+    serviceMethodDel: string = '';
+    filter: any;
+    editDelStateDis: boolean = true;
+    transferData$ = new BehaviorSubject<Product>(null);
 
     subsData: Subscription;
+    subsPopup: Subscription;
     dataStream$: Observable<any>;
 
     constructor() {
@@ -91,6 +97,36 @@ export class ListComponent {
                 this.loadState = false;
             }
         });
+    }
+
+    onDeleteData(id: string) {
+      this.subsPopup = this.popupService.showComponent(SureComponent).subscribe(
+        data => {
+          if (data.component === null && data.state) {
+            this.loadState = true;
+            this.subsData = this[this.service][this.serviceMethodDel](id).subscribe({
+              next: response => {
+                this.removeActiveButtons();
+                this.loadState = false;
+                this.subsData.unsubscribe();
+                this.getData(this.filter);
+                this.editData = null;
+                this.editDelStateDis = true;
+              },
+              error: error => {
+                this.loadState = false;
+                if (error.error.message !== undefined) {
+                  this.popupMessageService.showMessage(error.error.message);
+                }
+                this.subsData.unsubscribe();
+              }
+            });
+            this.subsPopup.unsubscribe();
+          } else if (data.component === null && !data.state) {
+            this.subsPopup.unsubscribe();
+          }
+        }
+      )
     }
 
     removeActiveButtons() {
@@ -164,6 +200,7 @@ export class ListComponent {
         this.editData = editData;
         tr.classList.add('active');
         this[state] = false;
+        this.transferData$.next(this.editData);
     }
 
     onClickPage(event, index: number, filter) {

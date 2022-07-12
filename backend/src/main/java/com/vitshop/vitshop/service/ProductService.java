@@ -2,6 +2,7 @@ package com.vitshop.vitshop.service;
 
 import com.vitshop.vitshop.domain.product.ProductDTO;
 import com.vitshop.vitshop.domain.product.ProductEntity;
+import com.vitshop.vitshop.exceptions.UserNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -32,4 +33,6 @@ public interface ProductService {
 
     HashMap<String, Object> getCategoryAndManufacturer();
     Page<ProductDTO> getProductWithFilter(Specification<ProductEntity> spec, Pageable page);
+    void deleteProduct(String productId) throws UserNotFoundException;
+    public List<HashMap<String, Object>> getFileList(String productId) throws NoSuchFieldException, IllegalAccessException, IOException;
 }

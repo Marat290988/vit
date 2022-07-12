@@ -11,11 +11,15 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
@@ -64,6 +68,25 @@ public class FileService {
 
     public byte[] getImage(String productId, String fileName) throws IOException {
         return Files.readAllBytes(Paths.get(VIT_FOLDER + productId + FORWARD_SLASH + fileName));
+    }
+
+    public List<HashMap<String, Object>> getFileList(Long productId, String prId) throws NoSuchFieldException, IllegalAccessException, IOException {
+        List<HashMap<String, Object>> fileList = new ArrayList<>();
+        List<FileEntity> fileEntityList = fileRepository.findAllByProductEquals(productId);
+        for (FileEntity f: fileEntityList) {
+            HashMap<String, Object> hMap = new HashMap<>();
+            hMap.put("id",f.getId());
+            Pattern pattern = Pattern.compile("\\/.[^\\/]+$");
+            Matcher matcher = pattern.matcher(f.getPath());
+            String fileName = "";
+            while (matcher.find()) {
+                fileName = f.getPath().substring(matcher.start()+1, matcher.end());
+            }
+            hMap.put("file", Files.readAllBytes(Paths.get(VIT_FOLDER + prId + FORWARD_SLASH + fileName)));
+            hMap.put("active", f.isMainFlag());
+            fileList.add(hMap);
+        }
+        return fileList;
     }
 
     private String setProductImageUrl (String productId, int n, String EXT) {

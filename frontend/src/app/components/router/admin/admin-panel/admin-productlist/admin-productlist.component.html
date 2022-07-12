@@ -5,6 +5,9 @@
     <div class="productlist-main">
         <app-productlist-panel
             (searchEmit)="onSearchEmit($event)"
+            (selectNumOfRow)="onSelectNumRowEmit($event)"
+            (delEmit)="onDelEmit()"
+            (editEmit)="onEditEmit()"
             [buttonState]="editDelStateDis"
         >
         </app-productlist-panel>
@@ -44,6 +47,17 @@
                     <div class="arrow" style="justify-self: end;" (click)="onClickArrow('RIGHT')">></div>
                 </div>
             </div>
+            <div *ngIf="loadState" class="spinner-container">
+                <app-spinner></app-spinner>
+            </div>
         </div>
+    </div>
+    <div class="edit-product" #editProduct>
+        <app-admin-addproducts
+            [isEdit]="true"
+            (closeEmit)="onCloseEmit()"
+            [transferData$]="transferData$"
+        >
+        </app-admin-addproducts>
     </div>
 </div>

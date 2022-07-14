@@ -121,6 +121,16 @@ public class ProductServiceImpl implements ProductService {
         return fileService.getFileList(productEntity.getId(), productId);
     }
 
+    @Override
+    public ProductEntity findProductEntityByProductId(String productId) {
+        return productRepository.findProductEntityByProductId(productId);
+    }
+    @Override
+    public void updateProduct(ProductEntity product) {
+        productRepository.save(product);
+        LOGGER.info("Have been updated product: " + product.getName());
+    }
+
     private String generateProductId() {
         return RandomStringUtils.randomAlphanumeric(12);
     }

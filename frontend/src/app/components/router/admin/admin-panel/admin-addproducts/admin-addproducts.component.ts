@@ -146,6 +146,8 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
   }
 
   setFileData(fileListUrl: string[], productId: string) {
+    this.dataTransfer = new DataTransfer();
+    this.listUrl = []
     const fileList: {fileName: string, productId: string}[] = [];
     fileListUrl.forEach((fileUrl: any) => {
       const match = fileUrl.path.match(/\/.[^\/]+$/);
@@ -166,7 +168,7 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
           let f = new File([jpgResult], "1");
           const url = this.sanitazer.bypassSecurityTrustUrl(URL.createObjectURL(f));
           this.dataTransfer.items.add(f);
-          this.listUrl.push({url: url, active: file.active ? 'active' : '', id: index, productId: file.id});
+          this.listUrl.push({url: url, active: file.active ? 'active' : '', id: index, productId: file.id, isEdit: false});
           if (file.active) {
             this.currentIndex = index;
           }
@@ -206,15 +208,34 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
     this.loadingState = true;
     if (this.isEdit) {
       const fileArr = [];
-      // let reader = new FileReader();
-      // reader.onloadend = (loadEvent) => {
-      //   console.log(loadEvent.target.result)
-      // }
-      // reader.readAsArrayBuffer(this.dataTransfer.files[0]);
-      let a;
-      new Blob([this.dataTransfer.files[0]]).arrayBuffer().then(
-        data => {
-          a = data;
+      let fileState = true;
+      for (let i=0; i < this.dataTransfer.files.length; i++) {
+        if (this.listUrl[i].isEdit) {
+          console.log(this.listUrl[i])
+          fileState = false;
+          this.readFile(this.dataTransfer.files[i], i).then(
+            (data: {result: string, fileName: string, index: number}) => {
+              fileArr.push({
+                file: data.result, fileName: data.fileName, main: this.listUrl[i].active === 'active' ? 'active' : ''
+              });
+              if (this.dataTransfer.files.length === data.index) {
+                const editData = {
+                  productId: this.productId,
+                  name: this.formGroup.get('name').value,
+                  category: this.formGroup.get('category').value,
+                  manufacturer: this.formGroup.get('dPrice').value,
+                  description: this.formGroup.get('description').value,
+                  dPrice: this.formGroup.get('dPrice').value,
+                  files: fileArr,
+                  activeImg: this.currentIndex,
+                  delete: this.removeImgs
+                }
+                this.subs = this.productService.editProduct(editData).subscribe(this.subsAction);
+              }
+            }
+          )
+        }
+        if (this.dataTransfer.files.length === i+1 && fileState) {
           const editData = {
             productId: this.productId,
             name: this.formGroup.get('name').value,
@@ -222,20 +243,26 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
             manufacturer: this.formGroup.get('dPrice').value,
             description: this.formGroup.get('description').value,
             dPrice: this.formGroup.get('dPrice').value,
-            files: a,
-            activeImg: this.currentIndex
+            files: fileArr,
+            activeImg: this.currentIndex,
+            delete: this.removeImgs
           }
-          console.log(editData)
-          this.subs = this.productService.editProduct(editData).subscribe({
-            next: res => {
-              this.subs.unsubscribe();
-              this.loadingState = false;
-              this.popupMessageService.showMessage('Product has edited successfully.');
-              this.resetForm();
-            },
-          })
         }
-      )
+      }
+      if (this.dataTransfer.files.length === 0) {
+        const editData = {
+          productId: this.productId,
+          name: this.formGroup.get('name').value,
+          category: this.formGroup.get('category').value,
+          manufacturer: this.formGroup.get('dPrice').value,
+          description: this.formGroup.get('description').value,
+          dPrice: this.formGroup.get('dPrice').value,
+          files: null,
+          activeImg: this.currentIndex,
+          delete: this.removeImgs
+        }
+        this.subs = this.productService.editProduct(editData).subscribe(this.subsAction);
+      }
     } else {
       this.subs = this.productService.addProduct(this.formGroup.value, this.currentIndex).subscribe({
         next: res => {
@@ -261,6 +288,18 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
         }
       })
     }
+  }
+
+  readFile(file: File, index) {
+    return new Promise((res, rej) => {
+        const fr = new FileReader;
+        fr.onloadend = () => {
+          res({result: fr.result, fileName: file.name, index: index+1});
+        };
+        fr.onerror = rej;
+        fr.readAsDataURL(file);
+      }
+    )
   }
 
   onInputForPrompt(event, list: string, listBase: string) {
@@ -432,7 +471,11 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
   addUrlList(file: File, firstAdd: boolean, a: AdminAddproductsComponent) {
     a.dataTransfer.items.add(file);
     const url = a.sanitazer.bypassSecurityTrustUrl(URL.createObjectURL(file));
-    a.listUrl.push({url, active: '', id: a.imgId});
+    if (this.isEdit) {
+      a.listUrl.push({url, active: '', id: a.imgId, isEdit: true});
+    } else {
+      a.listUrl.push({url, active: '', id: a.imgId, isEdit: false});
+    }
     a.imgId++;
     if (firstAdd) {
       a.listUrl[0].active = 'active';
@@ -457,8 +500,8 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
       );
     }
     this.dataTransfer.items.remove(index);
-    this.listUrl.splice(index, 1);
-    if (this.listUrl.length > 0) {
+    let urlItem = this.listUrl.splice(index, 1);
+    if (this.listUrl.length > 0 && urlItem[0].active === 'active') {
       this.listUrl[0].active = 'active';
       this.currentIndex = 0;
       this.currentIndexObserve$.next({id: this.listUrl[this.currentIndex].id, listUrl: this.listUrl});
@@ -501,6 +544,30 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
 
   close() {
     this.closeEmit.emit();
+  }
+
+  subsAction = {
+    next: res => {
+      this.subs.unsubscribe();
+      this.loadingState = false;
+      this.popupMessageService.showMessage('Product has edited successfully.');
+      this.resetForm();
+    },
+    error: error => {
+      let message;
+      if (error.status > 0) {
+        message = error.error.message;
+      } else {
+        message = 'No connection';
+      }
+      this.loadingState = false;
+      this.popupMessageService.showMessage(message); 
+      this.subs.unsubscribe();
+    },
+    complete: () => {
+      this.loadingState = false;
+      this.subs.unsubscribe();
+    }
   }
 
 }

@@ -18,6 +18,9 @@ public class FileEntity {
     @Column
     boolean mainFlag;
 
+    @Column
+    String name;
+
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     @JsonBackReference
@@ -55,5 +58,13 @@ public class FileEntity {
 
     public void setProduct(ProductEntity product) {
         this.product = product;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

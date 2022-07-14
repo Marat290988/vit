@@ -1,6 +1,15 @@
 package com.vitshop.vitshop.controller;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArrayInteger;
+import com.google.gwt.typedarrays.client.ArrayBuffer;
+import com.google.gwt.typedarrays.client.Uint8Array;
 import com.vitshop.vitshop.domain.HttpResponse;
+import com.vitshop.vitshop.domain.file.FileEntity;
 import com.vitshop.vitshop.domain.product.ProductDTO;
 import com.vitshop.vitshop.domain.product.ProductEntity;
 import com.vitshop.vitshop.domain.user.UserEntity;
@@ -26,19 +35,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.multipart.MultipartFile;
-import sun.misc.IOUtils;
+
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Blob;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
+import static com.vitshop.vitshop.service.FileService.FORWARD_SLASH;
 import static com.vitshop.vitshop.service.FileService.VIT_FOLDER;
 import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
@@ -49,16 +57,19 @@ public class ProductController {
     private ProductService productService;
     private JWTTokenProvider jwtTokenProvider;
     private AdvanceProductSpec advanceProductSpec;
+    private FileService fileService;
 
     @Autowired
     ProductController(
             ProductService productService,
             JWTTokenProvider jwtTokenProvider,
-            AdvanceProductSpec advanceProductSpec
+            AdvanceProductSpec advanceProductSpec,
+            FileService fileService
     ) {
         this.productService = productService;
         this.jwtTokenProvider = jwtTokenProvider;
         this.advanceProductSpec = advanceProductSpec;
+        this.fileService = fileService;
     }
 
     @PostMapping("/list")
@@ -96,21 +107,69 @@ public class ProductController {
 //        return registration;
 //    }
 
+
     @PostMapping("/edit_product")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<ProductEntity> editProduct(
-            //@RequestBody HashMap<String, Object> editProduct
-            HttpServletRequest req
+                @RequestBody HashMap<String, Object> editData
             ) throws IOException, ClassNotFoundException {
+        String productId = null;
+        ProductEntity productEntity = null;
+        if (editData.get("productId") != null) {
+            productId = (String)editData.get("productId");
+            productEntity = productService.findProductEntityByProductId(productId);
+        }
+        ArrayList<HashMap<String, String>> fileList = (ArrayList<HashMap<String, String>>)editData.get("files");
+        if (fileList != null && productEntity != null) {
+            List<FileEntity> fileEntityList = fileService.saveFileEditProduct(productEntity, fileList);
+//            List<FileEntity> fileListFromProduct = productEntity.getFileList();
+//            fileListFromProduct.addAll(fileEntityList);
+            productEntity.setFileList(fileEntityList);
+            productService.updateProduct(productEntity);
+        }
+//        String base64 = (String)editData.get("file");
+//        Base64.Decoder decoder = Base64.getDecoder();
+//        byte[] decodedByte = decoder.decode(base64.split(",")[1]);
+//        Path productFolder = Paths.get(VIT_FOLDER + "7894").toAbsolutePath().normalize();
+//        if (!Files.exists(productFolder)) {
+//            Files.createDirectories(productFolder);
+//        }
+//        File file = new File(productFolder + FORWARD_SLASH + "eee.jpg");
+//        FileOutputStream fos = new FileOutputStream(file);
+//        fos.write(decodedByte);
+//        fos.close();
+
+//        JSONObject jsonObject = new JSONObject(json);
+//        JSONArray jArray = new JSONArray((JSONArray)jsonObject.get("file"));
+        //JsonObject jObject = JsonParser.parseString(json).getAsJsonObject();
+        //JsonArray jArray = jObject.getAsJsonArray("file");
+//        String[] arr = jObject.getAsJsonPrimitive("file").toString().split(",");
+//        int[] intArr = new int[arr.length];
+//        for (int i=0; i<arr.length; i++) {
+//            String numberOnly= arr[i].replaceAll("[^0-9]", "");
+//            int a = Integer.parseInt(numberOnly);
+//            //uint8Array.set(i, a);
+//            intArr[i] = a;
+//        }
+//        Uint8Array uint8Array = Uint8Array.create(intArr);
+//        System.out.println(intArr.toString());
+
+        //Uint8Array uint8Array = Uint8Array.create();
+
+
+
+
+//        Uint8Array uint8Array = Uint8Array.create()
+
         //byte[] processedText = req.getParameter()
 
         //System.out.println(i.getClass());
         //LinkedHashMap lM = (LinkedHashMap) editProduct.get("files");
 //        HashMap a = (LinkedHashMap)editProduct.get("files");
-        InputStream input = req.getInputStream();
-        ObjectInputStream ois = new ObjectInputStream(input);
-        HashMap<String, Object> data = (HashMap<String, Object>)ois.readObject();
-        System.out.println(data);
+//        InputStream input = req.getInputStream();
+//        ObjectInputStream ois = new ObjectInputStream(input);
+//        HashMap<String, Object> data = (HashMap<String, Object>)ois.readObject();
+//        System.out.println(data);
 //        System.out.println(a.getClass());
         //System.out.println(t.toString());
         return null;

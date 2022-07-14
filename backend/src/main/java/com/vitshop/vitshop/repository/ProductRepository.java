@@ -28,6 +28,6 @@ public interface ProductRepository extends CrudRepository<ProductEntity, Long>, 
     @Query("Select Distinct u.manufacturer From ProductEntity u")
     List<String> getAllManufacturer();
 
-    //List<ProductEntity> findProductEntities (searchWithFilter());
+    ProductEntity findProductEntityById(Long id);
 
 }

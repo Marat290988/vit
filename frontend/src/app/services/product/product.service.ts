@@ -74,9 +74,9 @@ export class ProductService {
 
     editProduct(editData): Observable<Product> {
         return this.http.post<Product>(`${this.host}/product/edit_product`, editData, {
-            // headers: new HttpHeaders({
-            //     'Content-Type':  'undefined',
-            // })
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
         })
     }
 

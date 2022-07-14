@@ -10,12 +10,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -60,6 +62,7 @@ public class FileService {
             Files.deleteIfExists(Paths.get(productFolder + product.getProductId() + n + EXTENSION));
             Files.copy(file.getInputStream(), productFolder.resolve(product.getProductId() + n + EXTENSION), REPLACE_EXISTING);
             fileEntity.setPath(setProductImageUrl(product.getProductId(), n, EXTENSION));
+            fileEntity.setName(product.getProductId() + n + EXTENSION);
             productFileList.add(fileEntity);
             ++n;
         }
@@ -87,6 +90,47 @@ public class FileService {
             fileList.add(hMap);
         }
         return fileList;
+    }
+
+    public List<FileEntity> saveFileEditProduct(
+            ProductEntity product,
+            ArrayList<HashMap<String, String>> fileList
+    ) throws IOException {
+        List<FileEntity> productFileList = new ArrayList<>();
+        List<FileEntity> fileListFromProduct = product.getFileList();
+        long lastId = fileRepository.getId(product.getId()).get(0);
+        int i = (int)lastId;
+        for (HashMap<String, String> fileData: fileList) {
+            i++;
+            FileEntity fileEntity = new FileEntity();
+            String base64 = fileData.get("file");
+            String status = fileData.get("main");
+            String ext = fileData.get("fileName").substring(fileData.get("fileName").lastIndexOf(DOT), fileData.get("fileName").length());
+            Base64.Decoder decoder = Base64.getDecoder();
+            byte[] decodedByte = decoder.decode(base64.split(",")[1]);
+            Path productFolder = Paths.get(VIT_FOLDER + product.getProductId()).toAbsolutePath().normalize();
+            if (!Files.exists(productFolder)) {
+                Files.createDirectories(productFolder);
+            }
+            File file = new File(productFolder + FORWARD_SLASH + product.getProductId() + i + ext);
+            fileEntity.setName(product.getProductId() + i + DOT + ext);
+            fileEntity.setProduct(product);
+            fileEntity.setPath(setProductImageUrl(product.getProductId(), i, ext));
+            if (status.equalsIgnoreCase("active")) {
+                for (FileEntity fItem: fileListFromProduct) {
+                    fItem.setMainFlag(false);
+                }
+            }
+            fileEntity.setMainFlag(status.equalsIgnoreCase("active"));
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(decodedByte);
+            fos.close();
+            productFileList.add(fileEntity);
+        }
+        if (fileListFromProduct.size() > 0) {
+            productFileList.addAll(fileListFromProduct);
+        }
+        return productFileList;
     }
 
     private String setProductImageUrl (String productId, int n, String EXT) {

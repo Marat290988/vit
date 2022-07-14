@@ -13,4 +13,7 @@ public interface FileRepository extends JpaRepository<FileEntity, Long> {
 
     @Query("Select u From FileEntity u Where product_id = :productId")
     List<FileEntity> findAllByProductEquals(Long productId);
+
+    @Query("Select u.id From FileEntity u Where product_id = :productId ORDER BY u.id DESC")
+    List<Long> getId(Long productId);
 }

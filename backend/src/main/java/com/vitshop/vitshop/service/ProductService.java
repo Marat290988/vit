@@ -31,8 +31,11 @@ public interface ProductService {
 
     byte[] getProductImage(String productId, String fileName) throws IOException;
 
+
     HashMap<String, Object> getCategoryAndManufacturer();
     Page<ProductDTO> getProductWithFilter(Specification<ProductEntity> spec, Pageable page);
     void deleteProduct(String productId) throws UserNotFoundException;
     public List<HashMap<String, Object>> getFileList(String productId) throws NoSuchFieldException, IllegalAccessException, IOException;
+    public ProductEntity findProductEntityByProductId(String productId);
+    void updateProduct(ProductEntity product);
 }

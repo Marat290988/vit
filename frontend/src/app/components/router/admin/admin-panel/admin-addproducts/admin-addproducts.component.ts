@@ -211,7 +211,6 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
       let fileState = true;
       for (let i=0; i < this.dataTransfer.files.length; i++) {
         if (this.listUrl[i].isEdit) {
-          console.log(this.listUrl[i])
           fileState = false;
           this.readFile(this.dataTransfer.files[i], i).then(
             (data: {result: string, fileName: string, index: number}) => {
@@ -230,6 +229,7 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
                   activeImg: this.currentIndex,
                   delete: this.removeImgs
                 }
+                console.log(editData)
                 this.subs = this.productService.editProduct(editData).subscribe(this.subsAction);
               }
             }
@@ -247,6 +247,7 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
             activeImg: this.currentIndex,
             delete: this.removeImgs
           }
+          this.subs = this.productService.editProduct(editData).subscribe(this.subsAction);
         }
       }
       if (this.dataTransfer.files.length === 0) {

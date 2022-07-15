@@ -3,12 +3,14 @@ package com.vitshop.vitshop.service;
 import com.vitshop.vitshop.domain.file.FileEntity;
 import com.vitshop.vitshop.domain.product.ProductEntity;
 import com.vitshop.vitshop.repository.FileRepository;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,10 +18,7 @@ import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -97,40 +96,65 @@ public class FileService {
             ArrayList<HashMap<String, String>> fileList
     ) throws IOException {
         List<FileEntity> productFileList = new ArrayList<>();
-        List<FileEntity> fileListFromProduct = product.getFileList();
+        List<FileEntity> fileListFromProduct = fileRepository.findAllByProductEquals(product.getId());
         long lastId = fileRepository.getId(product.getId()).get(0);
         int i = (int)lastId;
-        for (HashMap<String, String> fileData: fileList) {
-            i++;
-            FileEntity fileEntity = new FileEntity();
-            String base64 = fileData.get("file");
-            String status = fileData.get("main");
-            String ext = fileData.get("fileName").substring(fileData.get("fileName").lastIndexOf(DOT), fileData.get("fileName").length());
-            Base64.Decoder decoder = Base64.getDecoder();
-            byte[] decodedByte = decoder.decode(base64.split(",")[1]);
-            Path productFolder = Paths.get(VIT_FOLDER + product.getProductId()).toAbsolutePath().normalize();
-            if (!Files.exists(productFolder)) {
-                Files.createDirectories(productFolder);
-            }
-            File file = new File(productFolder + FORWARD_SLASH + product.getProductId() + i + ext);
-            fileEntity.setName(product.getProductId() + i + DOT + ext);
-            fileEntity.setProduct(product);
-            fileEntity.setPath(setProductImageUrl(product.getProductId(), i, ext));
-            if (status.equalsIgnoreCase("active")) {
-                for (FileEntity fItem: fileListFromProduct) {
-                    fItem.setMainFlag(false);
+        if (fileList.size() > 0) {
+            for (HashMap<String, String> fileData: fileList) {
+                i++;
+                FileEntity fileEntity = new FileEntity();
+                String base64 = fileData.get("file");
+                String status = fileData.get("main");
+                String ext = fileData.get("fileName").substring(fileData.get("fileName").lastIndexOf(DOT), fileData.get("fileName").length());
+                Base64.Decoder decoder = Base64.getDecoder();
+                byte[] decodedByte = decoder.decode(base64.split(",")[1]);
+                Path productFolder = Paths.get(VIT_FOLDER + product.getProductId()).toAbsolutePath().normalize();
+                if (!Files.exists(productFolder)) {
+                    Files.createDirectories(productFolder);
                 }
+                File file = new File(productFolder + FORWARD_SLASH + product.getProductId() + i + ext);
+                fileEntity.setName(product.getProductId() + i + ext);
+                fileEntity.setProduct(product);
+                fileEntity.setPath(setProductImageUrl(product.getProductId(), i, ext));
+                if (status.equalsIgnoreCase("active")) {
+                    for (FileEntity fItem: fileListFromProduct) {
+                        fItem.setMainFlag(false);
+                    }
+                }
+                fileEntity.setMainFlag(status.equalsIgnoreCase("active"));
+                FileOutputStream fos = new FileOutputStream(file);
+                fos.write(decodedByte);
+                fos.close();
+                productFileList.add(fileEntity);
             }
-            fileEntity.setMainFlag(status.equalsIgnoreCase("active"));
-            FileOutputStream fos = new FileOutputStream(file);
-            fos.write(decodedByte);
-            fos.close();
-            productFileList.add(fileEntity);
         }
         if (fileListFromProduct.size() > 0) {
             productFileList.addAll(fileListFromProduct);
         }
         return productFileList;
+    }
+
+//    Users user = userRepository.findUsersByUsername(username);
+//    Path userFolder = Paths.get(USER_FOLDER + user.getUsername()).toAbsolutePath().normalize();
+//    FileUtils.deleteDirectory(new File(userFolder.toString()));
+//    userRepository.deleteById(user.getId());
+
+
+    @Transactional
+    public List<FileEntity> removeFile(String productId, Long id, List<Integer> deleteList) {
+        for (Integer iId: deleteList) {
+            Long lId = new Long(iId);
+            System.out.println(lId);
+            fileRepository.deleteFileEntityById(lId);
+        }
+//        FileEntity fileEntity = fileRepository.getById(id);
+//        Path filePath = Paths.get(VIT_FOLDER + productId + FORWARD_SLASH + fileEntity.getName()).toAbsolutePath().normalize();
+//        File file = new File(filePath.toString());
+//        if (file.exists()) {
+//            file.delete();
+//        }
+//        fileRepository.deleteById(id);
+        return fileRepository.findAllByProductEquals(id);
     }
 
     private String setProductImageUrl (String productId, int n, String EXT) {

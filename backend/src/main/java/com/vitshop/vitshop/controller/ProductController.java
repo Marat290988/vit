@@ -120,11 +120,12 @@ public class ProductController {
             productEntity = productService.findProductEntityByProductId(productId);
         }
         ArrayList<HashMap<String, String>> fileList = (ArrayList<HashMap<String, String>>)editData.get("files");
-        if (fileList != null && productEntity != null) {
+        ArrayList<Integer> deleteList = (ArrayList<Integer>)editData.get("delete");
+        if (fileList != null && productEntity != null && deleteList != null) {
             List<FileEntity> fileEntityList = fileService.saveFileEditProduct(productEntity, fileList);
-//            List<FileEntity> fileListFromProduct = productEntity.getFileList();
-//            fileListFromProduct.addAll(fileEntityList);
             productEntity.setFileList(fileEntityList);
+            productService.updateProduct(productEntity);
+            productEntity.setFileList(fileService.removeFile(productEntity.getProductId(), productEntity.getId(), deleteList));
             productService.updateProduct(productEntity);
         }
 //        String base64 = (String)editData.get("file");

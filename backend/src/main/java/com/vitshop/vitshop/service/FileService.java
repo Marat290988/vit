@@ -93,12 +93,23 @@ public class FileService {
 
     public List<FileEntity> saveFileEditProduct(
             ProductEntity product,
-            ArrayList<HashMap<String, String>> fileList
+            ArrayList<HashMap<String, String>> fileList,
+            Integer activeImg
     ) throws IOException {
         List<FileEntity> productFileList = new ArrayList<>();
         List<FileEntity> fileListFromProduct = fileRepository.findAllByProductEquals(product.getId());
         long lastId = fileRepository.getId(product.getId()).get(0);
         int i = (int)lastId;
+        if (activeImg != null) {
+            for (FileEntity fItem: fileListFromProduct) {
+                Long activeId = new Long(activeImg);
+                if (fItem.getId().longValue() == activeId.longValue()) {
+                    fItem.setMainFlag(true);
+                } else {
+                    fItem.setMainFlag(false);
+                }
+            }
+        }
         if (fileList.size() > 0) {
             for (HashMap<String, String> fileData: fileList) {
                 i++;
@@ -134,26 +145,18 @@ public class FileService {
         return productFileList;
     }
 
-//    Users user = userRepository.findUsersByUsername(username);
-//    Path userFolder = Paths.get(USER_FOLDER + user.getUsername()).toAbsolutePath().normalize();
-//    FileUtils.deleteDirectory(new File(userFolder.toString()));
-//    userRepository.deleteById(user.getId());
-
-
     @Transactional
     public List<FileEntity> removeFile(String productId, Long id, List<Integer> deleteList) {
         for (Integer iId: deleteList) {
             Long lId = new Long(iId);
-            System.out.println(lId);
+            FileEntity fileEntity = fileRepository.getFileEntityById(lId);
+            Path filePath = Paths.get(VIT_FOLDER + productId + FORWARD_SLASH + fileEntity.getName()).toAbsolutePath().normalize();
+            File file = new File(filePath.toString());
+            if (file.exists()) {
+                file.delete();
+            }
             fileRepository.deleteFileEntityById(lId);
         }
-//        FileEntity fileEntity = fileRepository.getById(id);
-//        Path filePath = Paths.get(VIT_FOLDER + productId + FORWARD_SLASH + fileEntity.getName()).toAbsolutePath().normalize();
-//        File file = new File(filePath.toString());
-//        if (file.exists()) {
-//            file.delete();
-//        }
-//        fileRepository.deleteById(id);
         return fileRepository.findAllByProductEquals(id);
     }
 

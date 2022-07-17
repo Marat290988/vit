@@ -22,4 +22,6 @@ public interface FileRepository extends CrudRepository<FileEntity, Long> {
     @Modifying
     @Query("Delete From FileEntity u Where u.id = :id")
     void deleteFileEntityById(Long id);
+
+    FileEntity getFileEntityById(Long id);
 }

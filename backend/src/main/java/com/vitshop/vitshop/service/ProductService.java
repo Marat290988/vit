@@ -37,5 +37,7 @@ public interface ProductService {
     void deleteProduct(String productId) throws UserNotFoundException;
     public List<HashMap<String, Object>> getFileList(String productId) throws NoSuchFieldException, IllegalAccessException, IOException;
     public ProductEntity findProductEntityByProductId(String productId);
-    void updateProduct(ProductEntity product);
+    ProductEntity updateProduct(
+            HashMap<String, Object> editData
+    ) throws IOException;
 }

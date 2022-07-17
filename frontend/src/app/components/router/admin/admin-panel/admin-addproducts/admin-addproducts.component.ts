@@ -40,6 +40,7 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
   addList = [];
   removeImgs = [];
   productId: string;
+  activeImgForEdit: number = null;
   
   @ViewChild('nameComposition') nameComposition: ElementRef;
   @ViewChild('qtyComposition') qtyComposition: ElementRef;
@@ -51,6 +52,7 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
   @Input() isEdit = false;
   @Input() transferData$: Observable<Product>;
   @Output() closeEmit = new EventEmitter();
+  @Output() updateProduct = new EventEmitter();
 
   
 
@@ -120,6 +122,7 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
     this.formGroup.get('dPrice').setValue(product.basePrice);
     this.setFileData(product.fileEntityList, product.productId);
     this.setDPrice(String(product.basePrice));
+    this.formGroup.get('composition').setValue('');
     this.setComposition(product.composition);
     if (!product.active) {
       document.querySelector('label[for="isActive"]').classList.remove('active');
@@ -168,7 +171,7 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
           let f = new File([jpgResult], "1");
           const url = this.sanitazer.bypassSecurityTrustUrl(URL.createObjectURL(f));
           this.dataTransfer.items.add(f);
-          this.listUrl.push({url: url, active: file.active ? 'active' : '', id: index, productId: file.id, isEdit: false});
+          this.listUrl.push({url: url, active: file.active ? 'active' : '', id: index, productId: file.id, isEdit: false, file_id: file.id});
           if (file.active) {
             this.currentIndex = index;
           }
@@ -222,14 +225,15 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
                   productId: this.productId,
                   name: this.formGroup.get('name').value,
                   category: this.formGroup.get('category').value,
-                  manufacturer: this.formGroup.get('dPrice').value,
+                  manufacturer: this.formGroup.get('manufacturer').value,
                   description: this.formGroup.get('description').value,
-                  dPrice: this.formGroup.get('dPrice').value,
+                  dPrice: String(this.formGroup.get('dPrice').value),
                   files: fileArr,
-                  activeImg: this.currentIndex,
-                  delete: this.removeImgs
+                  activeImg: this.activeImgForEdit,
+                  delete: this.removeImgs,
+                  isActive: this.formGroup.get('isActive').value,
+                  composition: this.formGroup.get('composition').value
                 }
-                console.log(editData)
                 this.subs = this.productService.editProduct(editData).subscribe(this.subsAction);
               }
             }
@@ -240,12 +244,14 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
             productId: this.productId,
             name: this.formGroup.get('name').value,
             category: this.formGroup.get('category').value,
-            manufacturer: this.formGroup.get('dPrice').value,
+            manufacturer: this.formGroup.get('manufacturer').value,
             description: this.formGroup.get('description').value,
-            dPrice: this.formGroup.get('dPrice').value,
+            dPrice: String(this.formGroup.get('dPrice').value),
             files: fileArr,
-            activeImg: this.currentIndex,
-            delete: this.removeImgs
+            activeImg: this.activeImgForEdit,
+            delete: this.removeImgs,
+            isActive: this.formGroup.get('isActive').value,
+            composition: this.formGroup.get('composition').value
           }
           this.subs = this.productService.editProduct(editData).subscribe(this.subsAction);
         }
@@ -257,10 +263,12 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
           category: this.formGroup.get('category').value,
           manufacturer: this.formGroup.get('dPrice').value,
           description: this.formGroup.get('description').value,
-          dPrice: this.formGroup.get('dPrice').value,
+          dPrice: String(this.formGroup.get('dPrice').value),
           files: null,
-          activeImg: this.currentIndex,
-          delete: this.removeImgs
+          activeImg: this.activeImgForEdit,
+          delete: this.removeImgs,
+          isActive: this.formGroup.get('isActive').value,
+          composition: this.formGroup.get('composition').value
         }
         this.subs = this.productService.editProduct(editData).subscribe(this.subsAction);
       }
@@ -473,9 +481,9 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
     a.dataTransfer.items.add(file);
     const url = a.sanitazer.bypassSecurityTrustUrl(URL.createObjectURL(file));
     if (this.isEdit) {
-      a.listUrl.push({url, active: '', id: a.imgId, isEdit: true});
+      a.listUrl.push({url, active: '', id: a.imgId, isEdit: true, file_id: null});
     } else {
-      a.listUrl.push({url, active: '', id: a.imgId, isEdit: false});
+      a.listUrl.push({url, active: '', id: a.imgId, isEdit: false, file_id: null});
     }
     a.imgId++;
     if (firstAdd) {
@@ -487,7 +495,10 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
     this.currentIndexObserve$.next({id: this.listUrl[this.currentIndex].id, listUrl: this.listUrl});
   }
 
-  changeMainImg(index: number) {
+  changeMainImg(index: number, file_id: number) {
+    if (this.isEdit) {
+      this.activeImgForEdit = file_id;
+    }
     this.listUrl[this.currentIndex].active = '';
     this.currentIndex = index;
     this.currentIndexObserve$.next({id: this.listUrl[this.currentIndex].id, listUrl: this.listUrl});
@@ -505,6 +516,7 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
     if (this.listUrl.length > 0 && urlItem[0].active === 'active') {
       this.listUrl[0].active = 'active';
       this.currentIndex = 0;
+      this.activeImgForEdit = this.listUrl[0].file_id;
       this.currentIndexObserve$.next({id: this.listUrl[this.currentIndex].id, listUrl: this.listUrl});
     } else {
       this.currentIndexObserve$.next({id: null, listUrl: this.listUrl});
@@ -544,6 +556,7 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
   }
 
   close() {
+    this.resetForm();
     this.closeEmit.emit();
   }
 
@@ -553,6 +566,7 @@ export class AdminAddproductsComponent implements OnInit, OnDestroy {
       this.loadingState = false;
       this.popupMessageService.showMessage('Product has edited successfully.');
       this.resetForm();
+      this.updateProduct.emit();
     },
     error: error => {
       let message;

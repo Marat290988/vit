@@ -54,6 +54,7 @@
 .productlist-table {
     padding: 10px 10px 0px 10px;
     position: relative;
+    overflow-x: auto;
 }
 
 .data-table td, .data-table th {
@@ -183,4 +184,11 @@ tbody tr:last-child td {
     z-index: 1001;
     transform: translate3d(-2000px, 0px, 0px);
     transition: transform 0.5s ease-in-out;
+}
+
+@media(max-width: 1080px) {
+    .productlist-main {
+        position: relative;
+        overflow: hidden;
+    }
 }

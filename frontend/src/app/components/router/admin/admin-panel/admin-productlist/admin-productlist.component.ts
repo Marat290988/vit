@@ -114,14 +114,18 @@ export class AdminProductlistComponent extends ListComponent implements AfterVie
   }
 
   onEditEmit() {
+    this.transferData$.next(this.editData);
     this.editProduct.nativeElement.style.transform = 
         `translate3d(0px, 0px, 0px)`;
   }
 
   onCloseEmit() {
-    this.transferData$.next(this.editData);
     this.editProduct.nativeElement.style.transform = 
         `translate3d(-${this.editProduct.nativeElement.getBoundingClientRect().width}px, 0px, 0px)`;
+  }
+
+  onUpdate() {
+    this.getData(this.setFilter());
   }
 
 }

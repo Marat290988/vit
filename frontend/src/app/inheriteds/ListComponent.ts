@@ -200,7 +200,6 @@ export class ListComponent {
         this.editData = editData;
         tr.classList.add('active');
         this[state] = false;
-        this.transferData$.next(this.editData);
     }
 
     onClickPage(event, index: number, filter) {

@@ -182,7 +182,7 @@
                         <input type="file" accept="image/jpeg,image/png" #fileInput hidden="true" multiple (change)="addFiles($event)">
                         <div class="images-list">
                             <ng-container *ngFor="let url of listUrl let index = index">
-                                <div style="position: relative;" (click)="changeMainImg(index)">
+                                <div style="position: relative;" (click)="changeMainImg(index, url.file_id)">
                                     <div class="img-cont" (click)="$event.stopPropagation(); removeImage(index);">
                                         <div class="img-cont-back"></div>
                                         <svg xmlns="http://www.w3.org/2000/svg" style="z-index: 1; position: absolute;" aria-hidden="true" role="img" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1024 1024">

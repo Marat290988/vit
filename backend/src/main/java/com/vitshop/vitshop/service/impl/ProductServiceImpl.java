@@ -126,9 +126,39 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findProductEntityByProductId(productId);
     }
     @Override
-    public void updateProduct(ProductEntity product) {
-        productRepository.save(product);
-        LOGGER.info("Have been updated product: " + product.getName());
+    public ProductEntity updateProduct(
+            HashMap<String, Object> editData
+    ) throws IOException {
+        String productId = (String) editData.get("productId");
+        ArrayList<HashMap<String, String>> fileList = (ArrayList<HashMap<String, String>>)editData.get("files");
+        ArrayList<Integer> deleteList = (ArrayList<Integer>)editData.get("delete");
+        String category = (String) editData.get("category");
+        String manufacturer = (String) editData.get("manufacturer");
+        String name = (String) editData.get("name");
+        String composition = (String) editData.get("composition");
+        String description = (String) editData.get("description");
+        double dPrice = Double.parseDouble((String) editData.get("dPrice"));
+        Integer activeImg = (Integer) editData.get("activeImg");
+        ProductEntity productEntity = findProductEntityByProductId(productId);
+        productEntity.setCategory(category);
+        productEntity.setManufacturer(manufacturer);
+        productEntity.setBasePrice(dPrice);
+        productEntity.setActive(((boolean) editData.get("isActive")));
+        productEntity.setName(name);
+        productEntity.setComposition(composition);
+        productEntity.setDescription(description);
+        if (fileList.size() > 0 || activeImg != null) {
+            List<FileEntity> fileEntityList = fileService.saveFileEditProduct(productEntity, fileList, activeImg);
+            productEntity.setFileList(fileEntityList);
+            productRepository.save(productEntity);
+        }
+        if (deleteList.size() > 0) {
+            productEntity.setFileList(fileService.removeFile(productEntity.getProductId(), productEntity.getId(), deleteList));
+            productRepository.save(productEntity);
+        }
+        productRepository.save(productEntity);
+        LOGGER.info("Have been updated product: " + productEntity.getName());
+        return productEntity;
     }
 
     private String generateProductId() {

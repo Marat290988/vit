@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
@@ -138,7 +139,7 @@ public class ProductEntity {
     }
 
     public void setBasePrice(double dPrice) {
-        this.basePrice = new BigDecimal(dPrice).setScale(2, BigDecimal.ROUND_DOWN);
+        this.basePrice = new BigDecimal(dPrice).setScale(2, RoundingMode.CEILING);
     }
 
     public String getAuthorName() {

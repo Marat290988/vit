@@ -60,3 +60,14 @@ input[type=number] {
 .select-cont p {
     font-size: 14px;
 }
+
+@media(max-width: 1080px) {
+    .productlist-panel {
+        position: absolute;
+        z-index: 100000;
+        height: calc(100% + 1px);
+    }
+    .productlist-panel-inner {
+        border-radius: 4px;
+    }
+}

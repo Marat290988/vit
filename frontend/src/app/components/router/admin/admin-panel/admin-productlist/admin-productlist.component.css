@@ -8,6 +8,7 @@
     margin-right: auto;
     position: relative;
     overflow: hidden;
+
 }
 
 .productlist-head {
@@ -16,11 +17,14 @@
     border-top-right-radius: 8px;
     padding: 5px;
     background-color: var(--colorblight1);
+    display: flex;
+    align-items: center;
 }
 
 .productlist-head h3 {
     text-align: center;
     color: var(--colorf1);
+    flex-grow: 1;
 }
 
 .productlist-main {
@@ -186,9 +190,32 @@ tbody tr:last-child td {
     transition: transform 0.5s ease-in-out;
 }
 
+.panel-button {
+    display: none;
+    width: 18px;
+    height: 18px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.panel-button:hover svg {
+    fill: #000;
+}
+
 @media(max-width: 1080px) {
     .productlist-main {
         position: relative;
         overflow: hidden;
+    }
+
+    .productlist-main>div:first-child {
+        display: none; 
+        opacity: 0; 
+        transition: 
+        opacity 0.5s ease-in-out;
+    }
+
+    .panel-button {
+        display: block;
     }
 }

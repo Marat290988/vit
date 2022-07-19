@@ -14,6 +14,8 @@ export class AdminProductlistComponent extends ListComponent implements AfterVie
   changeFilter$: BehaviorSubject<any> = new BehaviorSubject(null);
   filterSubs: Subscription;
   @ViewChild('editProduct') editProduct: ElementRef;
+  @ViewChild('productPanel') productPanel: ElementRef;
+  linkTimeout;
 
   constructor(
     
@@ -126,6 +128,22 @@ export class AdminProductlistComponent extends ListComponent implements AfterVie
 
   onUpdate() {
     this.getData(this.setFilter());
+  }
+
+  showSearchPanel() {
+    this.productPanel.nativeElement.style.zIndex = '1000000000000000000';
+    if (this.productPanel.nativeElement.style.display === 'block') {
+      this.productPanel.nativeElement.style.opacity = '0';
+      this.linkTimeout = setTimeout(() => {
+        this.productPanel.nativeElement.style.display = 'none';
+      }, 500);
+    } else {
+      clearTimeout(this.linkTimeout);
+      this.productPanel.nativeElement.style.display = 'block';
+      setTimeout(() => {
+        this.productPanel.nativeElement.style.opacity = '1';
+      });
+    }
   }
 
 }

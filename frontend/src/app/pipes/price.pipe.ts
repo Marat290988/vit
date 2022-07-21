@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from "@angular/core";
     name: 'price'
 })
 export class PricePipe implements PipeTransform {
-    transform(value: number, symbol: string): string {
+    transform(value: any, symbol: string): string {
         let ednNum;
         const match = String(value).match(/\.\d\d?/)
         if (match) {

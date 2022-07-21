@@ -1,1 +1,8 @@
-<p>vits works!</p>
+<div class="vit-list">
+    <div *ngFor="let product of tableData">
+        <app-vit-card
+            [product]="product"
+        >
+        </app-vit-card>
+    </div>
+</div>

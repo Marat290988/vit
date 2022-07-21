@@ -70,6 +70,7 @@ export class ListComponent {
         );
         this.subsData = this.dataStream$.subscribe({
             next: res => {
+              console.log(res)
                 this.removeActiveButtons();
                 this.loadState = false;
                 this.prepareData();

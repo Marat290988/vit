@@ -31,6 +31,8 @@ import { ProductService } from './services/product/product.service';
 import { ListComponent } from './inheriteds/ListComponent';
 import { InjectService } from './services/inject/inject.service';
 import { PricePipe } from './pipes/price.pipe';
+import { VitCardComponent } from './components/router/vits/vit-card/vit-card.component';
+import { PipesModule } from './shared/pipes.module';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,8 @@ import { PricePipe } from './pipes/price.pipe';
     CartComponent,
     SureComponent,
     HelpPopupComponent,
-    ErrorComponent
+    ErrorComponent,
+    VitCardComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +62,8 @@ import { PricePipe } from './pipes/price.pipe';
     EffectsModule.forRoot([]),
     AppRoutingModule,
     AdminModule,
-    DirectiveModule
+    DirectiveModule,
+    PipesModule
   ],
   providers: [
     UserService,

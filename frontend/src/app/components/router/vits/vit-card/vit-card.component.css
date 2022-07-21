@@ -1,0 +1,33 @@
+.card-container {
+    width: 300px;
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    border: 2px solid #eee;
+    border-radius: 10px;
+}
+
+.card-img {
+    height: 200px;
+    width: 200px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+.card-name {
+    width: 100%;
+    font-size: 14px;
+    color: var(--colorb1);
+    height: 32px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.card-price {
+    font-family: var(--f700);
+    margin-top: 10px;
+}

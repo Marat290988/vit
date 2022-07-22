@@ -41,7 +41,7 @@ export class ListComponent {
     refClass;
     classToRow: Function;
     editData;
-    cssClassPage = 'page-num';
+    cssClassPage = '.page-num';
     service: string = '';
     serviceMethod: string = '';
     serviceMethodDel: string = '';
@@ -70,7 +70,6 @@ export class ListComponent {
         );
         this.subsData = this.dataStream$.subscribe({
             next: res => {
-              console.log(res)
                 this.removeActiveButtons();
                 this.loadState = false;
                 this.prepareData();

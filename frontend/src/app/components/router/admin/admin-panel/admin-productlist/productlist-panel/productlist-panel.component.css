@@ -83,6 +83,7 @@ input[type=number] {
     .productlist-panel.productlist-card .productlist-panel-inner {
         height: 47px;
         overflow: hidden;
+        transition: height 0.5s ease-in-out;
     }
     .panel-arrow-down {
         display: block;

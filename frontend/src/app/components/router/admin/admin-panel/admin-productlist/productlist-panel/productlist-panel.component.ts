@@ -43,6 +43,7 @@ export class ProductlistPanelComponent implements OnInit {
   windowCliclEvent$: Observable<any> = fromEvent(window, 'click').pipe(
     map(event => event.target)
   );
+  linkTimeout;
   
 
   constructor(
@@ -128,10 +129,21 @@ export class ProductlistPanelComponent implements OnInit {
 
   expandSearchPanel() {
     const arrow: HTMLElement = document.querySelector('.panel-arrow-down');
+    const panel: HTMLElement = document.querySelector('.productlist-panel-inner');
     if (arrow.classList.contains('active')) {
+      clearTimeout(this.linkTimeout);
       arrow.classList.remove('active');
+      panel.style.height = `${panel.getBoundingClientRect().height}px`;
+      this.linkTimeout =  setTimeout(() => {
+        panel.style.height = '47px';
+      }, 100)
     } else {
+      clearTimeout(this.linkTimeout);
       arrow.classList.add('active');
+      panel.style.height = `${panel.scrollHeight}px`;
+      this.linkTimeout = setTimeout(() => {
+        panel.style.height = 'unset';
+      }, 500);
     }
   }
 

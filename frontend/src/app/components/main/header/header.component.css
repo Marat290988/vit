@@ -37,6 +37,7 @@
     position: relative;
     display: flex;
     align-items: center;
+    height: 100%;
 }
 
 .vit-user-name {
@@ -57,7 +58,7 @@
 .pop-up-profile {
     width: 70px;
     position: absolute;
-    top: 25px;
+    top: 44px;
     left: 50%;
     display: none;
     flex-direction: column;
@@ -67,6 +68,7 @@
     box-shadow: -1px 2px 7px 0 #b6b6b6;
     padding: 5px 0;
     background-color: var(--colorblight1);
+    z-index: 12;
 }
 
 .vit-user-title:hover .pop-up-profile {

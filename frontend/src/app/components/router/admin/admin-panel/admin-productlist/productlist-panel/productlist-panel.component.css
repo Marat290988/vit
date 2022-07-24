@@ -61,13 +61,34 @@ input[type=number] {
     font-size: 14px;
 }
 
-@media(max-width: 1080px) {
-    .productlist-panel {
-        position: absolute;
-        z-index: 100000;
-        height: calc(100% + 1px);
+.panel-arrow-down {
+    display: none;
+    width: 15px; 
+    height: 15px;
+    position: absolute;
+    right: 28px;
+    top: 8px;
+    transition: transform .3s ease-in-out;
+}
+
+.panel-arrow-down.active {
+    transform: rotate(180deg);
+}
+
+@media (max-width: 620px) {
+    .productlist-panel.productlist-card {
+        width: 100%;
     }
-    .productlist-panel-inner {
-        border-radius: 4px;
+
+    .productlist-panel.productlist-card .productlist-panel-inner {
+        height: 47px;
+        overflow: hidden;
+    }
+    .panel-arrow-down {
+        display: block;
+    }
+    .productlist-panel.productlist-card .productlist-panel-inner>.form-stadart-cont:first-child {
+        position: relative;
     }
 }
+

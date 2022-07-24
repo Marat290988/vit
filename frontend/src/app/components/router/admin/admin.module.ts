@@ -61,7 +61,8 @@ registerLocaleData(localeRu)
         },
     ],
     exports: [
-        SpinnerComponent
+        SpinnerComponent,
+        ProductlistPanelComponent
     ]
 })
 export class AdminModule {

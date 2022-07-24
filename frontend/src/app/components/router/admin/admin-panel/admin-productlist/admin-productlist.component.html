@@ -49,7 +49,7 @@
                     <div class="arrow" (click)="onClickArrow('LEFT')"><</div>
                 </div>
                 <ng-container *ngFor="let page of pagePaginator let index=index">
-                    <div *ngIf="page.state" [ngClass]="page.class" (click)="onClickPage($event, index, setFilter())">{{page.number}}</div>
+                    <div *ngIf="page.state" [ngClass]="page.class" (click)="onClickPage($event, index, setFilter(filter))">{{page.number}}</div>
                 </ng-container>
                 <div class="arrow-container" style="margin-right: 10px;">
                     <div class="arrow" style="justify-self: end;" (click)="onClickArrow('RIGHT')">></div>

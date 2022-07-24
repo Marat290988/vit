@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Product } from 'src/app/services/product/product.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vit-card',
@@ -11,7 +12,9 @@ export class VitCardComponent implements OnInit, AfterViewInit {
   @Input() product: Product;
   @ViewChild('img') img: ElementRef;
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
   
   ngOnInit(): void {
     

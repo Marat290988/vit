@@ -64,6 +64,7 @@ export class AdminProductlistComponent extends ListComponent implements AfterVie
   }
 
   onSearchEmit(searchData: SearchFilter) {
+    this.changePagePag = false;
     this.changeFilter$.next(this.setFilter(searchData));
     this.filter = this.setFilter(searchData);
   }
@@ -82,12 +83,12 @@ export class AdminProductlistComponent extends ListComponent implements AfterVie
       } else {
         tempSearch.product = searchData.product;
       }
-      if (searchData.catListSelected.length === 0) {
+      if (searchData.catListSelected && searchData.catListSelected.length === 0) {
         tempSearch.catListSelected = null;
       } else {
         tempSearch.catListSelected = searchData.catListSelected;
       }
-      if (searchData.manListSelected.length === 0) {
+      if (searchData.manListSelected && searchData.manListSelected.length === 0) {
         tempSearch.manListSelected = null;
       } else {
         tempSearch.manListSelected = searchData.manListSelected;

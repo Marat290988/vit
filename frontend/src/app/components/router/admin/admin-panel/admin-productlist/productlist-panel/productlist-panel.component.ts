@@ -126,4 +126,13 @@ export class ProductlistPanelComponent implements OnInit {
     this.selectNumOfRow.emit(event.target.value);
   }
 
+  expandSearchPanel() {
+    const arrow: HTMLElement = document.querySelector('.panel-arrow-down');
+    if (arrow.classList.contains('active')) {
+      arrow.classList.remove('active');
+    } else {
+      arrow.classList.add('active');
+    }
+  }
+
 }

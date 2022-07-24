@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BehaviorSubject, debounceTime, Subscription } from 'rxjs';
 import { ListComponent } from 'src/app/inheriteds/ListComponent';
 import { Product } from 'src/app/services/product/product.service';
 import { SearchFilter } from '../admin/admin-panel/admin-productlist/productlist-panel/productlist-panel.component';
@@ -10,7 +11,12 @@ import { SearchFilter } from '../admin/admin-panel/admin-productlist/productlist
 })
 export class VitsComponent extends ListComponent implements OnInit {
 
-  constructor() { 
+  changeFilter$: BehaviorSubject<any> = new BehaviorSubject(null);
+  filterSubs: Subscription;
+
+  constructor(
+    
+  ) { 
     super();
     this.listSize = 12;
   }
@@ -25,7 +31,17 @@ export class VitsComponent extends ListComponent implements OnInit {
       })
     }
     this.getData(this.setFilter());
+    this.filterSubs = this.changeFilter$
+      .pipe(
+        debounceTime(500)
+      )
+      .subscribe((data: SearchFilter) => {
+        if (data) {
+          this.getData(data);
+        }
+      });
     this.filter = this.setFilter();
+    
   }
 
   setFilter(searchData?: SearchFilter): SearchFilter {
@@ -42,12 +58,12 @@ export class VitsComponent extends ListComponent implements OnInit {
       } else {
         tempSearch.product = searchData.product;
       }
-      if (searchData.catListSelected.length === 0) {
+      if (searchData.catListSelected && searchData.catListSelected.length === 0) {
         tempSearch.catListSelected = null;
       } else {
         tempSearch.catListSelected = searchData.catListSelected;
       }
-      if (searchData.manListSelected.length === 0) {
+      if (searchData.manListSelected && searchData.manListSelected.length === 0) {
         tempSearch.manListSelected = null;
       } else {
         tempSearch.manListSelected = searchData.manListSelected;
@@ -64,6 +80,12 @@ export class VitsComponent extends ListComponent implements OnInit {
       }
     }
     return tempSearch;
+  }
+
+  onSearchEmit(searchData: SearchFilter) {
+    this.changePagePag = false;
+    this.changeFilter$.next(this.setFilter(searchData));
+    this.filter = this.setFilter(searchData);
   }
 
 }

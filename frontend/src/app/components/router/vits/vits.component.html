@@ -1,23 +1,37 @@
-<div class="vit-list">
-    <div *ngFor="let product of tableData">
-        <app-vit-card
-            *ngIf="product.productId"
-            [product]="product"
+<div class="vit-list-cont">
+    <div class="vit-list-panel">
+        <app-productlist-panel
+            [adminAction]="false"
+            (searchEmit)="onSearchEmit($event)"
         >
-        </app-vit-card>
+        </app-productlist-panel>
     </div>
-    <div class="pagination-container">
-        <div class="arrow-container" style="margin-left: 10px;">
-            <div class="arrow" (click)="onClickArrow('LEFT')"><</div>
+    <div class="vit-list">
+        <div *ngFor="let product of tableData let index = index" class="product-card-list"
+            [ngClass]="tableData.length-1 === index ? 'bottom' : ''"
+        >
+            <app-vit-card
+                *ngIf="product.productId"
+                [product]="product"
+            >
+            </app-vit-card>
         </div>
-        <ng-container *ngFor="let page of pagePaginator let index=index">
-            <div *ngIf="page.state" [ngClass]="page.class" (click)="onClickPage($event, index, setFilter())">{{page.number}}</div>
-        </ng-container>
-        <div class="arrow-container" style="margin-right: 10px;">
-            <div class="arrow" style="justify-self: end;" (click)="onClickArrow('RIGHT')">></div>
+        <div class="empty-card" *ngIf="totalPage === 0">
+            <div>Not found</div>
         </div>
-    </div>
-    <div *ngIf="loadState" class="spinner-container">
-        <app-spinner></app-spinner>
+        <div class="pagination-container">
+            <div class="arrow-container" style="margin-left: 10px;">
+                <div class="arrow" (click)="onClickArrow('LEFT')"><</div>
+            </div>
+            <ng-container *ngFor="let page of pagePaginator let index=index">
+                <div *ngIf="page.state" [ngClass]="page.class" (click)="onClickPage($event, index, setFilter(filter))">{{page.number}}</div>
+            </ng-container>
+            <div class="arrow-container" style="margin-right: 10px;">
+                <div class="arrow" style="justify-self: end;" (click)="onClickArrow('RIGHT')">></div>
+            </div>
+        </div>
+        <div *ngIf="loadState" class="spinner-container">
+            <app-spinner></app-spinner>
+        </div>
     </div>
 </div>

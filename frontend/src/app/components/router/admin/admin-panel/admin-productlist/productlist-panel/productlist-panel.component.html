@@ -1,4 +1,4 @@
-<div class="productlist-panel">
+<div class="productlist-panel" [ngClass]="!adminAction ? 'productlist-card' : ''">
     <div class="productlist-panel-inner">
         <!-- Search -->
         <div class="form-stadart-cont">
@@ -9,6 +9,11 @@
                     readonly onfocus="this.removeAttribute('readonly')" 
                     id="product-search"
                 />
+            </div>
+            <div class="panel-arrow-down" *ngIf="!adminAction" (click)="expandSearchPanel()">
+                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1024 1024">
+                    <path fill="var(--colorb1)" d="M104.704 338.752a64 64 0 0 1 90.496 0l316.8 316.8l316.8-316.8a64 64 0 0 1 90.496 90.496L557.248 791.296a64 64 0 0 1-90.496 0L104.704 429.248a64 64 0 0 1 0-90.496z"/>
+                </svg>
             </div>
         </div>
         <!-- Category -->

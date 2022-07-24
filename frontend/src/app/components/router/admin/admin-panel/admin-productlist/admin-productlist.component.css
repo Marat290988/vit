@@ -218,4 +218,14 @@ tbody tr:last-child td {
     .panel-button {
         display: block;
     }
+
+    :host ::ng-deep .productlist-panel {
+        position: absolute;
+        z-index: 100000;
+        height: calc(100% + 1px);
+    }
+    :host ::ng-deep .productlist-panel-inner {
+        border-radius: 4px;
+    }
 }
+

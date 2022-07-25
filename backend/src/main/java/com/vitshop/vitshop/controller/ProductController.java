@@ -78,6 +78,12 @@ public class ProductController {
         return new ResponseEntity<>(productService.getProductWithFilter(spec, page), HttpStatus.OK);
     }
 
+    @GetMapping("/details/{productId}")
+    public ResponseEntity<ProductDTO> getProductByProductId(@PathVariable("productId") String productId) {
+        ProductEntity productEntity = productService.findProductEntityByProductId(productId);
+        return new ResponseEntity<>(new ProductDTO(productEntity), HttpStatus.OK);
+    }
+
     @PostMapping("/addproduct")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<ProductEntity> addProduct(

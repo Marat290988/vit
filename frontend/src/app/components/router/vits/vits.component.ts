@@ -3,6 +3,7 @@ import { BehaviorSubject, debounceTime, Subscription } from 'rxjs';
 import { ListComponent } from 'src/app/inheriteds/ListComponent';
 import { Product } from 'src/app/services/product/product.service';
 import { SearchFilter } from '../admin/admin-panel/admin-productlist/productlist-panel/productlist-panel.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vits',
@@ -15,7 +16,7 @@ export class VitsComponent extends ListComponent implements OnInit {
   filterSubs: Subscription;
 
   constructor(
-    
+    private router: Router
   ) { 
     super();
     this.listSize = 12;

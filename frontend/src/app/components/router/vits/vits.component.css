@@ -115,6 +115,7 @@
 
 .product-card-list {
     margin: 5px;
+    cursor: pointer;
 }
 
 @media(max-width: 620px) {

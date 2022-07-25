@@ -120,6 +120,9 @@ export class AdminProductlistComponent extends ListComponent implements AfterVie
     this.transferData$.next(this.editData);
     this.editProduct.nativeElement.style.transform = 
         `translate3d(0px, 0px, 0px)`;
+    if (window.screen.width < 1081) {
+      this.showSearchPanel();
+    }
   }
 
   onCloseEmit() {

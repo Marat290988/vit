@@ -7,15 +7,19 @@
         </app-productlist-panel>
     </div>
     <div class="vit-list">
-        <div *ngFor="let product of tableData let index = index" class="product-card-list"
-            [ngClass]="tableData.length-1 === index ? 'bottom' : ''"
-        >
-            <app-vit-card
-                *ngIf="product.productId"
-                [product]="product"
-            >
-            </app-vit-card>
-        </div>
+        <ng-container *ngFor="let product of tableData let index = index">
+            <a routerLink="/details" [queryParams]="{id: product.productId}">
+                <div class="product-card-list"
+                    [ngClass]="tableData.length-1 === index ? 'bottom' : ''"
+                >
+                    <app-vit-card
+                        *ngIf="product.productId"
+                        [product]="product"
+                    >
+                    </app-vit-card>
+                </div>
+            </a>
+        </ng-container>
         <div class="empty-card" *ngIf="totalPage === 0">
             <div>Not found</div>
         </div>

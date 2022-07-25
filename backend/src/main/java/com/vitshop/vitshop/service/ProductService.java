@@ -40,4 +40,6 @@ public interface ProductService {
     ProductEntity updateProduct(
             HashMap<String, Object> editData
     ) throws IOException;
+
+
 }

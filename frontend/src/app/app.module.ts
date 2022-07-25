@@ -33,6 +33,7 @@ import { InjectService } from './services/inject/inject.service';
 import { PricePipe } from './pipes/price.pipe';
 import { VitCardComponent } from './components/router/vits/vit-card/vit-card.component';
 import { PipesModule } from './shared/pipes.module';
+import { VitCardDetailsComponent } from './components/router/vits/vit-card-details/vit-card-details.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { PipesModule } from './shared/pipes.module';
     SureComponent,
     HelpPopupComponent,
     ErrorComponent,
-    VitCardComponent
+    VitCardComponent,
+    VitCardDetailsComponent
   ],
   imports: [
     BrowserModule,

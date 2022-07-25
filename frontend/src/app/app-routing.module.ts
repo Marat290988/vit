@@ -7,9 +7,16 @@ import { VitsComponent } from './components/router/vits/vits.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { AdminPanelComponent } from './components/router/admin/admin-panel/admin-panel.component';
+import { VitCardDetailsComponent } from './components/router/vits/vit-card-details/vit-card-details.component';
 
 const routes: Routes = [
   { path: '', component: VitsComponent },
+  {
+    path: 'details',
+    component: VitCardDetailsComponent,
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard]
+  },
   { 
     path: 'profile', 
     component: ProfileComponent,

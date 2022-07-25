@@ -255,3 +255,18 @@ tbody tr.active {
     overflow: hidden;
     height: 0;
 }
+
+@media(max-width: 435px) {
+    .control-panel {
+        flex-wrap: wrap;
+    }
+    .control-panel>div {
+        width: 100%;
+    }
+    .search-container {
+        width: 100%;
+    }
+    .control-panel-search {
+        margin-top: 8px;
+    }
+}

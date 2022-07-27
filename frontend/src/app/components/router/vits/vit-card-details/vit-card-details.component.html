@@ -1,1 +1,18 @@
-<p>vit-card-details works!</p>
+<div class="card-details-container">
+    <div class="card-details-image-container">
+        <div class="main-image" [ngStyle]="{backgroundImage: mainImageUrl}"></div>
+        <div class="image-carausel">
+            <div class="arrow left" *ngIf="imgUrlArr.length > 4"><</div>
+            <div class="arrow right" *ngIf="imgUrlArr.length > 4">></div>
+            <div class="inner-image-carausel">
+                <ng-container *ngFor="let url of imgUrlArr">
+                    <div class="mini-img" [ngStyle]="{backgroundImage: url.url}" [ngClass]="url.current ? 'active' : ''"></div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="card-details-description">
+        <h2 class="card-details-title" *ngIf="product">{{product.name}}</h2>
+        <h2 class="card-details-title" *ngIf="!product">.............</h2>
+    </div>
+</div>

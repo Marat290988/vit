@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map, Subscription, switchMap } from 'rxjs';
 import { ProductListdataService } from './../../../../services/product/product-listdata.service';
@@ -12,6 +12,9 @@ import { Product, ProductService } from 'src/app/services/product/product.servic
 export class VitCardDetailsComponent implements OnInit, OnDestroy {
 
   routeSubs: Subscription;
+  product: Product;
+  mainImageUrl: string;
+  imgUrlArr: any[] = [];
 
   constructor(
     private activetedRouted: ActivatedRoute,
@@ -30,7 +33,16 @@ export class VitCardDetailsComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((product: Product) => {
-        console.log(product)
+        this.product = product;
+        this.product.fileEntityList.forEach((file: {path: string, mainFlag: boolean}) => {
+          if (file.mainFlag) {
+            this.imgUrlArr.unshift({url: `url('${file.path}')`, current: true});
+            this.mainImageUrl = `url('${file.path}')`;
+          } else {
+            this.imgUrlArr.push({url: `url('${file.path}')`, current: false});
+          }
+        })
+        console.log(this.product)
       });
   }
 

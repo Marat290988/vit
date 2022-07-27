@@ -23,7 +23,7 @@ export class VitCardComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.product.fileEntityList.forEach(file => {
       if (file.mainFlag) {
-        this.img.nativeElement.style.backgroundImage = `url('${file.path}')`
+        this.img.nativeElement.style.backgroundImage = `url('${file.path}')`;
       }
     })
   }

@@ -30,4 +30,5 @@
 .card-price {
     font-family: var(--f700);
     margin-top: 10px;
+    color: var(--colorf2)
 }

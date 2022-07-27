@@ -87,4 +87,8 @@ export class ProductService {
     getFileList(productId: string) {
         return this.http.get(`${this.host}/product/filelist/${productId}`);
     }
+
+    getProduct(productId: string) {
+        return this.http.get(`${this.host}/product/details/${productId}`);
+    }
 }

@@ -4,6 +4,7 @@ import { ListComponent } from 'src/app/inheriteds/ListComponent';
 import { Product } from 'src/app/services/product/product.service';
 import { SearchFilter } from '../admin/admin-panel/admin-productlist/productlist-panel/productlist-panel.component';
 import { Router } from '@angular/router';
+import { ProductListdataService } from './../../../services/product/product-listdata.service';
 
 @Component({
   selector: 'app-vits',
@@ -14,9 +15,10 @@ export class VitsComponent extends ListComponent implements OnInit {
 
   changeFilter$: BehaviorSubject<any> = new BehaviorSubject(null);
   filterSubs: Subscription;
+  listDataSubs: Subscription;
 
   constructor(
-    private router: Router
+    private listDataService: ProductListdataService
   ) { 
     super();
     this.listSize = 12;
@@ -42,7 +44,9 @@ export class VitsComponent extends ListComponent implements OnInit {
         }
       });
     this.filter = this.setFilter();
-    
+    this.listDataSubs = this.dataStream$.subscribe(_ => {
+      this.setListData();
+    })
   }
 
   setFilter(searchData?: SearchFilter): SearchFilter {
@@ -88,5 +92,14 @@ export class VitsComponent extends ListComponent implements OnInit {
     this.changeFilter$.next(this.setFilter(searchData));
     this.filter = this.setFilter(searchData);
   }
+
+  setListData() {
+    this.listDataService.setPagination(
+      this.filter,
+      this.listSize,
+      this.pageNumber,
+      this.sort
+    );
+  } 
 
 }

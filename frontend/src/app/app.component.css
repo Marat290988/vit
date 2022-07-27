@@ -26,7 +26,7 @@
 }
 
 .vit-container.main {
-    max-height: calc(100% - 45.6px - 39.2px);
+    height: calc(100% - 45.6px - 39.2px);
     overflow: hidden;
     padding: 5px 25px;
 }
@@ -39,14 +39,14 @@
 
 @media(max-width: 620px) {
     .vit-container.main {
-        max-height: 100%;
+        height: 100%;
         height: 100%;
     }
 }
 
 @media(max-width: 500px) {
     .vit-container.main {
-        max-height: 100%;
+        height: 100%;
         height: 100%;
     }
 }

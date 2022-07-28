@@ -15,6 +15,8 @@ export class VitCardDetailsComponent implements OnInit, OnDestroy {
   product: Product;
   mainImageUrl: string;
   imgUrlArr: any[] = [];
+  transform = 0;
+  @ViewChild('carausel') carausel: ElementRef;
 
   constructor(
     private activetedRouted: ActivatedRoute,
@@ -48,6 +50,28 @@ export class VitCardDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.routeSubs.unsubscribe();
+  }
+
+  onClickMiniImg(event, url: string) {
+    document.querySelector('.mini-img.active').classList.remove('active');
+    event.target.classList.add('active');
+    this.mainImageUrl = url;
+  }
+
+  onClickArrow(operation) {
+    const minTransform = -75*(this.imgUrlArr.length-4);
+    if (
+      this.transform === minTransform && operation === '+' ||
+      this.transform === 0 && operation === '-'
+    ) {
+      return;
+    };
+    if (operation === '+') {
+      this.transform -= 75;
+    } else {
+      this.transform += 75;
+    }
+    this.carausel.nativeElement.style.transform = `translateX(${this.transform}px)`;
   }
 
 }

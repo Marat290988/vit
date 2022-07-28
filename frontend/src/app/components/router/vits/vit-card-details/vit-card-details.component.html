@@ -1,12 +1,21 @@
 <div class="card-details-container">
     <div class="card-details-image-container">
-        <div class="main-image" [ngStyle]="{backgroundImage: mainImageUrl}"></div>
+        <div class="main-image" [ngStyle]="{backgroundImage: mainImageUrl}" *ngIf="mainImageUrl"></div>
+        <div class="main-image empty" *ngIf="!mainImageUrl">
+            <div>No image</div>
+        </div>
         <div class="image-carausel">
-            <div class="arrow left" *ngIf="imgUrlArr.length > 4"><</div>
-            <div class="arrow right" *ngIf="imgUrlArr.length > 4">></div>
-            <div class="inner-image-carausel">
+            <div class="arrow left" *ngIf="imgUrlArr.length > 4" (click)="onClickArrow('-')"><</div>
+            <div class="arrow right" *ngIf="imgUrlArr.length > 4" (click)="onClickArrow('+')">></div>
+            <div class="inner-image-carausel" #carausel>
                 <ng-container *ngFor="let url of imgUrlArr">
-                    <div class="mini-img" [ngStyle]="{backgroundImage: url.url}" [ngClass]="url.current ? 'active' : ''"></div>
+                    <div 
+                        class="mini-img" 
+                        [ngStyle]="{backgroundImage: url.url}" 
+                        [ngClass]="url.current ? 'active' : ''"
+                        (click)="onClickMiniImg($event, url.url)"
+                    >
+                    </div>
                 </ng-container>
             </div>
         </div>

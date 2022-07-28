@@ -17,19 +17,34 @@
     background-size: cover;
 }
 
+.main-image.empty {
+    background-color: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    font-family: var(--f700);
+    font-size: 28px;
+    color: var(--colorerror);
+}
+
+.main-image.empty>div {
+    font-family: var(--f700);
+}
+
 .mini-img {
     height: 70px;
-    min-width: 70px;
+    min-width: 74px;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
-    margin: 0 5px;
+    margin: 0 0.5px;
     border: 0.5px solid #eeeeee00;
     box-sizing: content-box;
 }
 
 .mini-img.active {
-    border: 0.5px solid #eee;
+    border: 0.5px solid #797979;
 }
 
 .image-carausel {
@@ -42,6 +57,7 @@
 
 .inner-image-carausel {
     display: flex;
+    transition: transform 0.2s ease-in-out;
 }
 
 .arrow {
@@ -58,6 +74,7 @@
     opacity: 0.7;
     cursor: pointer;
     user-select: none;
+    z-index: 10;
 }
 
 .arrow.left {

@@ -1,4 +1,4 @@
-<div class="card-details-container">
+<div class="card-details-container" #cont>
     <div class="card-details-image-container">
         <div class="main-image" [ngStyle]="{backgroundImage: mainImageUrl}" *ngIf="mainImageUrl"></div>
         <div class="main-image empty" *ngIf="!mainImageUrl">
@@ -20,8 +20,26 @@
             </div>
         </div>
     </div>
-    <div class="card-details-description">
-        <h2 class="card-details-title" *ngIf="product">{{product.name}}</h2>
-        <h2 class="card-details-title" *ngIf="!product">.............</h2>
+    <div class="card-details-description" *ngIf="product">
+        <h2 class="card-details-title" >{{product.name}}</h2>
+        <p style="font-size: 14px; margin-top: 3px;"><b>Brand: </b><span>{{product.manufacturer}}</span></p>
+        <p style="font-size: 14px; margin-top: 3px;"><b>Category: </b><span>{{product.category}}</span></p>
+        <h4 style="margin-top: 15px;">Description:</h4>
+        <div class="card-details-desc" [innerHTML]="nl2br(product.description)">
+        </div>
+        <h4 style="margin-top: 15px;" *ngIf="product.composition">Composition:</h4>
+        <div class="card-details-comp" #comp></div>
+    </div>
+    <div class="card-details-description" *ngIf="!product">
+        <h2 class="card-details-title">.............</h2>
+        <p style="font-size: 14px; margin-top: 3px;"><b>Brand: </b><span>..................</span></p>
+        <p style="font-size: 14px; margin-top: 3px;"><b>Category: </b><span>..................</span></p>
+        <h4 style="margin-top: 15px;">Description:</h4>
+        <div class="card-details-desc">
+            ..........................
+        </div>
+    </div>
+    <div class="card-details-price" *ngIf="product">
+        <p style="font-size: 24px; color: #626262;"><b>Price: <span style="color: #428750">{{product.basePrice | price:'$'}}</span></b></p>
     </div>
 </div>

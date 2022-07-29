@@ -17,6 +17,8 @@ export class VitCardDetailsComponent implements OnInit, OnDestroy {
   imgUrlArr: any[] = [];
   transform = 0;
   @ViewChild('carausel') carausel: ElementRef;
+  @ViewChild('comp') comp: ElementRef;
+  @ViewChild('cont') cont: ElementRef;
 
   constructor(
     private activetedRouted: ActivatedRoute,
@@ -27,6 +29,10 @@ export class VitCardDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    
+  }
+
+  ngAfterViewInit() {
     this.routeSubs = this.activetedRouted.queryParamMap
       .pipe(
         map((paramsAsMap: any) => paramsAsMap.params.id),
@@ -43,7 +49,12 @@ export class VitCardDetailsComponent implements OnInit, OnDestroy {
           } else {
             this.imgUrlArr.push({url: `url('${file.path}')`, current: false});
           }
-        })
+        });
+        const mObserver = new MutationObserver(() => {
+          this.comp.nativeElement.innerHTML = this.product.composition;
+          mObserver.disconnect();
+        });
+        mObserver.observe(this.cont.nativeElement, {childList: true});
         console.log(this.product)
       });
   }
@@ -72,6 +83,10 @@ export class VitCardDetailsComponent implements OnInit, OnDestroy {
       this.transform += 75;
     }
     this.carausel.nativeElement.style.transform = `translateX(${this.transform}px)`;
+  }
+
+  nl2br(str: string): string {
+    return str.replace(/([^>])\n/g, '$1<br/>');
   }
 
 }

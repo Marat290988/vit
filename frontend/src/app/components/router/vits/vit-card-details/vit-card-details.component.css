@@ -1,12 +1,15 @@
 .card-details-container {
     display: flex;
-    margin-top: 20px;
+    padding-top: 20px;
+    overflow-y: auto;
+    height: 100%;
 }
 
 .card-details-image-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-height: 342px;
 }
 
 .main-image {
@@ -83,4 +86,38 @@
 
 .arrow.right {
     right: 0;
+}
+
+.card-details-title {
+    font-size: 20px;
+    color: var(--colorf1);;
+}
+
+.card-details-description {
+    flex-grow: 1;
+    padding: 0 15px;
+}
+
+.card-details-description>p>span {
+    color: #1462dc;
+}
+
+.card-details-desc {
+    font-size: 14px;
+}
+
+:host::ng-deep .preview-composition {
+    font-size: 14px;
+    display: flex;
+    border-bottom: 1px solid #607d8b;
+    padding: 3px;
+}
+
+.card-details-price {
+    min-width: 250px;
+    background-color: #ebebeb;
+    padding: 10px;
+    border-radius: 10px;
+    margin-right: 5px;
+    height: fit-content;
 }

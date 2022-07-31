@@ -1,3 +1,8 @@
+<div class="top-title">
+    <div class="card-details-description" *ngIf="product">
+        <h2 class="card-details-title" >{{product.name}}</h2>
+    </div>
+</div>
 <div class="card-details-container" #cont>
     <div class="card-details-image-container">
         <div class="main-image" [ngStyle]="{backgroundImage: mainImageUrl}" *ngIf="mainImageUrl"></div>
@@ -41,5 +46,31 @@
     </div>
     <div class="card-details-price" *ngIf="product">
         <p style="font-size: 24px; color: #626262;"><b>Price: <span style="color: #428750">{{product.basePrice | price:'$'}}</span></b></p>
+        <div class="select-cont">
+            <p>Quantity:</p>
+            <select class="select" #select>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+        </div>
+        <div class="buttons-cont">
+            <button class="vit-button" button (click)="addToCart()">
+                <p>Add to cart</p>
+            </button>
+        </div>
+        <div class="buttons-cont">
+            <a routerLink="" [queryParams]="{filter: true}">
+                <button class="vit-button back" button>
+                    <p>Back to list</p>
+                </button>
+            </a>
+        </div>
     </div>
 </div>

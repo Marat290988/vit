@@ -48,6 +48,7 @@ export class ListComponent {
     filter: any;
     editDelStateDis: boolean = true;
     transferData$ = new BehaviorSubject<Product>(null);
+    eventOfFetchData = new BehaviorSubject<any>(null);
 
     subsData: Subscription;
     subsPopup: Subscription;
@@ -70,6 +71,7 @@ export class ListComponent {
         );
         this.subsData = this.dataStream$.subscribe({
             next: res => {
+                this.eventOfFetchData.next(true);
                 this.removeActiveButtons();
                 this.loadState = false;
                 this.prepareData();

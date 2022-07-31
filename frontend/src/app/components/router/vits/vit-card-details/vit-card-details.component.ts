@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { map, Subscription, switchMap } from 'rxjs';
 import { ProductListdataService } from './../../../../services/product/product-listdata.service';
 import { Product, ProductService } from 'src/app/services/product/product.service';
+import { CartService } from 'src/app/services/cart/cart.service';
 
 @Component({
   selector: 'app-vit-card-details',
@@ -19,11 +20,13 @@ export class VitCardDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('carausel') carausel: ElementRef;
   @ViewChild('comp') comp: ElementRef;
   @ViewChild('cont') cont: ElementRef;
+  @ViewChild('select') select: ElementRef;
 
   constructor(
     private activetedRouted: ActivatedRoute,
     private listDataService: ProductListdataService,
-    private productService: ProductService
+    private productService: ProductService,
+    private cartService: CartService
   ) { 
     
   }
@@ -87,6 +90,11 @@ export class VitCardDetailsComponent implements OnInit, OnDestroy {
 
   nl2br(str: string): string {
     return str.replace(/([^>])\n/g, '$1<br/>');
+  }
+
+  addToCart(): void {
+    const qty = this.select.nativeElement.value;
+    console.log(this.select.nativeElement.value)
   }
 
 }

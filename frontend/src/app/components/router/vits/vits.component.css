@@ -119,6 +119,10 @@
     cursor: pointer;
 }
 
+.product-card-list.bottom {
+    margin: 0;
+}
+
 @media(max-width: 620px) {
     .vit-list-cont {
         position: relative;

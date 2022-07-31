@@ -3,7 +3,7 @@ import { BehaviorSubject, debounceTime, Subscription } from 'rxjs';
 import { ListComponent } from 'src/app/inheriteds/ListComponent';
 import { Product } from 'src/app/services/product/product.service';
 import { SearchFilter } from '../admin/admin-panel/admin-productlist/productlist-panel/productlist-panel.component';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ProductListdataService } from './../../../services/product/product-listdata.service';
 
 @Component({
@@ -44,9 +44,11 @@ export class VitsComponent extends ListComponent implements OnInit {
         }
       });
     this.filter = this.setFilter();
-    this.listDataSubs = this.dataStream$.subscribe(_ => {
-      this.setListData();
-    })
+    this.listDataSubs = this.eventOfFetchData.subscribe(_ => {
+      if (_) {
+        this.setListData();
+      }
+    });
   }
 
   setFilter(searchData?: SearchFilter): SearchFilter {

@@ -26,6 +26,5 @@ export class ProductListdataService {
     this.listSize = listSize;
     this.pageNumber = pageNumber;
     this.sort = sort;
-    console.log(this)
   }
 }

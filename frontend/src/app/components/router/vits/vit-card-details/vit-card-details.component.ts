@@ -58,7 +58,6 @@ export class VitCardDetailsComponent implements OnInit, OnDestroy {
           mObserver.disconnect();
         });
         mObserver.observe(this.cont.nativeElement, {childList: true});
-        console.log(this.product)
       });
   }
 
@@ -94,7 +93,7 @@ export class VitCardDetailsComponent implements OnInit, OnDestroy {
 
   addToCart(): void {
     const qty = this.select.nativeElement.value;
-    console.log(this.select.nativeElement.value)
+    this.cartService.addToCart(this.product, qty);
   }
 
 }

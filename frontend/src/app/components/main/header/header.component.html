@@ -37,7 +37,8 @@
         <div class="vit-btn vit-sign" (click)="signEvent.emit()" *ngIf="!userService.user">
             SIGN IN
         </div>
-        <div style="height: 40px; width: 40px; padding: 5px; cursor: pointer;">
+        <div style="height: 40px; width: 40px; padding: 5px; cursor: pointer; position: relative;">
+            <div class="count" *ngIf="displayCount != 0">{{displayCount}}</div>
             <a routerLink="/cart">
                 <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20">
                     <path fill="#5c3c3c" d="M6 13h9c.55 0 1 .45 1 1s-.45 1-1 1H5c-.55 0-1-.45-1-1V4H2c-.55 0-1-.45-1-1s.45-1 1-1h3c.55 0 1 .45 1 1v2h13l-4 7H6v1zm-.5 3c.83 0 1.5.67 1.5 1.5S6.33 19 5.5 19S4 18.33 4 17.5S4.67 16 5.5 16zm9 0c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5z"/>

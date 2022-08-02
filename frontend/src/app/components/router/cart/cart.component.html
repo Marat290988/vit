@@ -1,1 +1,12 @@
-<p>cart works!</p>
+<div class="cart-container">
+    <div class="cart-list">
+        <ng-container *ngFor="let item of cart">
+            <app-cart-item
+                [item]="item"
+            ></app-cart-item>
+        </ng-container>
+    </div>
+    <div class="cart-checkout">
+
+    </div>
+</div>

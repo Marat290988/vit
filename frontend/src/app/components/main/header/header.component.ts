@@ -3,6 +3,7 @@ import { UserService } from './../../../services/user/user.service';
 import { PopupService } from './../../../services/pop-up/pop-up.service';
 import { SureComponent } from './../../../components/pop-up/sure/sure.component';
 import { Subscription } from 'rxjs';
+import { CartService } from 'src/app/services/cart/cart.service';
 
 @Component({
   selector: 'app-header',
@@ -14,14 +15,25 @@ export class HeaderComponent implements OnInit {
   @Output() signEvent = new EventEmitter();
   @Output() logoutEvent = new EventEmitter();
   subs: Subscription;
+  cartSubs: Subscription;
+  displayCount = 0;
 
   constructor(
     public userService: UserService,
-    private popupService: PopupService
+    private popupService: PopupService,
+    private cartService: CartService
   ) { }
 
   ngOnInit(): void {
-    
+    this.cartSubs = this.cartService.addEvent$.subscribe(qty => {
+      if (qty !== null) {
+        this.displayCount = qty;
+      }
+    })
+  }
+
+  ngOnDestroy() {
+    this.cartSubs.unsubscribe();
   }
 
   onLogout(): void {

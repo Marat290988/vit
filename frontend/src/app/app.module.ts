@@ -34,6 +34,7 @@ import { PricePipe } from './pipes/price.pipe';
 import { VitCardComponent } from './components/router/vits/vit-card/vit-card.component';
 import { PipesModule } from './shared/pipes.module';
 import { VitCardDetailsComponent } from './components/router/vits/vit-card-details/vit-card-details.component';
+import { CartItemComponent } from './components/router/cart/cart-item/cart-item.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { VitCardDetailsComponent } from './components/router/vits/vit-card-detai
     HelpPopupComponent,
     ErrorComponent,
     VitCardComponent,
-    VitCardDetailsComponent
+    VitCardDetailsComponent,
+    CartItemComponent
   ],
   imports: [
     BrowserModule,

@@ -101,6 +101,21 @@
     font-size: 15px;
 }
 
+.count {
+    position: absolute;
+    z-index: 100;
+    bottom: 5px;
+    right: -3px;
+    background-color: #f17700;
+    font-size: 12px;
+    padding: 1px 3px;
+    min-width: 19px;
+    text-align: center;
+    color: #fff;
+    border-radius: 3px;
+    opacity: .8;
+}
+
 @media(max-width: 610px) {
     .vit-logo>div {
         height: 30px; 

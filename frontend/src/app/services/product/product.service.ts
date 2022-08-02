@@ -18,6 +18,7 @@ export class Product {
     active?: any;
     productId?: string;
     id?: string;
+    qty?: string;
 }
 
 @Injectable()

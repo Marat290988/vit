@@ -1,0 +1,13 @@
+.cart-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.cart-list {
+    flex-grow: 1;
+}
+
+.cart-checkout {
+    max-width: 320px;
+    width: 100%;
+}

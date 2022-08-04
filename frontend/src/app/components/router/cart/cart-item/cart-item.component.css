@@ -1,0 +1,51 @@
+.product-row {
+    border-top: 1px solid #ededed;
+    border-bottom: 1px solid #ededed;
+    padding: 16px 0;
+    display: flex;
+}
+
+.product-row-img {
+    width: 100px; 
+    height: 100px; 
+    background-repeat: no-repeat;
+    background-position: center center; 
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #eee;
+}
+
+.short-product {
+    margin: 0px 8px;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 8px;
+}
+
+.short-product p {
+    font-family: 'Noticia-Text';
+    font-size: 15px;
+    color: #383838;
+}
+
+.short-product-remove {
+    background-color: #bd3c37;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 700;
+    width: fit-content;
+    padding: 1px 10px 1px 9px;
+    border-radius: 3px;
+}
+
+.product-row-price {
+    font-family: 'Noticia-Text';
+    font-size: 15px;
+    color: #383838;
+    font-weight: 700;
+    margin-left: 8px;
+}

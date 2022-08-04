@@ -22,3 +22,7 @@
     font-family: 'RobotoCondensed-LightItalic';
     src: url('./Roboto_Condensed/RobotoCondensed-LightItalic.ttf');
 }
+@font-face {
+    font-family: 'Noticia-Text';
+    src: url('./Noticia_Text/NoticiaText-Regular.ttf');
+}

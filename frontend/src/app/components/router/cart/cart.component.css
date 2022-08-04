@@ -5,9 +5,18 @@
 
 .cart-list {
     flex-grow: 1;
+    margin-top: 10px;
+}
+
+.cart-list h2 {
+    color: #333333;
+    font-size: 22px;
+    margin-bottom: 15px;
 }
 
 .cart-checkout {
     max-width: 320px;
     width: 100%;
 }
+
+

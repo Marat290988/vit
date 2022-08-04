@@ -10,8 +10,8 @@ export class Product {
     composition?: string;
     manufacturer: string;
     category: string;
-    dPrice: string;
-    basePrice?: string;
+    dPrice?: string;
+    basePrice?: string | number;
     files?: any;
     fileEntityList?: any;
     isActive?: any;

@@ -1,1 +1,12 @@
-<p>cart-item works!</p>
+<div class="product-row">
+    <div *ngIf="fileUrl" class="product-row-img" [ngStyle]="{'background-image': 'url(' + fileUrl + ')'}">
+    </div>
+    <div *ngIf="!fileUrl" class="product-row-img" [ngStyle]="{'background-image': 'url(' + fileUrl + ')'}">
+        <p>No image</p>
+    </div>
+    <div class="short-product">
+        <p>{{item.name}}</p>
+        <div class="short-product-remove">REMOVE</div>
+    </div>
+    <div class="product-row-price">{{item.basePrice | price:'$'}}</div>
+</div>

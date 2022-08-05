@@ -49,3 +49,70 @@
     font-weight: 700;
     margin-left: 8px;
 }
+
+.product-row-qty {
+    display: flex;
+    align-items: center;
+    height: 30px;
+    width: 100px;
+    margin: 0 20px;
+    border: 1px solid #545454;
+    border-radius: 8px;
+    position: relative;
+    padding-left: 10px;
+    cursor: pointer;
+    background-color: #e7f7ff;
+}
+
+.arrow-down {
+    position: absolute;
+    right: 1px;
+    top: 4px;
+    z-index: 100;
+}
+
+.select-cont {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100px;
+    border: 1px solid #545454;
+    background-color: #e7f7ff;
+    max-height: 100px;
+    overflow-y: auto;
+    position: absolute;
+    top: 34px;
+    left: 0;
+    border-bottom-left-radius: 8px;
+    border-top-left-radius: 8px;
+}
+
+div[select="selected"] {
+    color: #fff;
+    background-color: #32815a;
+}
+
+.select-cont>div {
+    width: 60px;
+    border-radius: 8px;
+    padding: 2px 16px;
+    text-align: right;
+    margin: 2px 0;
+    transition: background-color 0.5s ease-in-out;
+    position: relative;
+}
+
+.select-cont>div:hover:not(div[select="selected"]) {
+    background-color: #97ebdb;
+}
+
+.mark {
+    position: absolute;
+    left: 7px;
+    top: 3px;
+    display: none;
+}
+
+div[select="selected"] .mark {
+    display: block;
+}

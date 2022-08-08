@@ -4,6 +4,8 @@
         <ng-container *ngFor="let item of cart">
             <app-cart-item
                 [item]="item"
+                (qtyEmit)="onQtyEmit($event)"
+                (deleteEmit)="onDeleteEmit($event)"
             ></app-cart-item>
         </ng-container>
     </div>

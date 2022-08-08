@@ -16,7 +16,7 @@ export class PricePipe implements PipeTransform {
         } else {
             ednNum = '.00'
         }
-        return typeof(value) === 'number' ? `${symbol}${Number(Math.trunc(value)).toLocaleString('ru')}${ednNum}` : '';
+        return `${symbol}${Number(Math.trunc(value)).toLocaleString('ru')}${ednNum}`;
     }
 
 }

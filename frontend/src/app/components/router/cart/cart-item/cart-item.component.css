@@ -24,6 +24,7 @@
     flex-direction: column;
     justify-content: space-between;
     padding-bottom: 8px;
+    width: 60%;
 }
 
 .short-product p {
@@ -48,6 +49,8 @@
     color: #383838;
     font-weight: 700;
     margin-left: 8px;
+    min-width: 60px;
+    max-width: 60px;
 }
 
 .product-row-qty {
@@ -115,4 +118,10 @@ div[select="selected"] {
 
 div[select="selected"] .mark {
     display: block;
+}
+
+.price-block {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
 }

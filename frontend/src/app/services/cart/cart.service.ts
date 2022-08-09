@@ -16,11 +16,15 @@ export class CartService {
         private userService: UserService,
         private http: HttpClient
     ) {
-        const subs = this.getCart().subscribe({
-            next: res => {
-              this.cart = JSON.parse(res.cartText);
-              this.addEvent$.next(this.goodCount(this.cart));
-              subs.unsubscribe();
+        this.userService.authData$.subscribe(data => {
+            if (data) {
+                const subs = this.getCart().subscribe({
+                    next: res => {
+                      this.cart = JSON.parse(res.cartText);
+                      this.addEvent$.next(this.goodCount(this.cart));
+                      subs.unsubscribe();
+                    }
+                })
             }
         })
     }
@@ -101,5 +105,16 @@ export class CartService {
                 this.addEvent$.next(this.goodCount(this.cart));
             }
         })
+    }
+
+    calcAmount(): void | string {
+        let total = '0';
+        for (let i = 0; i < this.cart.length; i++) {
+            const big = new Big(this.cart[i].basePrice).times(this.cart[i].qty).plus(Number.parseFloat(total));
+            total = big.toFixed(2);
+            if (this.cart.length-1 === i) {
+                return total;
+            }
+        }
     }
 }

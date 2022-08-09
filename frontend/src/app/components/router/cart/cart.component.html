@@ -10,6 +10,12 @@
         </ng-container>
     </div>
     <div class="cart-checkout">
-
+        <div class="cart-checkout-inner">
+            <h3 class="cart-checkout-title">Order Summary</h3>
+            <div class="cart-checkout-row">
+                <div>Items Total:</div>
+                <div>{{amount | price:'$'}}</div>
+            </div>
+        </div>
     </div>
 </div>

@@ -10,6 +10,7 @@ import { Product } from './../../../services/product/product.service';
 export class CartComponent implements OnInit {
 
   cart: Product[];
+  amount: any;
 
   constructor(
     private cartService: CartService
@@ -17,6 +18,7 @@ export class CartComponent implements OnInit {
     const subs = this.cartService.getObs().subscribe(
       resCart => {
         this.cart = resCart;
+        this.setAmount();
         subs.unsubscribe();
       }
     )
@@ -28,12 +30,17 @@ export class CartComponent implements OnInit {
 
   onQtyEmit(emitData: {product: Product, qty: any}) {
     this.cartService.addToCart(emitData.product, emitData.qty);
+    this.setAmount();
   }
 
   onDeleteEmit(product: Product) {
     this.cartService.removeItem(product.productId);
     this.cart = this.cartService.cart;
+    this.setAmount();
   }
 
+  setAmount() {
+    this.amount = this.cartService.calcAmount();
+  }
 
 }

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CartService } from './../../../services/cart/cart.service';
 import { Product } from './../../../services/product/product.service';
+import { Big } from 'big.js';
 
 @Component({
   selector: 'app-cart',
@@ -11,6 +12,12 @@ export class CartComponent implements OnInit {
 
   cart: Product[];
   amount: any;
+  shipping = '';
+  total = '';
+  @ViewChild('in1') in1: ElementRef;
+  @ViewChild('in2') in2: ElementRef;
+  @ViewChild('in3') in3: ElementRef;
+  @ViewChild('in4') in4: ElementRef;
 
   constructor(
     private cartService: CartService
@@ -41,6 +48,34 @@ export class CartComponent implements OnInit {
 
   setAmount() {
     this.amount = this.cartService.calcAmount();
+    this.shipping = new Big(this.amount).times(10).div(100).toFixed(2);
+    this.total = new Big(this.amount).plus(this.shipping).toFixed(2);
+  }
+
+  blockNotNumeric(event, inputEl: HTMLInputElement) {
+    let checkValue: string = event.target.value;
+    let lastInput = event.data;
+    if (lastInput !== null && lastInput.match(/[0-9]/) === null) {
+      event.target.value = checkValue.slice(0, checkValue.length-1);
+    }
+    if (checkValue.length === 4 && inputEl !== null) {
+      inputEl.focus();
+    } else if (checkValue.length === 5 && inputEl === null) {
+      event.target.value = checkValue.slice(0, checkValue.length-1);
+    }
+  }
+
+  onFocus() {
+    if (this.in1.nativeElement.value.length !== 4) {
+      this.in1.nativeElement.focus();
+      return;
+    } else if (this.in2.nativeElement.value.length !== 4) {
+      this.in2.nativeElement.focus();
+      return;
+    } else if (this.in3.nativeElement.value.length !== 4) {
+      this.in3.nativeElement.focus();
+      return;
+    }
   }
 
 }

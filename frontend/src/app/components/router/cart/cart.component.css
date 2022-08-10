@@ -49,3 +49,29 @@
     font-size: 18px;
     color: #456b9c;
 }
+
+.bank-card-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.bank-card-input-outer {
+    min-height: 34px;
+    min-width: 60px;
+    border: 3px solid #6a6f6f;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bank-card-input {
+    border: 0;
+    outline: 0;
+    height: 100%;
+    width: 37px;
+    background-color: inherit;
+    font-size: 18px;
+    color: #5d5d5d;
+}

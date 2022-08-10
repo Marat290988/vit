@@ -16,6 +16,31 @@
                 <div>Items Total:</div>
                 <div>{{amount | price:'$'}}</div>
             </div>
+            <div class="cart-checkout-row">
+                <div>Shipping:</div>
+                <div>{{shipping | price:'$'}}</div>
+            </div>
+            <div class="cart-checkout-row">
+                <div>Total:</div>
+                <div>{{total | price:'$'}}</div>
+            </div>
+            <div class="cart-checkout-row">
+                <div>Enter bank card number:</div>
+            </div>
+            <div class="bank-card-container">
+                <div class="bank-card-input-outer">
+                    <input type="text" (input)="blockNotNumeric($event, in2)" (focus)="onFocus()" class="bank-card-input" #in1>
+                </div>
+                <div class="bank-card-input-outer">
+                    <input type="text" (input)="blockNotNumeric($event, in3)" (focus)="onFocus()" class="bank-card-input" #in2>
+                </div>
+                <div class="bank-card-input-outer">
+                    <input type="text" (input)="blockNotNumeric($event, in4)" (focus)="onFocus()" class="bank-card-input" #in3>
+                </div>
+                <div class="bank-card-input-outer">
+                    <input type="text" (input)="blockNotNumeric($event, null)" (focus)="onFocus()" class="bank-card-input" #in4>
+                </div>
+            </div>
         </div>
     </div>
 </div>

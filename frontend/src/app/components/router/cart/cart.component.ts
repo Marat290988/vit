@@ -13,7 +13,7 @@ export class CartComponent implements OnInit {
   cart: Product[];
   amount: any;
   shipping = '';
-  total = '';
+  total:any = '';
   @ViewChild('in1') in1: ElementRef;
   @ViewChild('in2') in2: ElementRef;
   @ViewChild('in3') in3: ElementRef;
@@ -48,8 +48,14 @@ export class CartComponent implements OnInit {
 
   setAmount() {
     this.amount = this.cartService.calcAmount();
-    this.shipping = new Big(this.amount).times(10).div(100).toFixed(2);
-    this.total = new Big(this.amount).plus(this.shipping).toFixed(2);
+    if (this.amount) {
+      this.shipping = new Big(this.amount).times(10).div(100).toFixed(2);
+      this.total = new Big(this.amount).plus(this.shipping).toFixed(2);
+    } else {
+      this.total = '';
+      this.shipping = '';
+      this.amount = null;
+    }
   }
 
   blockNotNumeric(event, inputEl: HTMLInputElement) {
@@ -62,19 +68,38 @@ export class CartComponent implements OnInit {
       inputEl.focus();
     } else if (checkValue.length === 5 && inputEl === null) {
       event.target.value = checkValue.slice(0, checkValue.length-1);
+    } else if (checkValue.length === 5 && inputEl !== null) {
+      event.target.value = checkValue.slice(0, checkValue.length-1);
     }
   }
 
-  onFocus() {
+  onFocus(inputEl: HTMLInputElement) {
     if (this.in1.nativeElement.value.length !== 4) {
       this.in1.nativeElement.focus();
       return;
-    } else if (this.in2.nativeElement.value.length !== 4) {
-      this.in2.nativeElement.focus();
-      return;
-    } else if (this.in3.nativeElement.value.length !== 4) {
-      this.in3.nativeElement.focus();
-      return;
+    }
+    // } else if (this.in2.nativeElement.value.length !== 4) {
+    //   this.in2.nativeElement.focus();
+    //   return;
+    // } else if (this.in3.nativeElement.value.length !== 4) {
+    //   this.in3.nativeElement.focus();
+    //   return;
+    // }
+    // inputEl.focus();
+  }
+
+  isValid(): boolean {
+    if (
+      this.total !== '' &&
+      this.in1 &&
+      this.in1.nativeElement.value.length === 4 &&
+      this.in2.nativeElement.value.length === 4 &&
+      this.in3.nativeElement.value.length === 4 &&
+      this.in4.nativeElement.value.length === 4
+    ) {
+      return true;
+    } else {
+      return false;
     }
   }
 

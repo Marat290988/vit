@@ -8,6 +8,7 @@
                 (deleteEmit)="onDeleteEmit($event)"
             ></app-cart-item>
         </ng-container>
+        <div *ngIf="total == ''">EMPTY</div>
     </div>
     <div class="cart-checkout">
         <div class="cart-checkout-inner">
@@ -29,17 +30,22 @@
             </div>
             <div class="bank-card-container">
                 <div class="bank-card-input-outer">
-                    <input type="text" (input)="blockNotNumeric($event, in2)" (focus)="onFocus()" class="bank-card-input" #in1>
+                    <input type="text" (input)="blockNotNumeric($event, in2)" (focus)="onFocus(in1)" class="bank-card-input" #in1>
                 </div>
                 <div class="bank-card-input-outer">
-                    <input type="text" (input)="blockNotNumeric($event, in3)" (focus)="onFocus()" class="bank-card-input" #in2>
+                    <input type="text" (input)="blockNotNumeric($event, in3)" (focus)="onFocus(in2)" class="bank-card-input" #in2>
                 </div>
                 <div class="bank-card-input-outer">
-                    <input type="text" (input)="blockNotNumeric($event, in4)" (focus)="onFocus()" class="bank-card-input" #in3>
+                    <input type="text" (input)="blockNotNumeric($event, in4)" (focus)="onFocus(in3)" class="bank-card-input" #in3>
                 </div>
                 <div class="bank-card-input-outer">
-                    <input type="text" (input)="blockNotNumeric($event, null)" (focus)="onFocus()" class="bank-card-input" #in4>
+                    <input type="text" (input)="blockNotNumeric($event, null)" (focus)="onFocus(in4)" class="bank-card-input" #in4>
                 </div>
+            </div>
+            <div class="checkout">
+                <button button class="vit-button" [disabled]="!isValid()">
+                    <p>PAY</p>
+                </button>
             </div>
         </div>
     </div>

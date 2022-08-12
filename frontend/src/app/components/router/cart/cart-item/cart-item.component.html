@@ -9,7 +9,7 @@
         <div class="short-product-remove" (click)="onRemove()">REMOVE</div>
     </div>
     <div class="price-block">
-        <div class="product-row-price">{{item.basePrice | price:'$'}}</div>
+        <div class="product-row-price product-row-price-one">{{item.basePrice | price:'$'}}</div>
         <div class="product-row-qty" (click)="selectQty()">
             <div>{{item.qty}}</div>
             <div class="arrow-down">

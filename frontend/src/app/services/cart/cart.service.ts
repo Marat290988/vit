@@ -79,6 +79,15 @@ export class CartService {
                 })
             }
         }
+        if (cart.length === 0) {
+            const subs = this.http.post(`${this.host}/cart/update/${userId}`,
+                    {cartText: JSON.stringify(cartSave)}
+                ).subscribe({
+                    next: res => {
+                        subs.unsubscribe();
+                    }
+                })
+        }
     }
 
     getCart(): Observable<any> {
@@ -99,7 +108,6 @@ export class CartService {
                 i = index;
             }
             if (this.cart.length-1 === index && i !== null) {
-                console.log(i)
                 this.cart.splice(i, 1);
                 this.saveCart(this.cart);
                 this.addEvent$.next(this.goodCount(this.cart));

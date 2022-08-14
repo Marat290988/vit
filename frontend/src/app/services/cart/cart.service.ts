@@ -125,4 +125,18 @@ export class CartService {
             }
         }
     }
+
+    placeOrder(): any {
+        const userId = this.userService.user.userId;
+        const productCart = [];
+        for (let i = 0; i < this.cart.length; i++) {
+            productCart.push({
+                productId: this.cart[i].productId,
+                qty: this.cart[i].qty
+            });
+            if (this.cart.length-1 === i) {
+                return this.http.post(`${this.host}/order/place_order/${userId}`, productCart);
+            }
+        }
+    }
 }

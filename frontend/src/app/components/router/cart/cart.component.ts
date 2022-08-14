@@ -103,4 +103,16 @@ export class CartComponent implements OnInit {
     }
   }
 
+  placeOrder() {
+    const subs = this.cartService.placeOrder()
+      .subscribe({
+        next: res => {
+          //console.log(res);
+        },
+        complete: () => {
+          subs.unsubscribe();
+        }
+      })
+  }
+
 }

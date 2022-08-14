@@ -43,7 +43,7 @@
                 </div>
             </div>
             <div class="checkout">
-                <button button class="vit-button" [disabled]="!isValid()">
+                <button button class="vit-button" [disabled]="!isValid()" (click)="placeOrder()">
                     <p>PAY</p>
                 </button>
             </div>

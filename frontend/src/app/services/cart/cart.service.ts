@@ -139,4 +139,8 @@ export class CartService {
             }
         }
     }
+
+    getAllOrders(size: number, number: number, sort: string): Observable<any> {
+        return this.http.get(`${this.host}/order/list?size=${size}&page=${number}&sort=${sort}`);
+    }
 }

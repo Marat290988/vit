@@ -41,5 +41,6 @@ public interface ProductService {
             HashMap<String, Object> editData
     ) throws IOException;
 
+    public List<ProductEntity> findProducts(List<String> ids);
 
 }

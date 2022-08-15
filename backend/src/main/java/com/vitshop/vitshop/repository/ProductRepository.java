@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -29,5 +30,8 @@ public interface ProductRepository extends CrudRepository<ProductEntity, Long>, 
     List<String> getAllManufacturer();
 
     ProductEntity findProductEntityById(Long id);
+
+    @Query("Select u from ProductEntity u Where u.productId in :ids")
+    List<ProductEntity> findProducts(@Param("ids") List<String> ids);
 
 }

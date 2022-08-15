@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.vitshop.vitshop.domain.product.ProductEntity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "file_table")
-public class FileEntity {
+public class FileEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

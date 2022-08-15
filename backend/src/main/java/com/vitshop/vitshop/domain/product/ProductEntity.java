@@ -1,11 +1,15 @@
 package com.vitshop.vitshop.domain.product;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.vitshop.vitshop.domain.file.FileEntity;
 import com.vitshop.vitshop.domain.user.UserPrincipal;
+import lombok.Data;
+import org.junit.Test;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
@@ -13,7 +17,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "product_table")
-public class ProductEntity {
+public class ProductEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -44,7 +48,7 @@ public class ProductEntity {
     @Column
     Boolean isActive;
 
-    public ProductEntity(String productId, String name, String description, String composition, String manufacturer, String category, BigDecimal basePrice, String authorName, Date creationDate, boolean isActive) {
+    public ProductEntity(String productId, String name, String description, String composition, String manufacturer, String category, BigDecimal basePrice, String authorName, Date creationDate, boolean isActive, List<FileEntity> fileList) {
         this.productId = productId;
         this.name = name;
         this.description = description;
@@ -55,6 +59,7 @@ public class ProductEntity {
         this.authorName = authorName;
         this.creationDate = creationDate;
         this.isActive = isActive;
+        this.fileList = fileList;
     }
 
     public ProductEntity() {

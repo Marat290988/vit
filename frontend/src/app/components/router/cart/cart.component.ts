@@ -14,6 +14,8 @@ export class CartComponent implements OnInit {
   amount: any;
   shipping = '';
   total:any = '';
+  loadState = false;
+  orderPlaced = false;
   @ViewChild('in1') in1: ElementRef;
   @ViewChild('in2') in2: ElementRef;
   @ViewChild('in3') in3: ElementRef;
@@ -104,13 +106,19 @@ export class CartComponent implements OnInit {
   }
 
   placeOrder() {
+    this.loadState = true;
     const subs = this.cartService.placeOrder()
       .subscribe({
         next: res => {
-          //console.log(res);
+          this.cart = [];
+          this.cartService.cart = [];
+          this.cartService.addEvent$.next(0);
+          this.cartService.saveCart([]);
+          this.orderPlaced = true;
         },
         complete: () => {
           subs.unsubscribe();
+          this.loadState = false;
         }
       })
   }

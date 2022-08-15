@@ -1,5 +1,5 @@
 <div class="cart-container">
-    <div class="cart-list">
+    <div class="cart-list" *ngIf="!orderPlaced">
         <h2>CART:</h2>
         <ng-container *ngFor="let item of cart">
             <app-cart-item
@@ -9,6 +9,9 @@
             ></app-cart-item>
         </ng-container>
         <div *ngIf="total == ''">EMPTY</div>
+    </div>
+    <div *ngIf="orderPlaced" class="placed-order">
+        <p>Your order has been placed.</p>
     </div>
     <div class="cart-checkout">
         <div class="cart-checkout-inner">
@@ -48,5 +51,8 @@
                 </button>
             </div>
         </div>
+    </div>
+    <div *ngIf="loadState" class="spinner-container">
+        <app-spinner></app-spinner>
     </div>
 </div>

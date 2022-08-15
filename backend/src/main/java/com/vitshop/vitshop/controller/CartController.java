@@ -42,6 +42,11 @@ public class CartController {
 
     @GetMapping("/usercart/{userId}")
     public ResponseEntity<String> getCart(@PathVariable("userId") String userId) {
-        return new ResponseEntity<>(cartService.findCartEntity(userId).getCartText(), HttpStatus.OK);
+        CartEntity cart = cartService.findCartEntity(userId);
+        if (cart != null) {
+            return new ResponseEntity<>(cartService.findCartEntity(userId).getCartText(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Cart with this id does not exist", HttpStatus.OK);
+        }
     }
 }

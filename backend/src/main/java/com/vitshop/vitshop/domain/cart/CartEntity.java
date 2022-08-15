@@ -11,9 +11,8 @@ public class CartEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "userId")
-    private UserEntity userEntity;
+    @JoinColumn(name = "user_id")
+    private String userId;
 
     @Column
     @Lob
@@ -21,9 +20,9 @@ public class CartEntity {
 
     public CartEntity() {};
 
-    public CartEntity(Long id, UserEntity userEntity, String cartText) {
+    public CartEntity(Long id, String userId, String cartText) {
         this.id = id;
-        this.userEntity = userEntity;
+        this.userId = userId;
         this.cartText = cartText;
     }
 
@@ -35,19 +34,19 @@ public class CartEntity {
         this.id = id;
     }
 
-    public UserEntity getUserEntity() {
-        return userEntity;
-    }
-
-    public void setUserEntity(UserEntity userEntity) {
-        this.userEntity = userEntity;
-    }
-
     public String getCartText() {
         return cartText;
     }
 
     public void setCartText(String cartText) {
         this.cartText = cartText;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

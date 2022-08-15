@@ -171,4 +171,8 @@ public class ProductServiceImpl implements ProductService {
         return pageProductDTO;
     }
 
+    public List<ProductEntity> findProducts(List<String> ids) {
+        return productRepository.findProducts(ids);
+    }
+
 }

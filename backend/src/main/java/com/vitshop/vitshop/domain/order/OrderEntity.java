@@ -1,5 +1,6 @@
 package com.vitshop.vitshop.domain.order;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.vitshop.vitshop.domain.cart.ProductCart;
 import com.vitshop.vitshop.domain.user.UserEntity;
@@ -26,7 +27,7 @@ public class OrderEntity {
     private UserEntity userEntity;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderEntity", fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonIgnoreProperties("orderEntity")
     private List<ProductCart> productCartList;
 
     @Column

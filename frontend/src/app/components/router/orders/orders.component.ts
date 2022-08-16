@@ -8,9 +8,10 @@ import { CartService } from 'src/app/services/cart/cart.service';
 })
 export class OrdersComponent implements OnInit {
 
-  sort = 'id';
-  size = 0;
+  sort = 'orderDate,desc';
+  size = 5;
   pageNumber = 0;
+  orderHistory = [];
 
   constructor(
     private cartService: CartService
@@ -21,6 +22,9 @@ export class OrdersComponent implements OnInit {
       .subscribe({
         next: res => {
           console.log(res)
+          this.orderHistory.push(...res.content);
+          console.log(this.orderHistory)
+          subs.unsubscribe();
         }
       })
   }

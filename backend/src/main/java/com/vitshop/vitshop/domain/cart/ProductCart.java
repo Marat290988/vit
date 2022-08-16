@@ -24,7 +24,7 @@ public class ProductCart {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "orderentity_id")
-    @JsonManagedReference
+    @JsonIgnoreProperties("productCartList")
     OrderEntity orderEntity;
 
     public ProductCart(Long id, ProductEntity productEntity, Integer quantity, OrderEntity orderEntity) {
